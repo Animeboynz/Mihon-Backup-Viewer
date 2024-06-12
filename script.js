@@ -1,21 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('data.json')
-        .then(response => response.json())
-        .then(data => initializeLibrary(data))
-        .catch(error => console.error('Error loading JSON data:', error));
+    const fileInput = document.getElementById('file-input');
+    const useDemoDataButton = document.getElementById('use-demo-data');
+
+    fileInput.addEventListener('change', handleFileUpload);
+    useDemoDataButton.addEventListener('click', () => {
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => initializeLibrary(data))
+            .catch(error => console.error('Error loading demo data:', error));
+        closeModal();
+    });
 });
+
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            initializeLibrary(data);
+            closeModal();
+        } catch (error) {
+            alert('Invalid JSON file. Please upload a valid JSON.');
+        }
+    };
+
+    if (file) {
+        reader.readAsText(file);
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+}
 
 function initializeLibrary(data) {
     const tabsContainer = document.getElementById('tabs');
     const tabContentsContainer = document.getElementById('tab-contents');
-    const categories = data.backupCategories.map(category => {
-        // Assume order 0 if the order field is missing
-        if (category.order === undefined) {
-            category.order = "0";
-        }
-        return category;
-    });
+    const categories = data.backupCategories;
     const mangaItems = data.backupManga;
+
+    // Clear existing content
+    tabsContainer.innerHTML = '';
+    tabContentsContainer.innerHTML = '';
 
     // Ensure 'Default' tab is always first
     categories.unshift({ name: 'Default', order: -1 });

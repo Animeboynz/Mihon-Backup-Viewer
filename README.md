@@ -22,9 +22,15 @@ python tachibk-converter.py --input backup.tachibk --output data.json
 ## Usage - Mihon Backup Viewer
 
 1. Clone this repo
-2. Replace the sample data.json with the one you created in the First Step
-3. Launch index.html with your favourite browser
-4. If it does not load its probably because of CORS Policy so you can open launch.bat to create a quick python web server.
+2. Launch index.html with your favourite browser
+3. If it does not load its probably because of CORS Policy so you can open launch.bat to create a quick python web server.
+4. Upload your own JSON or use the demo data provided
+
+or 
+
+1. Navigate to [https://tachibk.netlify.app/](https://tachibk.netlify.app/)
+2. Upload your own JSON or use the demo data provided
+
 
 ## Contributing
 

@@ -25,4 +25,3 @@ start "" "cmd.exe" /k "python -m http.server %PORT%"
 start "" "http://localhost:%PORT%/index.html"
 
 endlocal
-pause

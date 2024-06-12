@@ -48,13 +48,51 @@ body {
 
 .manga-item img {
     width: 150px;
-    height: 225px; /* Maintain aspect ratio (2:3) */
-    object-fit: cover; /* Cover the container, cropping if necessary */
-    object-position: center; /* Center the image */
+    height: 225px;
+    object-fit: cover;
+    object-position: center;
     border-radius: 5px;
 }
 
 .manga-item p {
     margin-top: 10px;
-    font-size: 0.9em; /* Adjust font size if necessary */
+    font-size: 0.9em;
+}
+
+/* Modal styles */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#file-input {
+    margin: 10px 0;
+}
+
+#use-demo-data {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#use-demo-data:hover {
+    background-color: #555;
 }
