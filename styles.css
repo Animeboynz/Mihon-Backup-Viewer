@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1d1d1d;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.tab-button {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.tab-button:hover {
+    background-color: #555;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.manga-item {
+    width: 150px;
+    margin: 10px;
+    text-align: center;
+}
+
+.manga-item img {
+    width: 150px;
+    height: 225px; /* Maintain aspect ratio (2:3) */
+    object-fit: cover; /* Cover the container, cropping if necessary */
+    object-position: center; /* Center the image */
+    border-radius: 5px;
+}
+
+.manga-item p {
+    margin-top: 10px;
+    font-size: 0.9em; /* Adjust font size if necessary */
+}
