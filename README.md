@@ -24,6 +24,7 @@ python tachibk-converter.py --input backup.tachibk --output data.json
 1. Clone this repo
 2. Replace the sample data.json with the one you created in the First Step
 3. Launch index.html with your favourite browser
+4. If it does not load its probably because of CORS Policy so you can open launch.bat to create a quick python web server.
 
 ## Contributing
 
