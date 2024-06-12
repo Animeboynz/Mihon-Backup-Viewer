@@ -32,3 +32,10 @@ Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+## Thanks To
+[BrutuZ](https://github.com/BrutuZ)
+
+rintohsaka9999
+
+[Clément Dubreuil](https://github.com/clementd64)
