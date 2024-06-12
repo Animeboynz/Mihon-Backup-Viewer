@@ -8,8 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => initializeLibrary(data))
             .catch(error => console.error('Error loading demo data:', error));
-        closeModal();
+        closeModal('upload-modal');
     });
+
+    document.getElementById('close-manga-modal').addEventListener('click', () => {
+        closeModal('manga-modal');
+    });
+
+    // Show the upload modal by default
+    showModal('upload-modal');
 });
 
 function handleFileUpload(event) {
@@ -20,7 +27,7 @@ function handleFileUpload(event) {
         try {
             const data = JSON.parse(e.target.result);
             initializeLibrary(data);
-            closeModal();
+            closeModal('upload-modal');
         } catch (error) {
             alert('Invalid JSON file. Please upload a valid JSON.');
         }
@@ -31,9 +38,14 @@ function handleFileUpload(event) {
     }
 }
 
-function closeModal() {
-    const modal = document.getElementById('modal');
-    modal.style.display = 'none';
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.remove('active');
+}
+
+function showModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.add('active');
 }
 
 function initializeLibrary(data) {
@@ -66,7 +78,7 @@ function initializeLibrary(data) {
     });
 
     // Populate manga items into the correct tab content
-    mangaItems.forEach(item => {
+    mangaItems.forEach((item, index) => {
         const itemCategories = item.categories || [-1]; // -1 represents Default
         itemCategories.forEach(catOrder => {
             const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
@@ -77,6 +89,9 @@ function initializeLibrary(data) {
             mangaItem.innerHTML = `
                 <img src="${item.thumbnailUrl}" alt="${item.title}" onerror="this.onerror=null;this.src='nocover.jpg';">
                 <p>${item.title}</p>`;
+            mangaItem.addEventListener('click', () => {
+                showMangaDetails(item, data.backupCategories);
+            });
             tabContent.appendChild(mangaItem);
         });
     });
@@ -94,3 +109,40 @@ function showTab(tabId) {
     const selectedTab = document.getElementById(tabId);
     selectedTab.classList.add('active');
 }
+
+function showMangaDetails(manga, categories) {
+    document.getElementById('manga-title').textContent = manga.title;
+    document.getElementById('manga-thumbnail').src = manga.thumbnailUrl;
+    document.getElementById('manga-genres').textContent = `Genres: ${manga.genre.join(', ')}`;
+    document.getElementById('manga-author').textContent = `Author: ${manga.author}`;
+    document.getElementById('manga-description').textContent = manga.description;
+
+    // Ensure manga.categories is an array before using map
+    const categoriesText = manga.categories && manga.categories.length > 0 ?
+        `Categories: ${manga.categories.map(catOrder => {
+            const category = categories.find(cat => cat.order === catOrder);
+            return category ? category.name : 'Unknown';
+        }).join(', ')}` :
+        'Categories: Unknown';
+    document.getElementById('manga-categories').textContent = categoriesText;
+
+    const chaptersContainer = document.getElementById('manga-chapters');
+    chaptersContainer.innerHTML = '';
+    // Check if manga.chapters is an array before using forEach
+    if (Array.isArray(manga.chapters)) {
+        manga.chapters.forEach(chapter => {
+            const chapterLink = document.createElement('a');
+            chapterLink.href = chapter.url;
+            chapterLink.textContent = chapter.name;
+            chapterLink.target = '_blank';
+            chaptersContainer.appendChild(chapterLink);
+            chaptersContainer.appendChild(document.createElement('br'));
+        });
+    }
+
+    showModal('manga-modal');
+}
+
+
+
+

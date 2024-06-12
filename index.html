@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <div id="modal" class="modal">
+    <div id="upload-modal" class="modal active">
         <div class="modal-content">
             <h2>Upload your JSON file</h2>
             <input type="file" id="file-input">
@@ -22,6 +22,20 @@
         <!-- Tab contents will be generated here -->
     </div>
 </div>
+
+<div id="manga-modal" class="modal">
+    <div class="modal-content">
+        <span id="close-manga-modal" class="close-button">&times;</span>
+        <h2 id="manga-title"></h2>
+        <img id="manga-thumbnail" src="" alt="Manga Thumbnail">
+        <p id="manga-genres"></p>
+        <p id="manga-author"></p>
+        <p id="manga-description"></p>
+        <p id="manga-categories"></p>
+        <div id="manga-chapters"></div>
+    </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
