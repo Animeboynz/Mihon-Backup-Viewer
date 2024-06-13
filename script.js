@@ -1,3 +1,5 @@
+const re = RegExp('^(http|https)://');
+
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
     const useDemoDataButton = document.getElementById('use-demo-data');
@@ -14,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('close-manga-modal').addEventListener('click', () => {
         closeModal('manga-modal');
     });
+
+    document.addEventListener('mousedown', (event) => {
+        const mangaModal = document.getElementById('manga-modal');
+        if (event.target === mangaModal && mangaModal.classList.contains('active')) {
+            closeModal('manga-modal');
+        }
+    })
 
     // Show the upload modal by default
     showModal('upload-modal');
@@ -188,9 +197,9 @@ function showMangaDetails(manga, categories) {
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
             const category = categories.find(cat => cat.order === catOrder);
-            return category ? category.name : 'Unknown';
+            return category ? category.name : 'Default';
         }).join(', ')}` :
-        'Categories: Unknown';
+        'Categories: Default';
     document.getElementById('manga-categories').textContent = categoriesText;
 
     const chaptersContainer = document.getElementById('manga-chapters');
@@ -208,9 +217,10 @@ function showMangaDetails(manga, categories) {
             chapterBox.className = 'chapter-box';
 
             const chapterLink = document.createElement('a');
-            chapterLink.href = chapter.url;
+            if (re.test(chapter.url)) chapterLink.href = chapter.url;
             chapterLink.textContent = chapter.name;
             chapterLink.target = '_blank';
+            
             if (chapter.read) {
                 chapterLink.classList.add('read');
             }
