@@ -189,7 +189,11 @@ function showTab(tabId) {
 
 function showMangaDetails(manga, categories) {
     document.getElementById('manga-title').textContent = manga.title;
-    document.getElementById('manga-thumbnail').src = manga.thumbnailUrl;
+    const mangaThumbnail = document.getElementById('manga-thumbnail');
+    mangaThumbnail.src = manga.thumbnailUrl;
+    mangaThumbnail.onerror = () => {
+        mangaThumbnail.src = 'nocover.jpg';
+    };
     document.getElementById('manga-genres').textContent = `Genres: ${manga.genre.join(', ')}`;
     document.getElementById('manga-author').textContent = `Author: ${manga.author}`;
     document.getElementById('manga-description').textContent = manga.description;
