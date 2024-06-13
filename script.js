@@ -1,3 +1,5 @@
+const re = RegExp('^(http|https)://');
+
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
     const useDemoDataButton = document.getElementById('use-demo-data');
@@ -210,9 +212,10 @@ function showMangaDetails(manga, categories) {
             chapterBox.className = 'chapter-box';
 
             const chapterLink = document.createElement('a');
-            chapterLink.href = chapter.url;
+            if (re.test(chapter.url)) chapterLink.href = chapter.url;
             chapterLink.textContent = chapter.name;
             chapterLink.target = '_blank';
+            
             if (chapter.read) {
                 chapterLink.classList.add('read');
             }
