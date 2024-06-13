@@ -71,7 +71,6 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    /*overflow-y:auto;*/
 }
 
 .modal.active {
@@ -83,10 +82,10 @@ body {
     border-radius: 5px;
     text-align: center;
     position: relative;
-    max-width: 80%; /* Limit the maximum width of the modal */
-    padding: 20px; /* Padding for the modal box */
-    overflow-y: auto; /* Enable vertical scrolling if content overflows */
-    max-height: calc(100% - 120px); /* Adjust the maximum height to fit within the viewport */
+    max-width: 80%;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100% - 120px);
 }
 
 .close-button {
@@ -120,6 +119,38 @@ body {
     height: 225px;
 }
 
+#manga-chapters {
+    margin-top: 20px;
+}
+
+.chapter-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #444;
+    border-radius: 5px;
+    width: calc(100% - 20px);
+}
+
+.chapter-box a {
+    color: darkseagreen;
+    text-decoration: none;
+}
+
+.chapter-box a:hover {
+    text-decoration: underline;
+}
+
+.chapter-date {
+    color: darkseagreen;
+}
+
+.chapter-box a.read {
+    color: white;
+}
+/*
 #manga-chapters a {
     color: darkseagreen;
     text-decoration: none;
@@ -128,9 +159,7 @@ body {
 #manga-chapters a:hover {
     text-decoration: underline;
 }
-
-
-
+*/
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
     width: 12px;

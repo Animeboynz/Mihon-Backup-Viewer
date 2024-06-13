@@ -100,6 +100,7 @@ function initializeLibrary(data) {
     showTab('Default');
 }
 
+
 function showTab(tabId) {
     // Hide all tab contents
     const tabContents = document.querySelectorAll('.tab-content');
@@ -117,7 +118,6 @@ function showMangaDetails(manga, categories) {
     document.getElementById('manga-author').textContent = `Author: ${manga.author}`;
     document.getElementById('manga-description').textContent = manga.description;
 
-    // Ensure manga.categories is an array before using map
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
             const category = categories.find(cat => cat.order === catOrder);
@@ -128,20 +128,45 @@ function showMangaDetails(manga, categories) {
 
     const chaptersContainer = document.getElementById('manga-chapters');
     chaptersContainer.innerHTML = '';
-    // Check if manga.chapters is an array before using forEach
+
     if (Array.isArray(manga.chapters)) {
-        manga.chapters.forEach(chapter => {
+        manga.chapters.sort((a, b) => a.chapterNumber - b.chapterNumber);
+        manga.chapters.forEach((chapter) => {
+            const chapterBox = document.createElement('div');
+            chapterBox.className = 'chapter-box';
+
             const chapterLink = document.createElement('a');
             chapterLink.href = chapter.url;
             chapterLink.textContent = chapter.name;
             chapterLink.target = '_blank';
-            chaptersContainer.appendChild(chapterLink);
-            chaptersContainer.appendChild(document.createElement('br'));
+            if (chapter.read) {
+                chapterLink.classList.add('read');
+            }
+
+            const lastReadDate = document.createElement('span');
+            lastReadDate.className = 'chapter-date';
+            if (Array.isArray(manga.history)) {
+                const historyItem = manga.history.find(history => history.url === chapter.url);
+                if (historyItem) {
+                    const date = new Date(parseInt(historyItem.lastRead));
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    lastReadDate.textContent = `${date.toLocaleDateString('en-GB', options)}`;
+                }
+            }
+
+            chapterBox.appendChild(chapterLink);
+            chapterBox.appendChild(lastReadDate);
+            chaptersContainer.appendChild(chapterBox);
         });
     }
 
     showModal('manga-modal');
 }
+
+
+
+
+
 
 
 
