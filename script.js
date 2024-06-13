@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
         closeModal('manga-modal');
     });
 
+    document.addEventListener('mousedown', (event) => {
+        const mangaModal = document.getElementById('manga-modal');
+        if (event.target === mangaModal && mangaModal.classList.contains('active')) {
+            closeModal('manga-modal');
+        }
+    })
+
     // Show the upload modal by default
     showModal('upload-modal');
 });
