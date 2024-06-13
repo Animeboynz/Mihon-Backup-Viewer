@@ -197,7 +197,12 @@ function showMangaDetails(manga, categories) {
     chaptersContainer.innerHTML = '';
 
     if (Array.isArray(manga.chapters)) {
-        manga.chapters.sort((a, b) => a.chapterNumber - b.chapterNumber);
+        manga.chapters.sort((a, b) => {
+            if (a.chapterNumber === undefined) return -1;
+            if (b.chapterNumber === undefined) return 1;
+            return a.chapterNumber - b.chapterNumber;
+        });
+
         manga.chapters.forEach((chapter) => {
             const chapterBox = document.createElement('div');
             chapterBox.className = 'chapter-box';
