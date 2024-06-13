@@ -13,20 +13,44 @@ body {
 
 .tabs {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 20px;
     margin-top: 20px;
 }
 
 .tab-button {
-    background-color: #444;
+    background-color: transparent;
     border: none;
     color: white;
     padding: 10px 20px;
     cursor: pointer;
+    transition: color 0.3s, background-color 0.3s;
+    font-size: 16px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
 .tab-button:hover {
-    background-color: #555;
+    color: #1666a6;
+}
+
+.tab-button.active {
+    color: #2196f3;
+    background-color: #333;
+}
+
+.tab-button.active::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 4px;
+    background-color: #2196f3;
+    position: absolute;
+    bottom: -10px;
+    border-radius: 2px;
 }
 
 .tab-content {
@@ -108,6 +132,7 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 10px;
+    border-radius: 15px;
 }
 
 #use-demo-data:hover {
@@ -150,17 +175,8 @@ body {
 .chapter-box a.read {
     color: white;
 }
-/*
-#manga-chapters a {
-    color: darkseagreen;
-    text-decoration: none;
-}
 
-#manga-chapters a:hover {
-    text-decoration: underline;
-}
-*/
-/* Works on Chrome, Edge, and Safari */
+/* Scrollbar styles */
 *::-webkit-scrollbar {
     width: 12px;
 }

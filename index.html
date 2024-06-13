@@ -10,8 +10,8 @@
 <div class="container">
     <div id="upload-modal" class="modal active">
         <div class="modal-content">
-            <h2>Upload your JSON file</h2>
-            <input type="file" id="file-input">
+            <h2>Upload your JSON file or .tachibk file</h2>
+            <input type="file" id="file-input" accept=".json,.tachibk">
             <button id="use-demo-data">Use Demo Data</button>
         </div>
     </div>
@@ -36,6 +36,8 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/6.11.2/protobuf.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
