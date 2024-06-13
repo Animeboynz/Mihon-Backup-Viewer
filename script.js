@@ -207,9 +207,9 @@ function showMangaDetails(manga, categories) {
 
     if (Array.isArray(manga.chapters)) {
         manga.chapters.sort((a, b) => {
-            if (a.chapterNumber === undefined) return -1;
-            if (b.chapterNumber === undefined) return 1;
-            return a.chapterNumber - b.chapterNumber;
+            if (a.sourceOrder === undefined) return 1;
+            if (b.sourceOrder === undefined) return -1;
+            return b.sourceOrder - a.sourceOrder;
         });
 
         manga.chapters.forEach((chapter) => {
@@ -217,10 +217,9 @@ function showMangaDetails(manga, categories) {
             chapterBox.className = 'chapter-box';
 
             const chapterLink = document.createElement('a');
-            if (re.test(chapter.url)) chapterLink.href = chapter.url;
+            chapterLink.href = chapter.url;
             chapterLink.textContent = chapter.name;
             chapterLink.target = '_blank';
-            
             if (chapter.read) {
                 chapterLink.classList.add('read');
             }
@@ -241,6 +240,7 @@ function showMangaDetails(manga, categories) {
             chaptersContainer.appendChild(chapterBox);
         });
     }
+
 
     showModal('manga-modal');
 }
