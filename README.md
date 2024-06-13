@@ -40,6 +40,8 @@ to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
 ## Thanks To
+[NGB-Was-Taken](https://github.com/NGB-Was-Taken)
+
 [BrutuZ](https://github.com/BrutuZ)
 
 rintohsaka9999
