@@ -195,9 +195,9 @@ function showMangaDetails(manga, categories) {
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
             const category = categories.find(cat => cat.order === catOrder);
-            return category ? category.name : 'Unknown';
+            return category ? category.name : 'Default';
         }).join(', ')}` :
-        'Categories: Unknown';
+        'Categories: Default';
     document.getElementById('manga-categories').textContent = categoriesText;
 
     const chaptersContainer = document.getElementById('manga-chapters');
