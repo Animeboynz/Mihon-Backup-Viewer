@@ -195,7 +195,7 @@ function showMangaDetails(manga, categories, source) {
     mangaThumbnail.onerror = () => {
         mangaThumbnail.src = 'nocover.jpg';
     };
-    document.getElementById('manga-genres').textContent = `Genres: ${(manga.genre || ["None"]).join(', ')}`;
+    document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
     document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
     document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
     document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
