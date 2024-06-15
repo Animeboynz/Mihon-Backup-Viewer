@@ -131,11 +131,18 @@ function initializeLibrary(data) {
         const tabButton = document.createElement('button');
         tabButton.className = 'tab-button';
         tabButton.id = `btn${category.name}`;
-        if (category.order === -1) {
-            tabButton.textContent = `${category.name} (${mangaItems.filter((manga) => manga.categories == null).length})`;
-        } else {
-            tabButton.textContent = `${category.name} (${mangaItems.filter((manga) => manga.categories?.indexOf(category.order) >= 0).length})`;
-        }
+
+        //////////////////
+        const itemCount = category.order === -1
+            ? mangaItems.filter((manga) => manga.categories == null).length
+            : mangaItems.filter((manga) => manga.categories?.indexOf(category.order) >= 0).length;
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = itemCount;
+        tabButton.textContent = category.name;
+
+        tabButton.appendChild(badge);
+        //////////////////////
         tabButton.onclick = () => showTab(category.name);
         if (index === 0) {
             tabButton.classList.add('active');
