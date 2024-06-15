@@ -38,7 +38,7 @@ body {
 }
 
 .tab-button.active {
-    color: #2196f3;
+    color: white;
     background-color: #333;
 }
 
@@ -47,14 +47,14 @@ body {
     display: block;
     width: 60%;
     height: 4px;
-    background-color: #2196f3;
+    background-color: #124875;
     position: absolute;
     bottom: -10px;
     border-radius: 2px;
 }
 
 .tab-button .badge {
-    background-color: #2196f3;
+    background-color: #124875;
     color: white;
     border-radius: 10px;
     padding: 2px 6px;
