@@ -1,4 +1,4 @@
-const re = RegExp('^(http|https)://');
+const re = RegExp('^https?://');
 
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
@@ -222,7 +222,7 @@ function showMangaDetails(manga, categories) {
 
             const chapterLink = document.createElement('a');
             chapterLink.textContent = chapter.name;
-            if (chapter.url.startsWith("htt")) {
+            if (chapter.url.match(re)) {
                 chapterLink.href = chapter.url;
                 chapterLink.target = '_blank';
             }
