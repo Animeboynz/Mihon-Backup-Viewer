@@ -130,7 +130,11 @@ function initializeLibrary(data) {
         // Create tab button
         const tabButton = document.createElement('button');
         tabButton.className = 'tab-button';
-        tabButton.textContent = category.name;
+        if (category.order === -1) {
+            tabButton.textContent = `${category.name} (${mangaItems.filter((manga) => manga.categories == null).length})`;
+        } else {
+            tabButton.textContent = `${category.name} (${mangaItems.filter((manga) => manga.categories?.indexOf(category.order) >= 0).length})`;
+        }
         tabButton.onclick = () => showTab(category.name);
         if (index === 0) {
             tabButton.classList.add('active');
