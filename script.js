@@ -122,6 +122,9 @@ function initializeLibrary(data) {
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
 
+    // Tab for entries with read history but not in library
+    categories.unshift({ name: 'History', order: -2 });
+
     // Ensure 'Default' tab is always first
     categories.unshift({ name: 'Default', order: -1 });
 
@@ -131,18 +134,32 @@ function initializeLibrary(data) {
         const tabButton = document.createElement('button');
         tabButton.className = 'tab-button';
         tabButton.id = `btn${category.name}`;
+        tabButton.textContent = category.order === -2 ? '⌛' : category.name;
 
-        //////////////////
-        const itemCount = category.order === -1
-            ? mangaItems.filter((manga) => manga.categories == null).length
-            : mangaItems.filter((manga) => manga.categories?.indexOf(category.order) >= 0).length;
         const badge = document.createElement('span');
         badge.className = 'badge';
-        badge.textContent = itemCount;
-        tabButton.textContent = category.name;
+        switch (category.order) {
+            default:
+                badge.textContent = mangaItems.filter((manga) =>
+                    manga.favorite != false &&
+                    manga.categories?.indexOf(category.order) >= 0
+                ).length;
+                break;
+            case -1:
+                badge.textContent = mangaItems.filter((manga) =>
+                    !manga.categories &&
+                    manga.favorite != false &&
+                    manga.dateAdded
+                ).length;
+                break;
+            case -2:
+                badge.textContent = mangaItems.filter((manga) =>
+                    manga.favorite === false || !manga.dateAdded
+                ).length;
+                break;
+        }
 
         tabButton.appendChild(badge);
-        //////////////////////
         tabButton.onclick = () => showTab(category.name);
         if (index === 0) {
             tabButton.classList.add('active');
@@ -157,10 +174,15 @@ function initializeLibrary(data) {
     });
 
     // Populate manga items into the correct tab content
-    mangaItems.forEach((item, index) => {
-        const itemCategories = item.categories || [-1]; // -1 represents Default
-        itemCategories.forEach(catOrder => {
-            const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
+    mangaItems.sort((a, b) =>
+        (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
+    ).forEach((item, index) => {
+        const itemCategories =
+        item.favorite === false || !item.dateAdded
+            ? [-2]
+            : item.categories || [-1]; // -1 = Default | -2 = History
+        itemCategories.forEach((catOrder) => {
+            const category = categories.find((cat) => cat.order === catOrder) || { name: 'Default' };
             const tabContent = document.getElementById(category.name);
 
             const mangaItem = document.createElement('div');
@@ -252,8 +274,7 @@ function showMangaDetails(manga, categories, source) {
                 const historyItem = manga.history.find(history => history.url === chapter.url);
                 if (historyItem) {
                     const date = new Date(parseInt(historyItem.lastRead));
-                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                    lastReadDate.textContent = `${date.toLocaleDateString('en-GB', options)}`;
+                    lastReadDate.textContent = `${date.toLocaleString()}`;
                 }
             }
 
