@@ -221,9 +221,11 @@ function showMangaDetails(manga, categories) {
             chapterBox.className = 'chapter-box';
 
             const chapterLink = document.createElement('a');
-            chapterLink.href = chapter.url;
             chapterLink.textContent = chapter.name;
-            chapterLink.target = '_blank';
+            if (chapter.url.startsWith("htt")) {
+                chapterLink.href = chapter.url;
+                chapterLink.target = '_blank';
+            }
             if (chapter.read) {
                 chapterLink.classList.add('read');
             }
