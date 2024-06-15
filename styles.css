@@ -80,9 +80,13 @@ body {
     text-align: center;
 }
 
-.manga-item img {
+.manga-item img, #manga-thumbnail {
     width: 150px;
     height: 225px;
+    box-sizing: content-box;
+    background-image: url('nocover.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
     object-fit: cover;
     object-position: center;
     border-radius: 5px;
@@ -152,12 +156,6 @@ body {
 
 #use-demo-data:hover {
     background-color: #555;
-}
-
-.modal-content img {
-    object-fit: cover;
-    width: 150px;
-    height: 225px;
 }
 
 #manga-chapters {

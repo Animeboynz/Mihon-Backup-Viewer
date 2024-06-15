@@ -182,7 +182,7 @@ function initializeLibrary(data) {
             const mangaItem = document.createElement('div');
             mangaItem.className = 'manga-item';
             mangaItem.innerHTML = `
-                <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" alt="${manga.customTitle || manga.title}" loading="lazy" onerror="this.onerror=null;this.src='nocover.jpg';">
+                <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" title="${manga.customTitle || manga.title}">
                 <p>${manga.customTitle || manga.title}</p>`;
             mangaItem.addEventListener('click', () => {
                 showMangaDetails(manga, data.backupCategories, data.backupSources.find(source => source.sourceId === manga.source).name);
@@ -220,9 +220,6 @@ function showMangaDetails(manga, categories, source) {
     document.getElementById('manga-source').textContent = source;
     const mangaThumbnail = document.getElementById('manga-thumbnail');
     mangaThumbnail.src = manga.customThumbnailUrl || manga.thumbnailUrl;
-    mangaThumbnail.onerror = () => {
-        mangaThumbnail.src = 'nocover.jpg';
-    };
     document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
     document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
     document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
