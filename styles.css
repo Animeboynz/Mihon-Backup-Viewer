@@ -153,6 +153,16 @@ body {
     margin-top: 20px;
 }
 
+#manga-title {
+    margin-bottom: 0px;
+}
+
+#manga-source {
+    margin-top: 0px;
+    font-size: 12px;
+    font-style: italic;
+}
+
 .chapter-box {
     display: flex;
     justify-content: space-between;

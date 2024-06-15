@@ -157,7 +157,7 @@ function initializeLibrary(data) {
                 <img src="${item.customThumbnailUrl || item.thumbnailUrl}" alt="${item.customTitle || item.title}" loading="lazy" onerror="this.onerror=null;this.src='nocover.jpg';">
                 <p>${item.customTitle || item.title}</p>`;
             mangaItem.addEventListener('click', () => {
-                showMangaDetails(item, data.backupCategories);
+                showMangaDetails(item, data.backupCategories, data.backupSources.find(source => source.sourceId === item.source).name);
             });
             tabContent.appendChild(mangaItem);
         });
@@ -187,15 +187,19 @@ function showTab(tabId) {
     }
 }
 
-function showMangaDetails(manga, categories) {
+function showMangaDetails(manga, categories, source) {
     document.getElementById('manga-title').textContent = manga.customTitle || manga.title;
+    document.getElementById('manga-source').textContent = source;
     const mangaThumbnail = document.getElementById('manga-thumbnail');
     mangaThumbnail.src = manga.customThumbnailUrl || manga.thumbnailUrl;
     mangaThumbnail.onerror = () => {
         mangaThumbnail.src = 'nocover.jpg';
     };
-    document.getElementById('manga-genres').textContent = `Genres: ${manga.genre.join(', ')}`;
+    document.getElementById('manga-genres').textContent = `Genres: ${(manga.genre || ["None"]).join(', ')}`;
     document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
+    document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
+    document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
+    document.getElementById('manga-artist').hidden = (!manga.customArtist && !manga.artist) ? true : false;
     document.getElementById('manga-description').textContent = manga.customDescription || manga.description;
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
