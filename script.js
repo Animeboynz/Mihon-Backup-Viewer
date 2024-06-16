@@ -222,6 +222,7 @@ function showMangaDetails(manga, categories, source) {
     document.getElementById('manga-source').textContent = source;
     const mangaThumbnail = document.getElementById('manga-thumbnail');
     mangaThumbnail.src = manga.customThumbnailUrl || manga.thumbnailUrl;
+    document.documentElement.style.setProperty('--manga-header-bg', `url('${mangaThumbnail.src}')`);
     const mangaStatus = (() => {
       switch (manga.status) {
           case 1: return 'Ongoing';
