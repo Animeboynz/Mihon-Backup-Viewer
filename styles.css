@@ -4,18 +4,21 @@ body {
     color: #fff;
     margin: 0;
     padding: 0;
+    overflow: hidden; /* Prevent body scroll */
 }
 
 .container {
     width: 90%;
     margin: auto;
+    overflow: auto; /* Enable scrolling within the container */
 }
 
 .tabs {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Ensure tabs are aligned to the left */
     gap: 20px;
     margin-top: 20px;
+    white-space: nowrap; /* Prevent line break for tabs */
 }
 
 .tab-button {
