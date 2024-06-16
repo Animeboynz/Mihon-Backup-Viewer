@@ -188,13 +188,15 @@ body {
 
 #manga-source {
     margin-top: 0px;
+    margin-left: 10px;
     font-size: 12px;
     font-style: italic;
 }
 
-
-#manga-description, #manga-genres {
-    text-align: justify;
+#manga-status {
+    margin-top: 0px;
+    margin-right: 10px;
+    font-size: 12px;
 }
 
 #manga-thumbnail {
