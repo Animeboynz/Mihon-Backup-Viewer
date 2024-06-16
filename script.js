@@ -266,3 +266,41 @@ function showMangaDetails(manga, categories, source) {
 
     showModal('manga-modal');
 }
+
+// Context Menu Script
+const contextMenu = document.getElementById('context-menu');
+const editOption = document.getElementById('edit');
+const deleteOption = document.getElementById('delete');
+let currentImage = null;
+
+document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    if (event.target.tagName === 'IMG' && event.target.closest('.tab-content')) {
+        currentImage = event.target;
+        contextMenu.style.top = `${event.clientY}px`;
+        contextMenu.style.left = `${event.clientX}px`;
+        contextMenu.style.display = 'block';
+    } else {
+        contextMenu.style.display = 'none';
+    }
+});
+
+document.addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+});
+
+editOption.addEventListener('click', () => {
+    if (currentImage) {
+        alert('Edit option clicked for ' + currentImage.alt);
+        // Add edit functionality here
+    }
+});
+
+deleteOption.addEventListener('click', () => {
+    if (currentImage) {
+        alert('Delete option clicked for ' + currentImage.alt);
+        // Add delete functionality here
+    }
+});
+
+
