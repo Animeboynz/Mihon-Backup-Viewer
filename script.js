@@ -118,6 +118,8 @@ function initializeLibrary(data) {
     const categories = data.backupCategories;
     const mangaItems = data.backupManga;
 
+    if (!categories[0].hasOwnProperty('order')) categories[0].order = '0'; // The first category doesn't seem to have order property in my backups.
+
     // Clear existing content
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
