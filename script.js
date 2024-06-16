@@ -209,12 +209,23 @@ function showMangaDetails(manga, categories, source) {
     mangaThumbnail.onerror = () => {
         mangaThumbnail.src = 'nocover.jpg';
     };
+    const mangaStatus = (() => {
+	switch (manga.status) {
+	    case 1: return 'Ongoing';
+	    case 2: return 'Completed';
+	    case 4: return 'Publishing Finished';
+	    case 5: return 'Cancelled';
+	    case 6: return 'On Hiatus';
+	    default: return 'Unknown';
+	}
+    })();
     document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
     document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
     document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
     document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
     document.getElementById('manga-artist').hidden = (!manga.customArtist && !manga.artist) ? true : false;
     document.getElementById('manga-description').innerText = (manga.customDescription || manga.description);
+    document.getElementById('manga-status').textContent = mangaStatus; 
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
