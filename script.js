@@ -118,6 +118,8 @@ function initializeLibrary(data) {
     const categories = data.backupCategories;
     const mangaItems = data.backupManga;
 
+    if (!categories[0].hasOwnProperty('order')) categories[0].order = '0'; // The first category doesn't seem to have order property in my backups.
+
     // Clear existing content
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
@@ -212,7 +214,7 @@ function showMangaDetails(manga, categories, source) {
     document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
     document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
     document.getElementById('manga-artist').hidden = (!manga.customArtist && !manga.artist) ? true : false;
-    document.getElementById('manga-description').textContent = manga.customDescription || manga.description;
+    document.getElementById('manga-description').innerText = (manga.customDescription || manga.description);
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
