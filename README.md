@@ -39,11 +39,14 @@ to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## Thanks To
-[NGB-Was-Taken](https://github.com/NGB-Was-Taken)
+<div align="center">
 
-[BrutuZ](https://github.com/BrutuZ)
+## Credits
 
-rintohsaka9999
+Thank you to all the people who have contributed!
 
-[Clément Dubreuil](https://github.com/clementd64)
+<a href="https://github.com/Animeboynz/Mihon-Backup-Viewer/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=Animeboynz/Mihon-Backup-Viewer" alt="Contributors" title="Contributors" width="200"/>
+</a>
+
+</a>
