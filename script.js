@@ -182,7 +182,7 @@ function initializeLibrary(data) {
             const mangaItem = document.createElement('div');
             mangaItem.className = 'manga-item';
             mangaItem.innerHTML = `
-                <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" title="${manga.customTitle || manga.title}" alt="">
+                <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
                 <p>${manga.customTitle || manga.title}</p>`;
             mangaItem.addEventListener('click', () => {
                 showMangaDetails(manga, data.backupCategories, data.backupSources.find(source => source.sourceId === manga.source).name);
