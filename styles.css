@@ -41,7 +41,7 @@ body {
 }
 
 .tab-button.active {
-    color: #2196f3;
+    color: white;
     background-color: #333;
 }
 
@@ -50,14 +50,14 @@ body {
     display: block;
     width: 60%;
     height: 4px;
-    background-color: #2196f3;
+    background-color: #124875;
     position: absolute;
     bottom: -10px;
     border-radius: 2px;
 }
 
 .tab-button .badge {
-    background-color: #2196f3;
+    background-color: #124875;
     color: white;
     border-radius: 10px;
     padding: 2px 6px;
@@ -83,9 +83,13 @@ body {
     text-align: center;
 }
 
-.manga-item img {
+.manga-item img, #manga-thumbnail {
     width: 150px;
     height: 225px;
+    box-sizing: content-box;
+    background-image: url('nocover.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
     object-fit: cover;
     object-position: center;
     border-radius: 5px;
@@ -162,6 +166,19 @@ body {
     height: 225px;
 }
 
+.manga-header {
+    display: flex;
+    align-items: center;
+}
+
+.manga-meta {
+    text-align: justify;
+}
+
+.manga-body{
+    margin-top: 20px;
+}
+
 #manga-chapters {
     margin-top: 20px;
 }
@@ -176,6 +193,20 @@ body {
     font-style: italic;
 }
 
+
+#manga-description, #manga-genres {
+    text-align: justify;
+}
+
+#manga-thumbnail {
+    border-radius: 5px;
+    margin-right: 30px;
+}
+
+#manga-description, #manga-genres {
+    text-align: justify;
+}
+
 .chapter-box {
     display: flex;
     justify-content: space-between;
@@ -188,7 +219,7 @@ body {
 }
 
 .chapter-box a {
-    color: darkseagreen;
+    color: white;
     text-decoration: none;
 }
 
@@ -201,7 +232,7 @@ body {
 }
 
 .chapter-box a.read {
-    color: white;
+    color: #808080;
 }
 
 /* Scrollbar styles */
