@@ -1,3 +1,6 @@
+# IDE folders
+.vscode/
+.idea/
 # Default ignored files
 /shelf/
 /workspace.xml
