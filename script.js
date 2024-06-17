@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
     const useDemoDataButton = document.getElementById('use-demo-data');
 
-    fileInput.addEventListener('change', handleFileUpload);
+    fileInput.addEventListener('change', handleFileLoad);
     useDemoDataButton.addEventListener('click', () => {
         fetch('data.json')
             .then(response => response.json())
             .then(data => initializeLibrary(data))
             .catch(error => console.error('Error loading demo data:', error));
-        closeModal('upload-modal');
+        closeModal('load-modal');
     });
 
     document.getElementById('close-manga-modal').addEventListener('click', () => {
@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    // Show the upload modal by default
-    showModal('upload-modal');
+    // Show the load modal by default
+    showModal('load-modal');
 });
 
 document.getElementById('file-input').addEventListener('change', function(event) {
@@ -63,14 +63,14 @@ document.getElementById('file-input').addEventListener('change', function(event)
             // Display the decoded message in the HTML
             //document.getElementById("output").textContent = JSON.stringify(jsonMessage, null, 2);
             initializeLibrary(jsonMessage);
-            closeModal('upload-modal');
+            closeModal('load-modal');
         };
         reader.readAsArrayBuffer(file);
     });
 });
 
 
-function handleFileUpload(event) {
+function handleFileLoad(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
 
@@ -81,17 +81,17 @@ function handleFileUpload(event) {
             let data;
             if (extension === 'json') {
                 data = JSON.parse(e.target.result);
-            } else if (extension === 'tachibk') {
+            } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
                 //decodeTachibkFile(e.target.result);
                 return;
             } else {
-                alert('Unsupported file type. Please upload a valid JSON or .tachibk file.');
+                alert('Unsupported file type. Please pick a valid .json, .tachibk or .proto.gz file.');
                 return;
             }
             initializeLibrary(data);
-            closeModal('upload-modal');
+            closeModal('load-modal');
         } catch (error) {
-            alert('Error processing the file. Please upload a valid file.');
+            alert('Error processing the file. Please pick a valid file.');
         }
     };
 
