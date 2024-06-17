@@ -223,25 +223,48 @@ function showMangaDetails(manga, categories, source) {
     const mangaThumbnail = document.getElementById('manga-thumbnail');
     mangaThumbnail.src = manga.customThumbnailUrl || manga.thumbnailUrl;
     document.documentElement.style.setProperty('--manga-header-bg', `url('${mangaThumbnail.src}')`);
-    const mangaStatus = (() => {
+    const mangaAuthor = document.getElementById('manga-author');
+    const mangaArtist = document.getElementById('manga-artist');
+    const mangaDescription = document.getElementById('manga-description');
+    const mangaStatus = document.getElementById('manga-status');
+
+    const mangaStatusText = (() => {
       switch (manga.status) {
-          case 1: return 'Ongoing';
-          case 2: return 'Completed';
-          case 4: return 'Publishing Finished';
-          case 5: return 'Cancelled';
-          case 6: return 'On Hiatus';
-          default: return 'Unknown';
+          case 1: 
+	    addMaterialSymbol(mangaStatus, 'schedule');
+	    return 'Ongoing';
+          case 2:
+	    addMaterialSymbol(mangaStatus, 'done_all');
+	    return 'Completed';
+          case 4: 
+	    addMaterialSymbol(mangaStatus, 'check');
+	    return 'Publishing Finished';
+          case 5:
+	    addMaterialSymbol(mangaStatus, 'close');
+	    return 'Cancelled';
+          case 6:
+	    addMaterialSymbol(mangaStatus, 'pause');
+	    return 'On Hiatus';
+          default:
+	    addMaterialSymbol(mangaStatus, 'block');
+	    return 'Unknown';
       }
     })();
+
+    mangaAuthor.innerHTML = '';
+    mangaArtist.innerHTML = '';
+    
     document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
-    document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
-    document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
-    document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
-    document.getElementById('manga-artist').hidden = (!manga.customArtist && !manga.artist) ? true : false;
-    document.getElementById('manga-description').innerText = (manga.customDescription || manga.description);
-    document.getElementById('manga-description').innerHTML += '<span class="fade-out" onclick="toggleExpand(this)"></span>';
-    document.getElementById('manga-description').classList.remove('expanded');
-    document.getElementById('manga-status').textContent = mangaStatus; 
+    addMaterialSymbol(mangaAuthor, 'person');
+    mangaAuthor.innerHTML += (manga.customAuthor || manga.author);
+    mangaAuthor.hidden = (!manga.customAuthor && !manga.author) ? true : false;
+    addMaterialSymbol(mangaArtist, 'brush');
+    mangaArtist.innerHTML += (manga.customArtist || manga.artist);
+    mangaArtist.hidden = (!manga.customArtist && !manga.artist) ? true : false;
+    mangaDescription.innerText = (manga.customDescription || manga.description);
+    mangaDescription.innerHTML += '<span class="fade-out" onclick="toggleExpand(this)"></span>';
+    mangaDescription.classList.remove('expanded');
+    document.getElementById('manga-status').innerHTML += mangaStatusText; 
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
@@ -305,4 +328,11 @@ function toggleExpand(element) {
 	    element.style.opacity = '1';
 	}, 500);
     }
+}
+
+function addMaterialSymbol(element, symbol) {
+    const symbolSpan = document.createElement('span');
+    symbolSpan.className = 'material-symbols-outlined';
+    symbolSpan.textContent = symbol;
+    element.appendChild(symbolSpan);    
 }

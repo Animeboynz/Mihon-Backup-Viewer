@@ -197,8 +197,27 @@ body {
     z-index: 2;
 }
 
-.manga-body{
+.manga-body {
     margin-top: 20px;
+}
+
+.material-symbols-outlined {
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+#manga-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+    font-size: 15px;
+}
+
+#manga-artist {
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+    font-size: 15px;
 }
 
 #manga-chapters {
@@ -209,17 +228,23 @@ body {
     margin-bottom: 0px;
 }
 
+.status-source {
+    display: flex;
+    align-items: center;
+}
+
 #manga-source {
     margin-top: 0px;
-    margin-left: 10px;
-    font-size: 12px;
-    font-style: italic;
+    margin-left: 5px;
+    font-size: 13px;
 }
 
 #manga-status {
+    display: flex;
+    align-items: center;
     margin-top: 0px;
-    margin-right: 10px;
-    font-size: 12px;
+    margin-right: 5px;
+    font-size: 13px;
 }
 
 #manga-thumbnail {
@@ -281,6 +306,10 @@ body {
 
 .chapter-box a.read {
     color: #808080;
+}
+
+[hidden]{
+    display: none !important;
 }
 
 /* Scrollbar styles */
