@@ -256,6 +256,7 @@ function showMangaDetails(manga, categories, source) {
 
     mangaAuthor.innerHTML = '';
     mangaArtist.innerHTML = '';
+    mangaStatus.innerHTML = '';
     
     document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
     addMaterialSymbol(mangaAuthor, 'person');
