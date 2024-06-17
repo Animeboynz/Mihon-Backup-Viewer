@@ -215,14 +215,20 @@ function showMangaDetails(manga, categories, source) {
       switch (manga.status) {
           case 1: return 'Ongoing';
           case 2: return 'Completed';
-          case 3: return 'Licenced';
+          case 3: return 'Licensed';
           case 4: return 'Publishing Finished';
           case 5: return 'Cancelled';
           case 6: return 'On Hiatus';
           default: return 'Unknown';
       }
     })();
-    document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
+    const genres = document.getElementById('manga-genres');
+    genres.innerHTML = '';
+    (manga.customGenre || manga.genre || ["None"]).forEach((tag) => {
+        const li = document.createElement('li');
+        li.innerText = tag;
+        genres.appendChild(li);
+    })
     document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
     document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
     document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
