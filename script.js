@@ -280,4 +280,6 @@ function showMangaDetails(manga, categories, source) {
 
 
     showModal('manga-modal');
+    const mangaModalContent = document.querySelector('#manga-modal .modal-content');
+    mangaModalContent.scrollTop = 0;
 }
