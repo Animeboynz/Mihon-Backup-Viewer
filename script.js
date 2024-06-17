@@ -236,6 +236,9 @@ function showMangaDetails(manga, categories, source) {
           case 2:
 	    addMaterialSymbol(mangaStatus, 'done_all');
 	    return 'Completed';
+	  case 3:
+	    addMaterialSymbol(mangaStatus, 'attach_money');
+	    return 'Licenced';
           case 4: 
 	    addMaterialSymbol(mangaStatus, 'check');
 	    return 'Publishing Finished';
