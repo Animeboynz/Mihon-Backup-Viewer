@@ -368,7 +368,7 @@ label.switch {
 }
 
 .settings-inline select {
-    margin-right: 5px; /* Additional space for better alignment */
+    margin: 20px auto 0px 5px; /* Additional space for better alignment */
 }
 
 
