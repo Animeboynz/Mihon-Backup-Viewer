@@ -289,3 +289,32 @@ function showMangaDetails(manga, categories, source) {
     const mangaModalContent = document.querySelector('#manga-modal .modal-content');
     mangaModalContent.scrollTop = 0;
 }
+
+///////////////////////////////
+
+const settingsIcon = document.getElementById('settings-icon');
+const closeSettingsModalBtn = document.getElementById('close-settings-modal');
+const applySettingsBtn = document.getElementById('apply-settings');
+const sortOrderSelect = document.getElementById('sort-order');
+const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
+
+settingsIcon.addEventListener('click', openSettingsModal);
+closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
+applySettingsBtn.addEventListener('click', applySettings);
+
+function openSettingsModal() {
+    showModal('settings-modal');
+}
+
+function closeSettingsModal() {
+    closeModal('settings-modal');
+}
+
+function applySettings() {
+    const sortOrder = sortOrderSelect.value;
+    const highlightTracker = highlightTrackerCheckbox.checked;
+
+    console.log('Settings applied:', { sortOrder, highlightTracker });
+
+    closeSettingsModal();
+}

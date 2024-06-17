@@ -12,6 +12,14 @@ body {
     overflow: auto; /* Enable scrolling within the container */
 }
 
+.settings-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 .tabs {
     display: flex;
     justify-content: flex-start; /* Ensure tabs are aligned to the left */
@@ -274,3 +282,93 @@ body {
     border-radius: 8px;
     background-color: #363636;
 }
+
+/* Switch styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #124875;
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+}
+
+label.switch {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#apply-settings {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 15px;
+}
+
+#apply-settings:hover {
+    background-color: #555;
+}
+
+/**/
+
+.settings-inline {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 0px; /* Space between each setting */
+}
+
+.settings-inline label {
+    margin-right: 30px; /* Space between label and input */
+    white-space: nowrap;
+}
+
+.settings-inline select {
+    margin-right: 5px; /* Additional space for better alignment */
+}
+
+
