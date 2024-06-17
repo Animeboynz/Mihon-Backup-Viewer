@@ -5,14 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const useDemoDataButton = document.getElementById('use-demo-data');
 
     fileInput.addEventListener('change', handleFileLoad);
+    //Loads Demo Data from data.json when button pressed on Load Modal
     useDemoDataButton.addEventListener('click', () => {
         fetch('data.json')
             .then(response => response.json())
             .then(data => initializeLibrary(data))
             .catch(error => console.error('Error loading demo data:', error));
-        closeModal('load-modal');
+        closeModal('load-modal'); // Closes the Load Modal
     });
 
+    // Closes the Manga Model is the X button is pressed
     document.getElementById('close-manga-modal').addEventListener('click', () => {
         closeModal('manga-modal');
     });
@@ -33,8 +35,8 @@ function handleFileLoad(event) {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-        const fileName = file.name;
-        const extension = fileName.split('.').pop().toLowerCase();
+        const fileName = file.name; // Gets filename to check nested extensions e.g. proto.gz
+        const extension = fileName.split('.').pop().toLowerCase(); // Used to check extensions (Future me replace with fileName.endsWith(''))
 
         try {
             if (extension === 'json') {
@@ -85,30 +87,34 @@ function handleFileLoad(event) {
     }
 }
 
+// Function to close the modal with the passed ID
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.remove('active');
 }
 
+// Function to show the modal with the passed ID
 function showModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.add('active');
 }
 
+// Function to Initialise the Tab Contents and Library from the JSON data passed to it.
 function initializeLibrary(data) {
     const tabsContainer = document.getElementById('tabs');
     const tabContentsContainer = document.getElementById('tab-contents');
     const categories = data.backupCategories;
     const mangaItems = data.backupManga;
 
-    if (!categories[0].hasOwnProperty('order')) categories[0].order = '0'; // The first category doesn't seem to have order property in my backups.
+    // Sets the order to 0 if a category has no order property
+    if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
 
     // Clear existing content
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
 
     // Tab for entries with read history but not in library
-    categories.unshift({ name: 'History', order: 65535 });
+    categories.unshift({ name: 'History', order: 65535 }); // Sets history tab's order as last
 
     // Ensure 'Default' tab is always first
     categories.unshift({ name: 'Default', order: -1 });
