@@ -228,6 +228,7 @@ function showMangaDetails(manga, categories, source) {
     const mangaDescription = document.getElementById('manga-description');
     const mangaStatus = document.getElementById('manga-status');
 
+    mangaStatus.innerHTML = '';
     const mangaStatusText = (() => {
       switch (manga.status) {
           case 1: 
@@ -256,7 +257,6 @@ function showMangaDetails(manga, categories, source) {
 
     mangaAuthor.innerHTML = '';
     mangaArtist.innerHTML = '';
-    mangaStatus.innerHTML = '';
     
     document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
     addMaterialSymbol(mangaAuthor, 'person');
