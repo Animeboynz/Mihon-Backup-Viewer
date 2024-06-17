@@ -1,0 +1,4 @@
+singleQuote: true
+arrowParens: avoid
+printWidth: 90
+tabWidth: 4
