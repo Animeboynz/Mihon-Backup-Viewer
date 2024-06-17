@@ -2,7 +2,22 @@
 
 This is a tool to explore your Tachiyomi Backup once its been decoded using the [TACHIBK to JSON Converter](https://github.com/BrutuZ/tachibk-converter) created by BrutuZ
 
-## Usage - TACHIBK to JSON Converter
+## Usage - Mihon Backup Viewer
+
+1. Clone this repo
+2. Launch index.html with your favourite browser
+3. If it does not load its probably because of CORS Policy so you can open launch.bat to create a quick python web server.
+4. Upload your own JSON, .tachibk or .proto.gz, or use the demo data provided
+
+or 
+
+1. Navigate to [https://tachibk.netlify.app/](https://tachibk.netlify.app/)
+2. Upload your own JSON, .tachibk or .proto.gz, or use the demo data provided
+
+<details>
+  <summary>Convert TACHIBK to JSON</summary>
+
+### Usage - TACHIBK to JSON Converter
 
 1. Install Python 3.7+
 2. Clone the [Repo](https://github.com/BrutuZ/tachibk-converter)
@@ -17,27 +32,11 @@ pip install -r requirements.txt
 ```
 python tachibk-converter.py --input backup.tachibk --output data.json
 ```
-
-
-## Usage - Mihon Backup Viewer
-
-1. Clone this repo
-2. Launch index.html with your favourite browser
-3. If it does not load its probably because of CORS Policy so you can open launch.bat to create a quick python web server.
-4. Upload your own JSON or use the demo data provided
-
-or 
-
-1. Navigate to [https://tachibk.netlify.app/](https://tachibk.netlify.app/)
-2. Upload your own JSON or use the demo data provided
-
+</details>
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+Check [CONTRIBUTING.md](https://github.com/Animeboynz/Mihon-Backup-Viewer/blob/main/CONTRIBUTING.md)
 
 <div align="center">
 
