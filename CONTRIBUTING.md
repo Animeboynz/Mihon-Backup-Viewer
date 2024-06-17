@@ -15,8 +15,8 @@ Pull requests are the best way to propose changes to the codebase. We actively w
 4. Use Prettier for formatting using the following config file `.prettierrc.yaml`.
 5. Create that pull request!
 
-## Any contributions you make will be under the GNU GPLv3 Software License
-In short, when you submit code changes, your submissions are understood to be under the same [GNU GPLv3](http://choosealicense.com/licenses/gpl-3.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
+## Any contributions you make will be under the GNU GPLv2 Software License
+In short, when you submit code changes, your submissions are understood to be under the same [GNU GPLv2](http://choosealicense.com/licenses/gpl-2.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's [issues](https://github.com/animeboynz/mihon-backup-viewer/issues)
 We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/Animeboynz/Mihon-Backup-Viewer/issues/new); it's that easy!
