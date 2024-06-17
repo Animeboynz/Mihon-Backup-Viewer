@@ -19,7 +19,7 @@ set "DIR=%~dp0"
 cd /d "%DIR%"
 
 :: Start the web server
-start "" "cmd.exe" /k "python -m http.server %PORT%"
+start "Tachibk Viewer" "cmd.exe" /k "python -m http.server %PORT%"
 
 :: Open the default web browser with index.html
 start "" "http://localhost:%PORT%/index.html"
