@@ -22,7 +22,8 @@ body {
 
 .tabs {
     display: flex;
-    justify-content: flex-start; /* Ensure tabs are aligned to the left */
+    flex-wrap: wrap; /* Expand vertically instead of horizontally and off-screen */
+    justify-content: space-evenly; /* Distribute tabs across the width */
     gap: 20px;
     margin-top: 20px;
     white-space: nowrap; /* Prevent line break for tabs */
