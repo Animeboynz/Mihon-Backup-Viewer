@@ -226,6 +226,7 @@ function showMangaDetails(manga, categories, source) {
       switch (manga.status) {
           case 1: return 'Ongoing';
           case 2: return 'Completed';
+          case 3: return 'Licenced';
           case 4: return 'Publishing Finished';
           case 5: return 'Cancelled';
           case 6: return 'On Hiatus';
