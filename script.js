@@ -1,4 +1,6 @@
 const re = RegExp('^https?://');
+var sortOrder = "descending"
+var data;
 
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
@@ -9,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     useDemoDataButton.addEventListener('click', () => {
         fetch('data.json')
             .then(response => response.json())
-            .then(data => initializeLibrary(data))
+            .then(data => window.data = data)
+            .then(data => initializeLibrary())
             .catch(error => console.error('Error loading demo data:', error));
         closeModal('load-modal'); // Closes the Load Modal
     });
@@ -41,7 +44,8 @@ function handleFileLoad(event) {
         try {
             if (extension === 'json') {
                 const data = JSON.parse(e.target.result);
-                initializeLibrary(data); // Initialises Library with loaded JSON
+                window.data = data;
+                initializeLibrary(); // Initialises Library with loaded JSON
                 closeModal('load-modal'); // Closes the Load Modal
             } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
                 // Load protobuf schema
@@ -65,7 +69,8 @@ function handleFileLoad(event) {
                                 enums: String,
                                 bytes: String,
                             });
-                            initializeLibrary(jsonMessage); // Initialises Library with the Converter protobuf
+                            window.data = jsonMessage;
+                            initializeLibrary(); // Initialises Library with the Converter protobuf
                             closeModal('load-modal'); // Closes the Load Modal
                         } catch (error) {
                             alert('Error decoding protobuf file.');
@@ -100,7 +105,7 @@ function showModal(modalId) {
 }
 
 // Function to Initialise the Tab Contents and Library from the JSON data passed to it.
-function initializeLibrary(data) {
+function initializeLibrary() {
     const tabsContainer = document.getElementById('tabs');
     const tabContentsContainer = document.getElementById('tab-contents');
     const categories = data.backupCategories;
@@ -113,11 +118,16 @@ function initializeLibrary(data) {
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
 
-    // Tab for entries with read history but not in library
-    categories.unshift({ name: 'History', order: 65535 }); // Sets history tab's order as last
+    // Add 'History' tab if it doesn't exist
+    if (!categories.some(category => category.name === 'History')) {
+        categories.push({ name: 'History', order: 65535 }); // Sets history tab's order as last
+    }
 
-    // Ensure 'Default' tab is always first
-    categories.unshift({ name: 'Default', order: -1 });
+    // Ensure 'Default' tab is always first, but add only if it doesn't exist
+    if (!categories.some(category => category.name === 'Default')) {
+        categories.unshift({ name: 'Default', order: -1 });
+    }
+
 
     // Create tabs and tab contents
     categories.sort((a, b) => a.order - b.order).forEach((category, index) => {
@@ -163,7 +173,17 @@ function initializeLibrary(data) {
 
     // Populate manga items into the correct tab content
     mangaItems.sort((a, b) =>
-        (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
+        {switch (sortOrder) {
+            case "recently-updated":
+                return (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt);
+            case "ascending":
+                return a.title.localeCompare(b.title);
+            case "descending":
+                return b.title.localeCompare(a.title);
+            default:
+                // Default to recently-updated if sortOrder is not recognized
+                return (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt);
+        }}
     ).forEach((manga) => {
         const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1]; // -1 = Default | 65535 = History
         itemCategories.forEach((catOrder) => {
@@ -311,10 +331,11 @@ function closeSettingsModal() {
 }
 
 function applySettings() {
-    const sortOrder = sortOrderSelect.value;
+    sortOrder = sortOrderSelect.value;
     const highlightTracker = highlightTrackerCheckbox.checked;
 
     console.log('Settings applied:', { sortOrder, highlightTracker });
 
     closeSettingsModal();
+    initializeLibrary();
 }
