@@ -4,15 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
     const useDemoDataButton = document.getElementById('use-demo-data');
 
-    fileInput.addEventListener('change', handleFileUpload);
+    fileInput.addEventListener('change', handleFileLoad);
+    //Loads Demo Data from data.json when button pressed on Load Modal
     useDemoDataButton.addEventListener('click', () => {
         fetch('data.json')
             .then(response => response.json())
             .then(data => initializeLibrary(data))
             .catch(error => console.error('Error loading demo data:', error));
-        closeModal('upload-modal');
+        closeModal('load-modal'); // Closes the Load Modal
     });
 
+    // Closes the Manga Model is the X button is pressed
     document.getElementById('close-manga-modal').addEventListener('click', () => {
         closeModal('manga-modal');
     });
@@ -24,74 +26,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    // Show the upload modal by default
-    showModal('upload-modal');
+    // Show the load modal by default
+    showModal('load-modal');
 });
 
-document.getElementById('file-input').addEventListener('change', function(event) {
-    var file = event.target.files[0];
-
-    if (!file) {
-        alert('Please select a file.');
-        return;
-    }
-
-    // Load protobuf schema
-    protobuf.load("schema.proto", function(err, root) {
-        if (err) throw err;
-
-        // Resolve Backup message type
-        var Backup = root.lookupType("Backup");
-
-        var reader = new FileReader();
-        reader.onload = function(event) {
-            var arrayBuffer = event.target.result;
-
-            // Decompress the gzip file
-            var inflated = pako.inflate(new Uint8Array(arrayBuffer));
-
-            // Decode the protobuf encoded binary data
-            var message = Backup.decode(inflated);
-
-            // Convert the decoded message to JSON format
-            var jsonMessage = Backup.toObject(message, {
-                longs: String,
-                enums: String,
-                bytes: String,
-            });
-
-            // Display the decoded message in the HTML
-            //document.getElementById("output").textContent = JSON.stringify(jsonMessage, null, 2);
-            initializeLibrary(jsonMessage);
-            closeModal('upload-modal');
-        };
-        reader.readAsArrayBuffer(file);
-    });
-});
-
-
-function handleFileUpload(event) {
+function handleFileLoad(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
+        const fileName = file.name; // Gets filename to check nested extensions e.g. proto.gz
+        const extension = fileName.split('.').pop().toLowerCase(); // Used to check extensions (Future me replace with fileName.endsWith(''))
+
         try {
-            const fileName = file.name;
-            const extension = fileName.split('.').pop().toLowerCase();
-            let data;
             if (extension === 'json') {
-                data = JSON.parse(e.target.result);
-            } else if (extension === 'tachibk') {
-                //decodeTachibkFile(e.target.result);
-                return;
+                const data = JSON.parse(e.target.result);
+                initializeLibrary(data); // Initialises Library with loaded JSON
+                closeModal('load-modal'); // Closes the Load Modal
+            } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
+                // Load protobuf schema
+                protobuf.load("schema.proto", (err, root) => {
+                    if (err) {
+                        alert('Error loading protobuf schema.');
+                        return;
+                    }
+
+                    const Backup = root.lookupType("Backup"); // Resolve Backup message type
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        try {
+                            const arrayBuffer = e.target.result;
+                            const inflated = pako.inflate(new Uint8Array(arrayBuffer)); // Decompress the gzip file
+                            const message = Backup.decode(inflated); // Decode the protobuf encoded binary data
+                            // Convert the decoded message to JSON format
+                            const jsonMessage = Backup.toObject(message, {
+                                longs: String,
+                                enums: String,
+                                bytes: String,
+                            });
+                            initializeLibrary(jsonMessage); // Initialises Library with the Converter protobuf
+                            closeModal('load-modal'); // Closes the Load Modal
+                        } catch (error) {
+                            alert('Error decoding protobuf file.');
+                        }
+                    };
+
+                    reader.readAsArrayBuffer(file);
+                });
             } else {
-                alert('Unsupported file type. Please upload a valid JSON or .tachibk file.');
-                return;
+                alert('Unsupported file type. Please pick a valid .json, .tachibk, or .proto.gz file.');
             }
-            initializeLibrary(data);
-            closeModal('upload-modal');
         } catch (error) {
-            alert('Error processing the file. Please upload a valid file.');
+            alert('Error processing the file. Please pick a valid file.');
         }
     };
 
@@ -100,32 +87,34 @@ function handleFileUpload(event) {
     }
 }
 
-
-
+// Function to close the modal with the passed ID
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.remove('active');
 }
 
+// Function to show the modal with the passed ID
 function showModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.add('active');
 }
 
+// Function to Initialise the Tab Contents and Library from the JSON data passed to it.
 function initializeLibrary(data) {
     const tabsContainer = document.getElementById('tabs');
     const tabContentsContainer = document.getElementById('tab-contents');
     const categories = data.backupCategories;
     const mangaItems = data.backupManga;
 
-    if (!categories[0].hasOwnProperty('order')) categories[0].order = '0'; // The first category doesn't seem to have order property in my backups.
+    // Sets the order to 0 if a category has no order property
+    if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
 
     // Clear existing content
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
 
     // Tab for entries with read history but not in library
-    categories.unshift({ name: 'History', order: 65535 });
+    categories.unshift({ name: 'History', order: 65535 }); // Sets history tab's order as last
 
     // Ensure 'Default' tab is always first
     categories.unshift({ name: 'Default', order: -1 });
@@ -231,6 +220,7 @@ function showMangaDetails(manga, categories, source) {
     mangaStatus.innerHTML = '';
     const mangaStatusText = (() => {
       switch (manga.status) {
+
           case 1: 
 	    addMaterialSymbol(mangaStatus, 'schedule');
 	    return 'Ongoing';
@@ -270,6 +260,7 @@ function showMangaDetails(manga, categories, source) {
     mangaDescription.parentNode.style.maxHeight = '3.6em';
     document.getElementById('description-expand-icon').style.transform = 'none';
     document.getElementById('manga-status').innerHTML += mangaStatusText; 
+
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
@@ -321,6 +312,8 @@ function showMangaDetails(manga, categories, source) {
 
 
     showModal('manga-modal');
+    const mangaModalContent = document.querySelector('#manga-modal .modal-content');
+    mangaModalContent.scrollTop = 0;
 }
 
 function toggleExpand(element) {
