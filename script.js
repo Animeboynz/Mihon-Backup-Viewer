@@ -248,7 +248,13 @@ function showMangaDetails(manga, categories, source) {
     mangaAuthor.innerHTML = '';
     mangaArtist.innerHTML = '';
     
-    document.getElementById('manga-genres').textContent = `Genres: ${(manga.customGenre || manga.genre || ["None"]).join(', ')}`;
+    const genres = document.getElementById('manga-genres');
+    genres.innerHTML = '';
+    (manga.customGenre || manga.genre || ["None"]).forEach((tag) => {
+        const li = document.createElement('li');
+        li.innerText = tag;
+        genres.appendChild(li);
+    })
     addMaterialSymbol(mangaAuthor, 'person');
     mangaAuthor.innerHTML += (manga.customAuthor || manga.author);
     mangaAuthor.hidden = (!manga.customAuthor && !manga.author) ? true : false;
