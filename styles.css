@@ -290,9 +290,11 @@ body {
 }
 
 #manga-genres {
-    text-align: left;
-    padding-left: 0px;
+    display: flex;
+    flex-wrap: wrap;
     gap: 5px;
+    padding-left: 0px;
+    text-align: left;
 }
 
 #manga-genres li {
@@ -301,11 +303,8 @@ body {
     border-radius: 5px;
     display: inline;
     font-size: 11pt;
-    gap: 5px;
     line-height: 1.75;
     list-style-type: none;
-    margin-bottom: 15px;
-    margin-right: 6px;
     padding: 6px;
 
 }
