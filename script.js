@@ -267,6 +267,7 @@ function showMangaDetails(manga, categories, source) {
     mangaArtist.hidden = (!manga.customArtist && !manga.artist) ? true : false;
     mangaDescription.innerText = (manga.customDescription || manga.description);
     mangaDescription.parentNode.classList.remove('expanded');
+    mangaDescription.parentNode.style.maxHeight = '3.6em';
     document.getElementById('description-expand-icon').style.transform = 'none';
     document.getElementById('manga-status').innerHTML += mangaStatusText; 
 
@@ -323,10 +324,15 @@ function showMangaDetails(manga, categories, source) {
 }
 
 function toggleExpand(element) {
+    const mangaDescriptionDiv = document.getElementById('manga-description-div');
     if (element.parentNode.classList.toggle('expanded')) {
+	const mangaDescription = document.getElementById('manga-description');
+	const maxDivSize = mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) + 5;
+	mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
 	document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
     } else {
 	document.getElementById('description-expand-icon').style.transform = 'none';
+	mangaDescriptionDiv.style.maxHeight = '3.6em';
     }
 }
 
