@@ -239,7 +239,7 @@ function showMangaDetails(manga, categories, source) {
 	    return 'Completed';
 	  case 3:
 	    addMaterialSymbol(mangaStatus, 'attach_money');
-	    return 'Licenced';
+	    return 'Licensed';
           case 4: 
 	    addMaterialSymbol(mangaStatus, 'check');
 	    return 'Publishing Finished';
@@ -266,8 +266,8 @@ function showMangaDetails(manga, categories, source) {
     mangaArtist.innerHTML += (manga.customArtist || manga.artist);
     mangaArtist.hidden = (!manga.customArtist && !manga.artist) ? true : false;
     mangaDescription.innerText = (manga.customDescription || manga.description);
-    mangaDescription.innerHTML += '<span class="fade-out" onclick="toggleExpand(this)"></span>';
-    mangaDescription.classList.remove('expanded');
+    mangaDescription.parentNode.classList.remove('expanded');
+    document.getElementById('description-expand-icon').style.transform = 'none';
     document.getElementById('manga-status').innerHTML += mangaStatusText; 
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
@@ -324,13 +324,9 @@ function showMangaDetails(manga, categories, source) {
 
 function toggleExpand(element) {
     if (element.parentNode.classList.toggle('expanded')) {
-	element.style.transition = 'opacity 0.5s ease';
-	element.style.opacity = '0';
+	document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
     } else {
-	setTimeout(() => {
-	    element.style.transition = 'none';
-	    element.style.opacity = '1';
-	}, 500);
+	document.getElementById('description-expand-icon').style.transform = 'none';
     }
 }
 
