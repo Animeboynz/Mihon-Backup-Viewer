@@ -1,3 +1,7 @@
+:root {
+    --manga-header-bg: 'url()';
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #1d1d1d;
@@ -141,6 +145,7 @@ body {
     line-height: 30px;
     background-color: #555;
     border-radius: 100%;
+    z-index: 2;
 }
 
 #file-input {
@@ -169,15 +174,52 @@ body {
 .manga-header {
     display: flex;
     align-items: center;
+    position: relative;
+    background:  var(--manga-header-bg);
+    background-size: cover;
+    overflow: hidden;
+    background-position: center;
+}
+
+.manga-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: linear-gradient(to bottom, rgba(51, 51, 51, 0.5) 0%, rgba(51, 51, 51, 1) 90%); 
 }
 
 .manga-meta {
     text-align: justify;
+    position: relative;
+    z-index: 2;
 }
 
 .manga-body {
     margin-top: 20px;
     display: inline;
+}
+
+.material-symbols-outlined {
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+#manga-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+    font-size: 15px;
+}
+
+#manga-artist {
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+    font-size: 15px;
 }
 
 #manga-chapters {
@@ -188,26 +230,63 @@ body {
     margin-bottom: 0px;
 }
 
+.status-source {
+    display: flex;
+    align-items: center;
+}
+
 #manga-source {
     margin-top: 0px;
-    margin-left: 10px;
-    font-size: 12px;
-    font-style: italic;
+    margin-left: 5px;
+    font-size: 13px;
 }
 
 #manga-status {
+    display: flex;
+    align-items: center;
     margin-top: 0px;
-    margin-right: 10px;
-    font-size: 12px;
+    margin-right: 5px;
+    font-size: 13px;
 }
 
 #manga-thumbnail {
     border-radius: 5px;
     margin-right: 30px;
+    z-index: 2;
+    position: relative;
 }
 
 #manga-description {
     text-align: justify;
+}
+
+
+#manga-description-div {
+    position: relative;
+    max-height: 3.6em;
+    overflow: hidden;
+    transition: max-height 0.2s linear;
+}
+
+#manga-description {
+    margin-bottom: 1.8em;
+}
+
+.fade-out {
+    position: absolute;
+    height: 1.8em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(51, 51, 51, 1));
+    cursor: pointer;
+    user-select: none;
+}
+
+#description-expand-icon {
+    font-size: 2.7em;
+    margin: 0px;
+    transition: transform 0.2s linear;
 }
 
 #manga-genres {
@@ -228,6 +307,7 @@ body {
     margin-bottom: 15px;
     margin-right: 6px;
     padding: 6px;
+
 }
 
 .chapter-box {
@@ -256,6 +336,10 @@ body {
 
 .chapter-box a.read {
     color: #808080;
+}
+
+[hidden]{
+    display: none !important;
 }
 
 /* Scrollbar styles */
