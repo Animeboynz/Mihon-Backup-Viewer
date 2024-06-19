@@ -1,5 +1,5 @@
 const re = RegExp('^https?://');
-var sortOrder = localStorage.getItem('MBV_SortOrder') || 'ascending';
+var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title';
 var filterStatus = -1;
 var filterSource = 'all';
 var filterTracking = 'all-entries';
@@ -190,9 +190,9 @@ function initializeLibrary() {
           return (
             (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
           );
-        case 'ascending':
+        case 'title':
           return a.title.localeCompare(b.title);
-        case 'descending':
+        case 'title-desc':
           return b.title.localeCompare(a.title);
         default:
           // Default to recently-updated if sortOrder is not recognized
