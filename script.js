@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => initializeLibrary())
             .catch(error => console.error('Error loading demo data:', error));
         closeModal('load-modal'); // Closes the Load Modal
-        closeSettingsModal();
-        initializeLibrary();
     });
 
     // Closes the Manga Model is the X button is pressed
@@ -87,8 +85,6 @@ function handleFileLoad(event) {
         } catch (error) {
             alert('Error processing the file. Please pick a valid file.');
         }
-        closeSettingsModal();
-        initializeLibrary();
     };
 
     if (file) {
@@ -276,43 +272,17 @@ function showMangaDetails(manga, categories, source) {
     document.getElementById('manga-source').textContent = source;
     const mangaThumbnail = document.getElementById('manga-thumbnail');
     mangaThumbnail.src = manga.customThumbnailUrl || manga.thumbnailUrl;
-    document.documentElement.style.setProperty('--manga-header-bg', `url('${mangaThumbnail.src}')`);
-    const mangaAuthor = document.getElementById('manga-author');
-    const mangaArtist = document.getElementById('manga-artist');
-    const mangaDescription = document.getElementById('manga-description');
-    const mangaStatus = document.getElementById('manga-status');
-
-    mangaStatus.innerHTML = '';
-    const mangaStatusText = (() => {
-        switch (manga.status) {
-
-            case 1:
-                addMaterialSymbol(mangaStatus, 'schedule');
-                return 'Ongoing';
-            case 2:
-                addMaterialSymbol(mangaStatus, 'done_all');
-                return 'Completed';
-            case 3:
-                addMaterialSymbol(mangaStatus, 'attach_money');
-                return 'Licensed';
-            case 4:
-                addMaterialSymbol(mangaStatus, 'check');
-                return 'Publishing Finished';
-            case 5:
-                addMaterialSymbol(mangaStatus, 'close');
-                return 'Cancelled';
-            case 6:
-                addMaterialSymbol(mangaStatus, 'pause');
-                return 'On Hiatus';
-            default:
-                addMaterialSymbol(mangaStatus, 'block');
-                return 'Unknown';
-        }
+    const mangaStatus = (() => {
+      switch (manga.status) {
+          case 1: return 'Ongoing';
+          case 2: return 'Completed';
+          case 3: return 'Licensed';
+          case 4: return 'Publishing Finished';
+          case 5: return 'Cancelled';
+          case 6: return 'On Hiatus';
+          default: return 'Unknown';
+      }
     })();
-
-    mangaAuthor.innerHTML = '';
-    mangaArtist.innerHTML = '';
-
     const genres = document.getElementById('manga-genres');
     genres.innerHTML = '';
     (manga.customGenre || manga.genre || ["None"]).forEach((tag) => {
@@ -320,18 +290,12 @@ function showMangaDetails(manga, categories, source) {
         li.innerText = tag;
         genres.appendChild(li);
     })
-    addMaterialSymbol(mangaAuthor, 'person');
-    mangaAuthor.innerHTML += (manga.customAuthor || manga.author);
-    mangaAuthor.hidden = (!manga.customAuthor && !manga.author) ? true : false;
-    addMaterialSymbol(mangaArtist, 'brush');
-    mangaArtist.innerHTML += (manga.customArtist || manga.artist);
-    mangaArtist.hidden = (!manga.customArtist && !manga.artist) ? true : false;
-    mangaDescription.innerText = (manga.customDescription || manga.description);
-    mangaDescription.parentNode.classList.remove('expanded');
-    mangaDescription.parentNode.style.maxHeight = '3.6em';
-    document.getElementById('description-expand-icon').style.transform = 'none';
-    document.getElementById('manga-status').innerHTML += mangaStatusText;
-
+    document.getElementById('manga-author').textContent = `Author: ${manga.customAuthor || manga.author}`;
+    document.getElementById('manga-author').hidden = (!manga.customAuthor && !manga.author) ? true : false;
+    document.getElementById('manga-artist').textContent = `Artist: ${manga.customArtist || manga.artist}`;
+    document.getElementById('manga-artist').hidden = (!manga.customArtist && !manga.artist) ? true : false;
+    document.getElementById('manga-description').innerText = (manga.customDescription || manga.description);
+    document.getElementById('manga-status').textContent = mangaStatus; 
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
         `Categories: ${manga.categories.map(catOrder => {
@@ -387,26 +351,6 @@ function showMangaDetails(manga, categories, source) {
     mangaModalContent.scrollTop = 0;
 }
 
-function toggleExpand(element) {
-    const mangaDescriptionDiv = document.getElementById('manga-description-div');
-    if (element.parentNode.classList.toggle('expanded')) {
-        const mangaDescription = document.getElementById('manga-description');
-        const maxDivSize = mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) + 5;
-        mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
-        document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
-    } else {
-        document.getElementById('description-expand-icon').style.transform = 'none';
-        mangaDescriptionDiv.style.maxHeight = '3.6em';
-    }
-}
-
-function addMaterialSymbol(element, symbol) {
-    const symbolSpan = document.createElement('span');
-    symbolSpan.className = 'material-symbols-outlined';
-    symbolSpan.textContent = symbol;
-    element.appendChild(symbolSpan);
-}
-
 ///////////////////////////////
 
 const settingsIcon = document.getElementById('settings-icon');
@@ -434,4 +378,7 @@ function applySettings() {
     const highlightTracker = highlightTrackerCheckbox.checked;
 
     console.log('Settings applied:', { sortOrder, highlightTracker });
+
+    closeSettingsModal();
+    initializeLibrary();
 }
