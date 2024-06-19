@@ -47,8 +47,7 @@ function handleFileLoad(event) {
 
         try {
             if (extension === 'json') {
-                const data = JSON.parse(e.target.result);
-                window.data = data;
+                window.data = JSON.parse(e.target.result);
                 initializeLibrary(); // Initialises Library with loaded JSON
                 closeModal('load-modal'); // Closes the Load Modal
             } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
@@ -68,12 +67,11 @@ function handleFileLoad(event) {
                             const inflated = pako.inflate(new Uint8Array(arrayBuffer)); // Decompress the gzip file
                             const message = Backup.decode(inflated); // Decode the protobuf encoded binary data
                             // Convert the decoded message to JSON format
-                            const jsonMessage = Backup.toObject(message, {
+                            data = Backup.toObject(message, {
                                 longs: String,
                                 enums: String,
                                 bytes: String,
                             });
-                            window.data = jsonMessage;
                             initializeLibrary(); // Initialises Library with the Converter protobuf
                             closeModal('load-modal'); // Closes the Load Modal
                         } catch (error) {
