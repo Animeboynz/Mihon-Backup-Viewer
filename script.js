@@ -444,23 +444,3 @@ function applySettings() {
 
   console.log('Settings applied:', { sortOrder, highlightTracker });
 }
-
-function toggleExpand(element) {
-    const mangaDescriptionDiv = document.getElementById('manga-description-div');
-    if (element.parentNode.classList.toggle('expanded')) {
-	const mangaDescription = document.getElementById('manga-description');
-	const maxDivSize = mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) + 5;
-	mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
-	document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
-    } else {
-	document.getElementById('description-expand-icon').style.transform = 'none';
-	mangaDescriptionDiv.style.maxHeight = '3.6em';
-    }
-}
-
-function addMaterialSymbol(element, symbol) {
-    const symbolSpan = document.createElement('span');
-    symbolSpan.className = 'material-symbols-outlined';
-    symbolSpan.textContent = symbol;
-    element.appendChild(symbolSpan);    
-}
