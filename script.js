@@ -1,5 +1,7 @@
 const re = RegExp('^https?://');
 var sortOrder = "ascending"
+var filterStatus = -1;
+var filterSource = 'all';
 var data;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -104,12 +106,22 @@ function showModal(modalId) {
     modal.classList.add('active');
 }
 
+function initializeTabs() {
+
+}
+
 // Function to Initialise the Tab Contents and Library from the JSON data passed to it.
 function initializeLibrary() {
     const tabsContainer = document.getElementById('tabs');
     const tabContentsContainer = document.getElementById('tab-contents');
     const categories = data.backupCategories;
-    const mangaItems = data.backupManga;
+    let mangaItems = data.backupManga;
+
+    mangaItems = mangaItems.filter(manga => {
+      let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
+      let matchesSource = filterSource == 'all' || manga.source == filterSource;
+      return matchesStatus && matchesSource;
+    });
 
     // Sets the order to 0 if a category has no order property
     if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
@@ -223,7 +235,7 @@ function addOptionsFromData() {
     // Iterate over the data and add options to the select element
     data.backupSources.forEach(function(source) {
         let newOption = document.createElement('option');
-        newOption.value = source.name.toLowerCase().replace(/\s+/g, '-'); // Convert name to a suitable value
+        newOption.value = source.sourceId;
         newOption.text = source.name;
         filterSource.add(newOption);
     });
@@ -357,6 +369,8 @@ const settingsIcon = document.getElementById('settings-icon');
 const closeSettingsModalBtn = document.getElementById('close-settings-modal');
 const applySettingsBtn = document.getElementById('apply-settings');
 const sortOrderSelect = document.getElementById('sort-order');
+const filterStatusSelect = document.getElementById('filter-status');
+const filterSourceSelect = document.getElementById('filter-source');
 const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
 
 settingsIcon.addEventListener('click', openSettingsModal);
@@ -375,6 +389,8 @@ function closeSettingsModal() {
 
 function applySettings() {
     sortOrder = sortOrderSelect.value;
+    filterStatus = filterStatusSelect.value;
+    filterSource = filterSourceSelect.value;
     const highlightTracker = highlightTrackerCheckbox.checked;
 
     console.log('Settings applied:', { sortOrder, highlightTracker });
