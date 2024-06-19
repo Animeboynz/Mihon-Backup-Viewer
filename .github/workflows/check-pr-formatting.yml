@@ -32,4 +32,4 @@ jobs:
       - name: Check code format
         run: |
           npm install --silent prettier
-          prettier --check **.{js,md,html,css}
+          npx prettier --check *.{js,md,html,css}

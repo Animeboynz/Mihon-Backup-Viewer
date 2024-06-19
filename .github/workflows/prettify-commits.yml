@@ -23,6 +23,8 @@ jobs:
         with:
           # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
+          # Only fetch the latest commit
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -31,8 +33,11 @@ jobs:
       - name: Prettify code format
         run: |
           npm install --silent prettier postcss prettier-plugin-css-order
-          prettier --write **.{js,md,html,css} --plugin prettier-plugin-css-order
+          npx prettier --write *.{js,md,html,css} --plugin prettier-plugin-css-order
           if [ ! $(git status | grep 'nothing added to commit') ]; then
-            git commit --amend --no-edit --all
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add *.{js,md,html,css}
+            git commit --amend --no-edit
             git push -f
           fi
