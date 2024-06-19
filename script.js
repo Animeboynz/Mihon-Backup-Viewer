@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         closeModal('manga-modal');
     });
 
+    document.querySelector('.fade-out').addEventListener('click', toggleExpand);
+
     document.addEventListener('mousedown', (event) => {
         const mangaModal = document.getElementById('manga-modal');
         if (event.target === mangaModal && mangaModal.classList.contains('active')) {
@@ -400,9 +402,9 @@ function showMangaDetails(manga, categories, source) {
     mangaModalContent.scrollTop = 0;
 }
 
-function toggleExpand(element) {
+function toggleExpand() {
     const mangaDescriptionDiv = document.getElementById('manga-description-div');
-    if (element.parentNode.classList.toggle('expanded')) {
+    if (document.querySelector('.fade-out').parentNode.classList.toggle('expanded')) {
         const mangaDescription = document.getElementById('manga-description');
         const maxDivSize = mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) + 5;
         mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
