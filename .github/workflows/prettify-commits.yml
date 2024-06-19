@@ -1,0 +1,38 @@
+name: Format Commits
+
+# This action works with pushes
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.js'
+      - '**.html'
+      - '**.css'
+      - '**.md'
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: npm
+
+      - name: Prettify code format
+        run: |
+          npm install --silent prettier postcss prettier-plugin-css-order
+          prettier --write **.{js,md,html,css} --plugin prettier-plugin-css-order
+          if [ ! $(git status | grep 'nothing added to commit') ]; then
+            git commit --amend --no-edit --all
+            git push -f
+          fi
