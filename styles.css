@@ -92,6 +92,7 @@ body {
 }
 
 .manga-item {
+  cursor: pointer;
   margin: 10px;
   width: 150px;
   text-align: center;

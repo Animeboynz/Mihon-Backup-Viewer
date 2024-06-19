@@ -172,7 +172,7 @@ function initializeLibrary() {
 
       tabButton.onclick = () => showTab(category.name);
       tabButton.appendChild(badge);
-      if (badge.textContent === '0') return; // Don't bother creating empty elements
+      if (badge.textContent === '0' && [-1, 65535].includes(category.order)) return; // Don't create empty meta-categories
       tabsContainer.appendChild(tabButton);
 
       // Create tab content container
