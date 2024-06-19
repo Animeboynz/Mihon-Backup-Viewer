@@ -2,6 +2,7 @@ name: Format Commits
 
 # This action works with pushes
 on:
+  workflow_dispatch:  # Manuall trigger
   push:
     branches: [main]
     paths:
