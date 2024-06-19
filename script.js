@@ -1,5 +1,5 @@
 const re = RegExp('^https?://');
-var sortOrder = "ascending"
+var sortOrder = localStorage.getItem('MBV_SortOrder') || "ascending";
 var filterStatus = -1;
 var filterSource = 'all';
 var filterTracking = 'all-entries'
@@ -457,6 +457,10 @@ function applySettings() {
     filterStatus = filterStatusSelect.value;
     filterSource = filterSourceSelect.value;
     filterTracking = filterTrackedSelect.value;
+
+    // Save sortOrder to local storage
+    localStorage.setItem('MBV_SortOrder', sortOrder);
+
     //const highlightTracker = highlightTrackerCheckbox.checked;
 
     console.log('Settings applied:', { sortOrder, filterStatus, filterSource, filterTracking });
