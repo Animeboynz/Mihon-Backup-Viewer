@@ -2,6 +2,7 @@ const re = RegExp('^https?://');
 var sortOrder = "ascending"
 var filterStatus = -1;
 var filterSource = 'all';
+var activeTabId = null;
 var data;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -173,7 +174,7 @@ function initializeLibrary() {
 
         tabButton.onclick = () => showTab(category.name);
         tabButton.appendChild(badge);
-        if (badge.textContent === '0') return  // Don't bother creating empty elements
+        if (badge.textContent === '0' && category.order === 65535) return  // Don't bother creating empty elements
         tabsContainer.appendChild(tabButton);
 
         // Create tab content container
@@ -215,8 +216,11 @@ function initializeLibrary() {
     });
 
     // Show the first tab on page load
-    showTab(document.querySelector(".tab-content").id);
+    //showTab(document.querySelector(".tab-content").id);
+    const tabToShow = activeTabId ? activeTabId : document.querySelector(".tab-content").id;
+    showTab(tabToShow);
     addOptionsFromData();
+    disableMissingStatusOptions();
 }
 
 function addOptionsFromData() {
@@ -277,6 +281,9 @@ function showTab(tabId) {
     if (selectedTabButton) {
         selectedTabButton.classList.add('active');
     }
+
+    // Save the active tab ID
+    activeTabId = tabId;
 }
 
 function showMangaDetails(manga, categories, source) {
@@ -378,8 +385,9 @@ closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
 applySettingsBtn.addEventListener('click', applySettings);
 
 function openSettingsModal() {
-    addOptionsFromData();
-    disableMissingStatusOptions();
+    sortOrderSelect.value = sortOrder;
+    filterStatusSelect.value = filterStatus;
+    filterSourceSelect.value = filterSource;
     showModal('settings-modal');
 }
 
@@ -388,6 +396,8 @@ function closeSettingsModal() {
 }
 
 function applySettings() {
+    // Store the current active tab ID before reinitializing
+    activeTabId = document.querySelector('.tab-content.active').id;
     sortOrder = sortOrderSelect.value;
     filterStatus = filterStatusSelect.value;
     filterSource = filterSourceSelect.value;
