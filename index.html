@@ -16,6 +16,9 @@
             <button id="use-demo-data">Use Demo Data</button>
         </div>
     </div>
+    <div class="settings-icon" id="settings-icon">
+        &#9881;
+    </div>
     <div class="tabs" id="tabs">
         <!-- Tabs will be generated here -->
     </div>
@@ -27,33 +30,87 @@
 <div id="manga-modal" class="modal">
     <div class="modal-content">
         <span id="close-manga-modal" class="close-button">&times;</span>
-
-	<div class="manga-header">
-	    <img id="manga-thumbnail" src="" alt="Manga Thumbnail">
-	    <div class="manga-meta">
-		<h1 id="manga-title"></h1>
-		<p id="manga-author"></p>
-		<p id="manga-artist"></p>
-		<div class="status-source">
-		    <span id="manga-status"></span>
-		    &#x25CF;
-		    <span id="manga-source"></span>
-		</div>
-	    </div>
-	</div>
-	<div class="manga-body">
-	    <div id="manga-description-div">
-		<p id="manga-description"></p>
-		<span class="fade-out" onclick="toggleExpand(this)"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
-	    </div>
-	    <ul id="manga-genres"></ul>
-	    <p id="manga-categories"></p>
-	</div>
-
+        <div class="manga-header">
+            <img id="manga-thumbnail" src="" alt="Manga Thumbnail">
+            <div class="manga-meta">
+                <h1 id="manga-title"></h1>
+                <p id="manga-author"></p>
+                <p id="manga-artist"></p>
+                <div class="status-source">
+                    <span id="manga-status"></span>
+                    &#x25CF;
+                    <span id="manga-source"></span>
+                </div>
+            </div>
+        </div>
+        <div class="manga-body">
+            <div id="manga-description-div">
+                <p id="manga-description"></p>
+                <span class="fade-out" onclick="toggleExpand(this)"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
+            </div>
+            <ul id="manga-genres"></ul>
+            <p id="manga-categories"></p>
+        </div>
 
         <div id="manga-chapters"></div>
     </div>
 </div>
+
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <div align="left">
+            <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
+                <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24"></object>
+            </a>
+        </div>
+        <span id="close-settings-modal" class="close-button">&times;</span>
+        <h2>Settings</h2>
+        <div class="settings-inline">
+            <label for="sort-order">Sort Order</label>
+            <select id="sort-order">
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+                <option value="recently-updated">Recently Updated</option>
+            </select>
+        </div>
+        <div class="settings-inline">
+            <label for="highlight-tracker">Highlight Tracker</label>
+            <label class="switch">
+                <input type="checkbox" id="highlight-tracker">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="settings-inline">
+            <label for="filter-status">Filter by Status</label>
+            <select id="filter-status">
+                <option value="-1">All Statuses</option>
+                <option value="0">Unknown</option>
+                <option value="1">Ongoing</option>
+                <option value="2">Completed</option>
+                <option value="3">Licensed</option>
+                <option value="4">Publishing Finished</option>
+                <option value="5">Cancelled</option>
+                <option value="6">On Hiatus</option>
+            </select>
+        </div>
+        <div class="settings-inline">
+            <label for="filter-source">Filter by Source</label>
+            <select id="filter-source">
+                <!-- Sources will be loaded here -->
+            </select>
+        </div>
+        <div class="settings-inline">
+            <label for="filter-tracked">Filter by Tracking</label>
+            <select id="filter-tracked">
+                <option value="all-entries">All Entries</option>
+                <option value="tracked">Tracked</option>
+                <option value="untracked">Untracked</option>
+            </select>
+        </div>
+        <button id="apply-settings">Apply</button>
+    </div>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/6.11.2/protobuf.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>

@@ -1,4 +1,10 @@
 const re = RegExp('^https?://');
+var sortOrder = "ascending"
+var filterStatus = -1;
+var filterSource = 'all';
+var filterTracking = 'all-entries'
+var activeTabId = null;
+var data;
 
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
@@ -9,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     useDemoDataButton.addEventListener('click', () => {
         fetch('data.json')
             .then(response => response.json())
-            .then(data => initializeLibrary(data))
+            .then(data => window.data = data)
+            .then(data => initializeLibrary())
             .catch(error => console.error('Error loading demo data:', error));
         closeModal('load-modal'); // Closes the Load Modal
     });
@@ -41,7 +48,8 @@ function handleFileLoad(event) {
         try {
             if (extension === 'json') {
                 const data = JSON.parse(e.target.result);
-                initializeLibrary(data); // Initialises Library with loaded JSON
+                window.data = data;
+                initializeLibrary(); // Initialises Library with loaded JSON
                 closeModal('load-modal'); // Closes the Load Modal
             } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
                 // Load protobuf schema
@@ -65,7 +73,8 @@ function handleFileLoad(event) {
                                 enums: String,
                                 bytes: String,
                             });
-                            initializeLibrary(jsonMessage); // Initialises Library with the Converter protobuf
+                            window.data = jsonMessage;
+                            initializeLibrary(); // Initialises Library with the Converter protobuf
                             closeModal('load-modal'); // Closes the Load Modal
                         } catch (error) {
                             alert('Error decoding protobuf file.');
@@ -100,11 +109,20 @@ function showModal(modalId) {
 }
 
 // Function to Initialise the Tab Contents and Library from the JSON data passed to it.
-function initializeLibrary(data) {
+function initializeLibrary() {
     const tabsContainer = document.getElementById('tabs');
     const tabContentsContainer = document.getElementById('tab-contents');
     const categories = data.backupCategories;
-    const mangaItems = data.backupManga;
+    let mangaItems = data.backupManga;
+
+    mangaItems = mangaItems.filter(manga => {
+        let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
+        let matchesSource = filterSource == 'all' || manga.source == filterSource;
+        let matchesTracking = filterTracking === 'all-entries' ||
+            (filterTracking === 'tracked' && manga.tracking) ||
+            (filterTracking === 'untracked' && !manga.tracking);
+        return matchesStatus && matchesSource && matchesTracking;
+    });
 
     // Sets the order to 0 if a category has no order property
     if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
@@ -113,11 +131,16 @@ function initializeLibrary(data) {
     tabsContainer.innerHTML = '';
     tabContentsContainer.innerHTML = '';
 
-    // Tab for entries with read history but not in library
-    categories.unshift({ name: 'History', order: 65535 }); // Sets history tab's order as last
+    // Add 'History' tab if it doesn't exist
+    if (!categories.some(category => category.name === 'History')) {
+        categories.push({ name: 'History', order: 65535 }); // Sets history tab's order as last
+    }
 
-    // Ensure 'Default' tab is always first
-    categories.unshift({ name: 'Default', order: -1 });
+    // Ensure 'Default' tab is always first, but add only if it doesn't exist
+    if (!categories.some(category => category.name === 'Default')) {
+        categories.unshift({ name: 'Default', order: -1 });
+    }
+
 
     // Create tabs and tab contents
     categories.sort((a, b) => a.order - b.order).forEach((category, index) => {
@@ -151,7 +174,7 @@ function initializeLibrary(data) {
 
         tabButton.onclick = () => showTab(category.name);
         tabButton.appendChild(badge);
-        if (badge.textContent === '0') return  // Don't bother creating empty elements
+        if (badge.textContent === '0' && category.order === 65535) return  // Don't bother creating empty elements
         tabsContainer.appendChild(tabButton);
 
         // Create tab content container
@@ -163,7 +186,17 @@ function initializeLibrary(data) {
 
     // Populate manga items into the correct tab content
     mangaItems.sort((a, b) =>
-        (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
+        {switch (sortOrder) {
+            case "recently-updated":
+                return (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt);
+            case "ascending":
+                return a.title.localeCompare(b.title);
+            case "descending":
+                return b.title.localeCompare(a.title);
+            default:
+                // Default to recently-updated if sortOrder is not recognized
+                return (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt);
+        }}
     ).forEach((manga) => {
         const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1]; // -1 = Default | 65535 = History
         itemCategories.forEach((catOrder) => {
@@ -183,7 +216,51 @@ function initializeLibrary(data) {
     });
 
     // Show the first tab on page load
-    showTab(document.querySelector(".tab-content").id);
+    //showTab(document.querySelector(".tab-content").id);
+    const tabToShow = activeTabId ? activeTabId : document.querySelector(".tab-content").id;
+    showTab(tabToShow);
+    addOptionsFromData();
+    disableMissingStatusOptions();
+}
+
+function addOptionsFromData() {
+    // Get the filter-source select element
+    let filterSource = document.getElementById('filter-source');
+
+    // Clear existing options (optional, if you want to remove the placeholder option)
+    filterSource.innerHTML = '';
+
+    // Add the default "All Sources" option
+    let defaultOption = document.createElement('option');
+    defaultOption.value = 'all';
+    defaultOption.text = 'All Sources';
+    filterSource.add(defaultOption);
+
+    // Iterate over the data and add options to the select element
+    data.backupSources.forEach(function(source) {
+        let newOption = document.createElement('option');
+        newOption.value = source.sourceId;
+        newOption.text = source.name;
+        filterSource.add(newOption);
+    });
+}
+
+function disableMissingStatusOptions() {
+    // Get the filter-status select element
+    let filterStatus = document.getElementById('filter-status');
+
+    // Get the unique statuses from the data
+    let validStatuses = new Set(data.backupManga.map(manga => manga.status));
+
+    // Iterate over the options and disable those that are not in the validStatuses set
+    for (let i = 0; i < filterStatus.options.length; i++) {
+        let option = filterStatus.options[i];
+        if (option.value != '-1' && !validStatuses.has(parseInt(option.value))) {
+            option.disabled = true;
+        } else {
+            option.disabled = false;
+        }
+    }
 }
 
 function showTab(tabId) {
@@ -204,6 +281,9 @@ function showTab(tabId) {
     if (selectedTabButton) {
         selectedTabButton.classList.add('active');
     }
+
+    // Save the active tab ID
+    activeTabId = tabId;
 }
 
 function showMangaDetails(manga, categories, source) {
@@ -219,35 +299,35 @@ function showMangaDetails(manga, categories, source) {
 
     mangaStatus.innerHTML = '';
     const mangaStatusText = (() => {
-      switch (manga.status) {
+        switch (manga.status) {
 
-          case 1: 
-	    addMaterialSymbol(mangaStatus, 'schedule');
-	    return 'Ongoing';
-          case 2:
-	    addMaterialSymbol(mangaStatus, 'done_all');
-	    return 'Completed';
-	  case 3:
-	    addMaterialSymbol(mangaStatus, 'attach_money');
-	    return 'Licensed';
-          case 4: 
-	    addMaterialSymbol(mangaStatus, 'check');
-	    return 'Publishing Finished';
-          case 5:
-	    addMaterialSymbol(mangaStatus, 'close');
-	    return 'Cancelled';
-          case 6:
-	    addMaterialSymbol(mangaStatus, 'pause');
-	    return 'On Hiatus';
-          default:
-	    addMaterialSymbol(mangaStatus, 'block');
-	    return 'Unknown';
-      }
+            case 1:
+                addMaterialSymbol(mangaStatus, 'schedule');
+                return 'Ongoing';
+            case 2:
+                addMaterialSymbol(mangaStatus, 'done_all');
+                return 'Completed';
+            case 3:
+                addMaterialSymbol(mangaStatus, 'attach_money');
+                return 'Licensed';
+            case 4:
+                addMaterialSymbol(mangaStatus, 'check');
+                return 'Publishing Finished';
+            case 5:
+                addMaterialSymbol(mangaStatus, 'close');
+                return 'Cancelled';
+            case 6:
+                addMaterialSymbol(mangaStatus, 'pause');
+                return 'On Hiatus';
+            default:
+                addMaterialSymbol(mangaStatus, 'block');
+                return 'Unknown';
+        }
     })();
 
     mangaAuthor.innerHTML = '';
     mangaArtist.innerHTML = '';
-    
+
     const genres = document.getElementById('manga-genres');
     genres.innerHTML = '';
     (manga.customGenre || manga.genre || ["None"]).forEach((tag) => {
@@ -265,7 +345,7 @@ function showMangaDetails(manga, categories, source) {
     mangaDescription.parentNode.classList.remove('expanded');
     mangaDescription.parentNode.style.maxHeight = '3.6em';
     document.getElementById('description-expand-icon').style.transform = 'none';
-    document.getElementById('manga-status').innerHTML += mangaStatusText; 
+    document.getElementById('manga-status').innerHTML += mangaStatusText;
 
 
     const categoriesText = manga.categories && manga.categories.length > 0 ?
@@ -325,13 +405,13 @@ function showMangaDetails(manga, categories, source) {
 function toggleExpand(element) {
     const mangaDescriptionDiv = document.getElementById('manga-description-div');
     if (element.parentNode.classList.toggle('expanded')) {
-	const mangaDescription = document.getElementById('manga-description');
-	const maxDivSize = mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) + 5;
-	mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
-	document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
+        const mangaDescription = document.getElementById('manga-description');
+        const maxDivSize = mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) + 5;
+        mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
+        document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
     } else {
-	document.getElementById('description-expand-icon').style.transform = 'none';
-	mangaDescriptionDiv.style.maxHeight = '3.6em';
+        document.getElementById('description-expand-icon').style.transform = 'none';
+        mangaDescriptionDiv.style.maxHeight = '3.6em';
     }
 }
 
@@ -339,5 +419,48 @@ function addMaterialSymbol(element, symbol) {
     const symbolSpan = document.createElement('span');
     symbolSpan.className = 'material-symbols-outlined';
     symbolSpan.textContent = symbol;
-    element.appendChild(symbolSpan);    
+    element.appendChild(symbolSpan);
+}
+
+///////////////////////////////
+
+const settingsIcon = document.getElementById('settings-icon');
+const closeSettingsModalBtn = document.getElementById('close-settings-modal');
+const applySettingsBtn = document.getElementById('apply-settings');
+const sortOrderSelect = document.getElementById('sort-order');
+const filterStatusSelect = document.getElementById('filter-status');
+const filterSourceSelect = document.getElementById('filter-source');
+//const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
+const filterTrackedSelect = document.getElementById('filter-tracked');
+
+//filterTrackedSelect.addEventListener('change', applySettings);
+settingsIcon.addEventListener('click', openSettingsModal);
+closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
+applySettingsBtn.addEventListener('click', applySettings);
+
+function openSettingsModal() {
+    sortOrderSelect.value = sortOrder;
+    filterStatusSelect.value = filterStatus;
+    filterSourceSelect.value = filterSource;
+    filterTrackedSelect.value = filterTracking;
+    showModal('settings-modal');
+}
+
+function closeSettingsModal() {
+    closeModal('settings-modal');
+}
+
+function applySettings() {
+    // Store the current active tab ID before reinitializing
+    activeTabId = document.querySelector('.tab-content.active').id;
+    sortOrder = sortOrderSelect.value;
+    filterStatus = filterStatusSelect.value;
+    filterSource = filterSourceSelect.value;
+    filterTracking = filterTrackedSelect.value;
+    //const highlightTracker = highlightTrackerCheckbox.checked;
+
+    console.log('Settings applied:', { sortOrder, filterStatus, filterSource, filterTracking });
+
+    closeSettingsModal();
+    initializeLibrary();
 }
