@@ -28,7 +28,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: latest
-          cache: npm
 
       - name: Check code format
         run: |
