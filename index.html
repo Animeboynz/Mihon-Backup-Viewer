@@ -74,6 +74,34 @@
                 <span class="slider"></span>
             </label>
         </div>
+        <div class="settings-inline">
+            <label for="filter-status">Filter by Status</label>
+            <select id="filter-status">
+                <option value="-1">All Statuses</option>
+                <option value="0">Unknown</option>
+                <option value="1">Ongoing</option>
+                <option value="2">Completed</option>
+                <option value="3">Licensed</option>
+                <option value="4">Publishing Finished</option>
+                <option value="5">Cancelled</option>
+                <option value="6">On Hiatus</option>
+            </select>
+        </div>
+        <div class="settings-inline">
+            <label for="filter-source">Filter by Source</label>
+            <select id="filter-source">
+                <option value="all">All Sources</option>
+                <option value="source">Sources will be here</option>
+            </select>
+        </div>
+        <div class="settings-inline">
+            <label for="filter-tracked">Filter by Tracking</label>
+            <select id="filter-tracked">
+                <option value="ascending">All Entries</option>
+                <option value="descending">Tracked</option>
+                <option value="recently-updated">Untracked</option>
+            </select>
+        </div>
         <button id="apply-settings">Apply</button>
     </div>
 </div>

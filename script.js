@@ -1,5 +1,5 @@
 const re = RegExp('^https?://');
-var sortOrder = "descending"
+var sortOrder = "ascending"
 var data;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -204,6 +204,47 @@ function initializeLibrary() {
 
     // Show the first tab on page load
     showTab(document.querySelector(".tab-content").id);
+    addOptionsFromData();
+}
+
+function addOptionsFromData() {
+    // Get the filter-source select element
+    let filterSource = document.getElementById('filter-source');
+
+    // Clear existing options (optional, if you want to remove the placeholder option)
+    filterSource.innerHTML = '';
+
+    // Add the default "All Sources" option
+    let defaultOption = document.createElement('option');
+    defaultOption.value = 'all';
+    defaultOption.text = 'All Sources';
+    filterSource.add(defaultOption);
+
+    // Iterate over the data and add options to the select element
+    data.backupSources.forEach(function(source) {
+        let newOption = document.createElement('option');
+        newOption.value = source.name.toLowerCase().replace(/\s+/g, '-'); // Convert name to a suitable value
+        newOption.text = source.name;
+        filterSource.add(newOption);
+    });
+}
+
+function disableMissingStatusOptions() {
+    // Get the filter-status select element
+    let filterStatus = document.getElementById('filter-status');
+
+    // Get the unique statuses from the data
+    let validStatuses = new Set(data.backupManga.map(manga => manga.status));
+
+    // Iterate over the options and disable those that are not in the validStatuses set
+    for (let i = 0; i < filterStatus.options.length; i++) {
+        let option = filterStatus.options[i];
+        if (option.value != '-1' && !validStatuses.has(parseInt(option.value))) {
+            option.disabled = true;
+        } else {
+            option.disabled = false;
+        }
+    }
 }
 
 function showTab(tabId) {
@@ -323,6 +364,8 @@ closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
 applySettingsBtn.addEventListener('click', applySettings);
 
 function openSettingsModal() {
+    addOptionsFromData();
+    disableMissingStatusOptions();
     showModal('settings-modal');
 }
 
