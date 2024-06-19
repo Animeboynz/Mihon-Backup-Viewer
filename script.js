@@ -2,6 +2,7 @@ const re = RegExp('^https?://');
 var sortOrder = "ascending"
 var filterStatus = -1;
 var filterSource = 'all';
+var filterTracking = 'all-entries'
 var activeTabId = null;
 var data;
 
@@ -107,10 +108,6 @@ function showModal(modalId) {
     modal.classList.add('active');
 }
 
-function initializeTabs() {
-
-}
-
 // Function to Initialise the Tab Contents and Library from the JSON data passed to it.
 function initializeLibrary() {
     const tabsContainer = document.getElementById('tabs');
@@ -119,9 +116,12 @@ function initializeLibrary() {
     let mangaItems = data.backupManga;
 
     mangaItems = mangaItems.filter(manga => {
-      let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
-      let matchesSource = filterSource == 'all' || manga.source == filterSource;
-      return matchesStatus && matchesSource;
+        let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
+        let matchesSource = filterSource == 'all' || manga.source == filterSource;
+        let matchesTracking = filterTracking === 'all-entries' ||
+            (filterTracking === 'tracked' && manga.tracking) ||
+            (filterTracking === 'untracked' && !manga.tracking);
+        return matchesStatus && matchesSource && matchesTracking;
     });
 
     // Sets the order to 0 if a category has no order property
@@ -378,8 +378,10 @@ const applySettingsBtn = document.getElementById('apply-settings');
 const sortOrderSelect = document.getElementById('sort-order');
 const filterStatusSelect = document.getElementById('filter-status');
 const filterSourceSelect = document.getElementById('filter-source');
-const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
+//const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
+const filterTrackedSelect = document.getElementById('filter-tracked');
 
+//filterTrackedSelect.addEventListener('change', applySettings);
 settingsIcon.addEventListener('click', openSettingsModal);
 closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
 applySettingsBtn.addEventListener('click', applySettings);
@@ -388,6 +390,7 @@ function openSettingsModal() {
     sortOrderSelect.value = sortOrder;
     filterStatusSelect.value = filterStatus;
     filterSourceSelect.value = filterSource;
+    filterTrackedSelect.value = filterTracking;
     showModal('settings-modal');
 }
 
@@ -401,9 +404,10 @@ function applySettings() {
     sortOrder = sortOrderSelect.value;
     filterStatus = filterStatusSelect.value;
     filterSource = filterSourceSelect.value;
-    const highlightTracker = highlightTrackerCheckbox.checked;
+    filterTracking = filterTrackedSelect.value;
+    //const highlightTracker = highlightTrackerCheckbox.checked;
 
-    console.log('Settings applied:', { sortOrder, highlightTracker });
+    console.log('Settings applied:', { sortOrder, filterStatus, filterSource, filterTracking });
 
     closeSettingsModal();
     initializeLibrary();
