@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manga Library</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -29,22 +30,28 @@
 <div id="manga-modal" class="modal">
     <div class="modal-content">
         <span id="close-manga-modal" class="close-button">&times;</span>
+
         <div class="manga-header">
-        <img id="manga-thumbnail" src="" alt="Manga Thumbnail">
-        <div class="manga-meta">
-        <h1 id="manga-title"></h1>
-        <p id="manga-author"></p>
-        <p id="manga-artist"></p>
-        <span id="manga-status"></span>
-        &#x25CF;
-            <span id="manga-source"></span>
+            <img id="manga-thumbnail" src="" alt="Manga Thumbnail">
+            <div class="manga-meta">
+                <h1 id="manga-title"></h1>
+                <p id="manga-author"></p>
+                <p id="manga-artist"></p>
+                <div class="status-source">
+                    <span id="manga-status"></span>
+                    &#x25CF;
+                    <span id="manga-source"></span>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="manga-body">
-        <p id="manga-description"></p>
-        <ul id="manga-genres"></ul>
-        <p id="manga-categories"></p>
-    </div>
+        <div class="manga-body">
+            <div id="manga-description-div">
+                <p id="manga-description"></p>
+                <span class="fade-out" onclick="toggleExpand(this)"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
+            </div>
+            <ul id="manga-genres"></ul>
+            <p id="manga-categories"></p>
+        </div>
 
         <div id="manga-chapters"></div>
     </div>
