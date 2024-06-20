@@ -281,11 +281,13 @@ function showTab(tabId) {
   tabButtons.forEach(button => button.classList.remove('active'));
 
   // Show the selected tab content
-  const selectedTab = document.getElementById(tabId);
+  const selectedTab = document.getElementById(tabId) || document.querySelector('.tab-content');
   selectedTab.classList.add('active');
 
   // Add active class to the selected tab button
-  const selectedTabButton = Array.from(tabButtons).find(button => button.id === `btn${tabId}`);
+  const selectedTabButton = Array.from(tabButtons).find(
+    button => button.id === `btn${selectedTab.id}`
+  );
   if (selectedTabButton) {
     selectedTabButton.classList.add('active');
   }
