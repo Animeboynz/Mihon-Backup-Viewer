@@ -299,7 +299,7 @@ body {
   font-size: 2.7em;
 }
 
-#manga-genres {
+#manga-genres, #manga-categories {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -316,6 +316,19 @@ body {
   font-size: 11pt;
   line-height: 1.75;
   list-style-type: none;
+}
+
+#manga-categories li {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 5px;
+  background: #222;
+  padding: 6px;
+  font-size: 11pt;
+  line-height: 1.75;
+  list-style-type: none;
+  cursor: pointer;
 }
 
 .chapter-box {

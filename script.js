@@ -290,6 +290,8 @@ function showTab(tabId) {
     selectedTabButton.classList.add('active');
   }
 
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
   // Save the active tab ID
   activeTabId = tabId;
 }
@@ -354,16 +356,37 @@ function showMangaDetails(manga, categories, source) {
   document.getElementById('description-expand-icon').style.transform = 'none';
   document.getElementById('manga-status').innerHTML += mangaStatusText;
 
-  const categoriesText =
-    manga.categories && manga.categories.length > 0
-      ? `Categories: ${manga.categories
-          .map(catOrder => {
-            const category = categories.find(cat => cat.order === catOrder);
+  const mangaCategories = document.getElementById('manga-categories');
+  mangaCategories.innerHTML = '';
+  
+  if (manga.categories && manga.categories.length > 0) {
+      manga.categories
+	.map(catOrder => {
+	    const category = categories.find(cat => cat.order === catOrder);
             return category ? category.name : 'Default';
           })
-          .join(', ')}`
-      : 'Categories: Default';
-  document.getElementById('manga-categories').textContent = categoriesText;
+          .forEach(cat => {
+	    const li = document.createElement('li');
+	    li.id = cat;
+	    addMaterialSymbol(li, 'label');
+	    li.innerHTML += cat;
+	    li.addEventListener('click', function () {
+	      closeModal('manga-modal');
+	      showTab(this.id);
+	    });
+	    mangaCategories.appendChild(li);
+	  });
+      } else {
+	const li = document.createElement('li');
+	addMaterialSymbol(li, 'label');
+	li.id = 'Default';
+	li.innerHTML += 'Default';
+	li.addEventListener('click', function () {
+	  closeModal('manga-modal');
+	  showTab(this.id);
+	});
+	mangaCategories.appendChild(li);
+      }
 
   const chaptersContainer = document.getElementById('manga-chapters');
   chaptersContainer.innerHTML = '';
