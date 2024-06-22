@@ -100,14 +100,12 @@ function handleFileLoad(event) {
 function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   modal.classList.remove('active');
-  document.getElementById('settings-icon').hidden = false;
 }
 
 // Function to show the modal with the passed ID
 function showModal(modalId) {
   const modal = document.getElementById(modalId);
   modal.classList.add('active');
-  document.getElementById('settings-icon').hidden = true;
 }
 
 // Function to Initialise the Tab Contents and Library from the JSON data passed to it.
