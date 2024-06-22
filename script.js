@@ -30,8 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('mousedown', event => {
     const mangaModal = document.getElementById('manga-modal');
+    const settingsModal = document.getElementById('settings-modal');
     if (event.target === mangaModal && mangaModal.classList.contains('active')) {
       closeModal('manga-modal');
+    } else if (event.target === settingsModal && settingsModal.classList.contains('active')) {
+      closeSettingsModal();
     }
   });
 
