@@ -117,7 +117,7 @@ function initializeLibrary() {
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
-    let matchesSource = filterSource == 'all' || manga.source == filterSource;
+    let matchesSource = filterSource == 'all' || filterSource.split(',').includes(manga.source);
     let matchesTracking =
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
@@ -210,7 +210,9 @@ function initializeLibrary() {
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
         mangaItem.innerHTML = `
-                <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
+                <img src="${
+                  manga.customThumbnailUrl || manga.thumbnailUrl
+                }" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
                 <p>${manga.customTitle || manga.title}</p>`;
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
@@ -245,12 +247,22 @@ function addOptionsFromData() {
   filterSource.add(defaultOption);
 
   // Iterate over the data and add options to the select element
-  data.backupSources.forEach(function (source) {
-    let newOption = document.createElement('option');
-    newOption.value = source.sourceId;
-    newOption.text = source.name;
-    filterSource.add(newOption);
-  });
+  [...new Set(data.backupSources.map(source => source.name))]
+    .sort()
+    .map(name => {
+      obj = new Object();
+      obj.name = name;
+      obj.sourceId = data.backupSources
+        .filter(source => source.name === name)
+        .map(source => source.sourceId);
+      return obj;
+    })
+    .forEach(function (source) {
+      let newOption = document.createElement('option');
+      newOption.value = source.sourceId;
+      newOption.text = source.name;
+      filterSource.add(newOption);
+    });
 }
 
 function disableMissingStatusOptions() {
