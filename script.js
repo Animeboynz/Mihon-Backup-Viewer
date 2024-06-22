@@ -449,6 +449,7 @@ closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
 applySettingsBtn.addEventListener('click', applySettings);
 
 function openSettingsModal() {
+  this.firstChild.style.transform = 'rotate(90deg)';
   sortOrderSelect.value = sortOrder;
   filterStatusSelect.value = filterStatus;
   filterSourceSelect.value = filterSource;
@@ -457,6 +458,7 @@ function openSettingsModal() {
 }
 
 function closeSettingsModal() {
+  document.getElementById('settings-icon').firstChild.style.transform = 'rotate(0deg)';
   closeModal('settings-modal');
 }
 

@@ -24,6 +24,12 @@ body {
   font-size: 24px;
 }
 
+.settings-icon .material-symbols-outlined {
+  margin: 0px;
+  font-size: 35px;
+  transition: transform 0.4s;
+}
+
 .tabs {
   display: flex;
   flex-wrap: wrap; /* Expand vertically instead of horizontally and off-screen */
