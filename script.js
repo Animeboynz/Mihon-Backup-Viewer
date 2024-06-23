@@ -483,3 +483,44 @@ function applySettings() {
   closeSettingsModal();
   initializeLibrary();
 }
+
+function encodeToProtobuf() {
+  // Load protobuf schema
+  protobuf.load("schema.proto", function(err, root) {
+    if (err) throw err;
+
+    // Resolve Backup message type
+    var Backup = root.lookupType("Backup");
+
+    try {
+      // Parse JSON data
+      var parsedData = window.data;  // Ensure that window.data is already set with your JSON data
+
+      // Encode the JSON data using the protobuf schema
+      var encodedData = Backup.encode(Backup.fromObject(parsedData)).finish();
+
+      // Compress the encoded data
+      var compressedData = pako.gzip(encodedData);
+
+      // Create Blob from compressed data
+      var blob = new Blob([compressedData], { type: 'application/octet-stream' });
+
+      // Create download link
+      var downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = "output.tachibk";
+
+      // Append to body to ensure it is part of the document
+      document.body.appendChild(downloadLink);
+
+      // Programmatically click the download link
+      downloadLink.click();
+
+      // Remove the download link from the document
+      document.body.removeChild(downloadLink);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error: Invalid JSON data");
+    }
+  });
+}
