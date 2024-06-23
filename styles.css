@@ -445,9 +445,9 @@ label.switch {
   border-radius: 15px;
   background-color: #444;
   padding: 10px 20px;
-  color: white;
   width: 100%; /* Adjust the width as needed */
   max-width: 300px; /* Optional: set a max-width */
+  color: white;
 }
 
 .settings-button:hover {

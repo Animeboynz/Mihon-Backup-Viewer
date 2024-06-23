@@ -490,18 +490,17 @@ function applySettings() {
 
 function encodeToProtobuf() {
   // Load protobuf schema
-  protobuf.load("schema.proto", function(err, root) {
+  protobuf.load('schema.proto', function (err, root) {
     if (err) throw err;
 
     // Resolve Backup message type
-    var Backup = root.lookupType("Backup");
+    var Backup = root.lookupType('Backup');
 
     try {
-
       var parsedData = window.data;
 
-      parsedData.backupCategories = parsedData.backupCategories.filter(category =>
-          category.order !== -1 && category.order !== 65535
+      parsedData.backupCategories = parsedData.backupCategories.filter(
+        category => category.order !== -1 && category.order !== 65535
       );
 
       // Encode the JSON data using the protobuf schema
@@ -514,9 +513,9 @@ function encodeToProtobuf() {
       var blob = new Blob([compressedData], { type: 'application/octet-stream' });
 
       // Create download link
-      var downloadLink = document.createElement("a");
+      var downloadLink = document.createElement('a');
       downloadLink.href = URL.createObjectURL(blob);
-      downloadLink.download = "output.tachibk";
+      downloadLink.download = 'output.tachibk';
 
       // Append to body to ensure it is part of the document
       document.body.appendChild(downloadLink);
@@ -527,13 +526,12 @@ function encodeToProtobuf() {
       // Remove the download link from the document
       document.body.removeChild(downloadLink);
     } catch (error) {
-      console.error("Error:", error);
-      alert("Error: Invalid JSON data");
+      console.error('Error:', error);
+      alert('Error: Invalid JSON data');
     }
   });
 }
 
-function dlJSON()
-{
-  alert("Downloading as JSON will be available soon");
+function dlJSON() {
+  alert('Downloading as JSON will be available soon');
 }
