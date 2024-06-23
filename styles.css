@@ -28,6 +28,7 @@ body {
   margin: 0px;
   font-size: 35px;
   transition: transform 0.4s;
+  font-variation-settings: 'wght' 200;
 }
 
 .tabs {
@@ -223,6 +224,7 @@ body {
 .material-symbols-outlined {
   margin-right: 15px;
   font-size: 18px;
+  font-variation-settings: 'wght' 400;
 }
 
 #manga-author {
