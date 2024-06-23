@@ -25,9 +25,9 @@ body {
 }
 
 .settings-icon .material-symbols-outlined {
+  transition: transform 0.4s;
   margin: 0px;
   font-size: 35px;
-  transition: transform 0.4s;
   font-variation-settings: 'wght' 200;
 }
 
