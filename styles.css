@@ -237,8 +237,7 @@ body {
 
 .status-source {
   display: flex;
-  margin-top: 8px;
-  margin-bottom: 32px;
+  margin: 3px 0 0.75em;
   align-items: center;
 }
 
@@ -312,6 +311,10 @@ body {
   font-size: 11pt;
   line-height: 1.75;
   list-style-type: none;
+}
+
+#manga-categories {
+  margin: 0.75em 0;
 }
 
 #manga-categories li {
