@@ -440,6 +440,8 @@ function addMaterialSymbol(element, symbol) {
 const settingsIcon = document.getElementById('settings-icon');
 const closeSettingsModalBtn = document.getElementById('close-settings-modal');
 const applySettingsBtn = document.getElementById('apply-settings');
+const dlJSONBtn = document.getElementById('download-json');
+const dlTachibkBtn = document.getElementById('download-tachibk');
 const sortOrderSelect = document.getElementById('sort-order');
 const filterStatusSelect = document.getElementById('filter-status');
 const filterSourceSelect = document.getElementById('filter-source');
@@ -450,6 +452,8 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 settingsIcon.addEventListener('click', openSettingsModal);
 closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
 applySettingsBtn.addEventListener('click', applySettings);
+dlJSONBtn.addEventListener('click', dlJSON);
+dlTachibkBtn.addEventListener('click', encodeToProtobuf);
 
 function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
@@ -482,4 +486,54 @@ function applySettings() {
 
   closeSettingsModal();
   initializeLibrary();
+}
+
+function encodeToProtobuf() {
+  // Load protobuf schema
+  protobuf.load("schema.proto", function(err, root) {
+    if (err) throw err;
+
+    // Resolve Backup message type
+    var Backup = root.lookupType("Backup");
+
+    try {
+
+      var parsedData = window.data;
+
+      parsedData.backupCategories = parsedData.backupCategories.filter(category =>
+          category.order !== -1 && category.order !== 65535
+      );
+
+      // Encode the JSON data using the protobuf schema
+      var encodedData = Backup.encode(Backup.fromObject(parsedData)).finish();
+
+      // Compress the encoded data
+      var compressedData = pako.gzip(encodedData);
+
+      // Create Blob from compressed data
+      var blob = new Blob([compressedData], { type: 'application/octet-stream' });
+
+      // Create download link
+      var downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = "output.tachibk";
+
+      // Append to body to ensure it is part of the document
+      document.body.appendChild(downloadLink);
+
+      // Programmatically click the download link
+      downloadLink.click();
+
+      // Remove the download link from the document
+      document.body.removeChild(downloadLink);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error: Invalid JSON data");
+    }
+  });
+}
+
+function dlJSON()
+{
+  alert("Downloading as JSON will be available soon");
 }
