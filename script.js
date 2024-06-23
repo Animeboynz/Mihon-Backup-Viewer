@@ -1,7 +1,7 @@
 const re = RegExp('^https?://');
 var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title';
-var filterStatus = -1;
-var filterSource = 'all';
+var filterStatus = ['-1'];
+var filterSource = ['all'];
 var filterTracking = 'all-entries';
 var activeTabId = null;
 var data;
@@ -116,8 +116,9 @@ function initializeLibrary() {
   let mangaItems = data.backupManga;
 
   mangaItems = mangaItems.filter(manga => {
-    let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
-    let matchesSource = filterSource == 'all' || filterSource.split(',').includes(manga.source);
+    let matchesStatus =
+      filterStatus.includes('-1') || filterStatus.includes(manga.status?.toString());
+    let matchesSource = filterSource.includes('all') || filterSource.includes(manga.source);
     let matchesTracking =
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
@@ -464,8 +465,16 @@ applySettingsBtn.addEventListener('click', applySettings);
 
 function openSettingsModal() {
   sortOrderSelect.value = sortOrder;
-  filterStatusSelect.value = filterStatus;
-  filterSourceSelect.value = filterSource;
+  for (const option of filterStatusSelect.options) {
+    if (filterStatus.includes(option.value)) {
+      option.selected = true;
+    }
+  }
+  for (const option of filterSourceSelect.options) {
+    if (option.value.split(',').every(uid => filterSource.includes(uid))) {
+      option.selected = true;
+    }
+  }
   filterTrackedSelect.value = filterTracking;
   showModal('settings-modal');
 }
@@ -478,8 +487,20 @@ function applySettings() {
   // Store the current active tab ID before reinitializing
   activeTabId = document.querySelector('.tab-content.active').id;
   sortOrder = sortOrderSelect.value;
-  filterStatus = filterStatusSelect.value;
-  filterSource = filterSourceSelect.value;
+  filterStatus = [];
+  for (const option of filterStatusSelect.options) {
+    if (option.selected) {
+      filterStatus.push(option.value);
+    }
+  }
+
+  filterSource = [];
+  for (const option of filterSourceSelect.options) {
+    if (option.selected) {
+      option.value.split(',').forEach(uid => filterSource.push(uid));
+    }
+  }
+
   filterTracking = filterTrackedSelect.value;
 
   // Save sortOrder to local storage
