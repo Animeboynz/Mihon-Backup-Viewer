@@ -431,18 +431,31 @@ label.switch {
   margin-left: 10px;
 }
 
-#apply-settings {
+.settings-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 25px;
+}
+
+.settings-button {
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 5px;
   border: none;
   border-radius: 15px;
   background-color: #444;
   padding: 10px 20px;
   color: white;
+  width: 100%; /* Adjust the width as needed */
+  max-width: 300px; /* Optional: set a max-width */
 }
 
-#apply-settings:hover {
+.settings-button:hover {
   background-color: #555;
+}
+
+.settings-button:first-of-type {
+  margin-top: 0; /* Remove top margin for the first button */
 }
 
 /**/

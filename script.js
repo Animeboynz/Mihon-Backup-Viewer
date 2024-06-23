@@ -440,6 +440,8 @@ function addMaterialSymbol(element, symbol) {
 const settingsIcon = document.getElementById('settings-icon');
 const closeSettingsModalBtn = document.getElementById('close-settings-modal');
 const applySettingsBtn = document.getElementById('apply-settings');
+const dlJSONBtn = document.getElementById('download-json');
+const dlTachibkBtn = document.getElementById('download-tachibk');
 const sortOrderSelect = document.getElementById('sort-order');
 const filterStatusSelect = document.getElementById('filter-status');
 const filterSourceSelect = document.getElementById('filter-source');
@@ -450,6 +452,8 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 settingsIcon.addEventListener('click', openSettingsModal);
 closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
 applySettingsBtn.addEventListener('click', applySettings);
+dlJSONBtn.addEventListener('click', dlJSON);
+dlTachibkBtn.addEventListener('click', encodeToProtobuf);
 
 function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
@@ -493,8 +497,12 @@ function encodeToProtobuf() {
     var Backup = root.lookupType("Backup");
 
     try {
-      // Parse JSON data
-      var parsedData = window.data;  // Ensure that window.data is already set with your JSON data
+
+      var parsedData = window.data;
+
+      parsedData.backupCategories = parsedData.backupCategories.filter(category =>
+          category.order !== -1 && category.order !== 65535
+      );
 
       // Encode the JSON data using the protobuf schema
       var encodedData = Backup.encode(Backup.fromObject(parsedData)).finish();
@@ -523,4 +531,9 @@ function encodeToProtobuf() {
       alert("Error: Invalid JSON data");
     }
   });
+}
+
+function dlJSON()
+{
+  alert("Downloading as JSON will be available soon");
 }
