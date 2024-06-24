@@ -3,6 +3,13 @@ name: Format Commits
 # This action works with pushes
 on:
   workflow_dispatch: # Manuall trigger
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.js'
+      - '**.html'
+      - '**.css'
+      - '**.md'
   push:
     branches: [main]
     paths:
@@ -32,8 +39,10 @@ jobs:
           cache: npm
 
       - name: Prettify code format
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm ci
+          npm ci --silent
           npx prettier --write *.{js,md,html,css}
           if [ ! $(git status | grep 'nothing to commit') ]; then
             git config user.name github-actions
@@ -41,4 +50,7 @@ jobs:
             git add *.{js,md,html,css}
             git commit -m 'Reformatted file'
             git push
+            if [ ${{ github.event_name }} == 'pull_request' ]; then
+              gh pr comment ${{ github.event.number }} --body 'Reformatted your code. Remember to `git pull` if you plan to continue working on this PR'
+            fi
           fi
