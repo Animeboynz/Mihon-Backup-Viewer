@@ -2,7 +2,7 @@ name: Format Commits
 
 # This action works with pushes
 on:
-  workflow_dispatch:  # Manuall trigger
+  workflow_dispatch: # Manuall trigger
   push:
     branches: [main]
     paths:
@@ -28,16 +28,17 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: 20
+          cache: npm
 
       - name: Prettify code format
         run: |
-          npm install --silent prettier@2.8.8 postcss prettier-plugin-css-order
-          npx prettier --write *.{js,md,html,css} --plugin prettier-plugin-css-order
+          npm ci
+          npx prettier --write *.{js,md,html,css}
           if [ ! $(git status | grep 'nothing added to commit') ]; then
             git config user.name github-actions
             git config user.email github-actions@github.com
             git add *.{js,md,html,css}
-            git commit -am 'Reformatted File'
+            git commit -m 'Reformatted file'
             git push
           fi

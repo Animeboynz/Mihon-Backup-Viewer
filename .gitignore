@@ -7,4 +7,5 @@
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
-
+# Node.js files (Prettier)
+/node_modules
