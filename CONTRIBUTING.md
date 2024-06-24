@@ -11,12 +11,17 @@ We love your input! We want to make contributing to this project as easy and tra
 
 Pull requests are the best way to propose changes to the codebase. We actively welcome your pull requests:
 
-1. Fork the repo and create your branch from `master`.
+1. Fork the repo and create your branch from `main`.
 2. Make necessary changes.
 3. Add code comments.
-4. Use Prettier for formatting using the following config file `.prettierrc.yaml`.
-   4.1 Either [integrate with your editor](https://prettier.io/docs/en/editors) or `npm install` to use the pre-commit hook
+4. [Format your code](#formatting-your-code)
 5. Create that pull request!
+
+#### Formatting your code
+
+1. Install [Node.js](https://nodejs.org)
+2. Run `npm ci` in the repo folder to install [Prettier](https://prettier.io) and setup the pre-commit hook
+3. [Optional] [Setup prettier on your editor](https://prettier.io/docs/en/editors)
 
 ## Any contributions you make will be under the GNU GPLv2 Software License
 
