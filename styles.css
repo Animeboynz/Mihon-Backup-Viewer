@@ -380,23 +380,6 @@ body {
 /* Scrollbar styles */
 * {
   scrollbar-color: #e7e7e7 #363636;
-  scrollbar-width: thin;
-}
-
-*::-webkit-scrollbar {
-  width: 12px;
-}
-
-*::-webkit-scrollbar-track {
-  background-color: #e7e7e7;
-  border: 1px solid #cacaca;
-  border-radius: 8px;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #363636;
-  border-radius: 8px;
 }
 
 /* Switch styles */
