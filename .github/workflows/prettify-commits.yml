@@ -28,14 +28,14 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 'lts/*'
           cache: npm
 
       - name: Prettify code format
         run: |
           npm ci
           npx prettier --write *.{js,md,html,css}
-          if [ ! $(git status | grep 'nothing added to commit') ]; then
+          if [ ! $(git status | grep 'nothing to commit') ]; then
             git config user.name github-actions
             git config user.email github-actions@github.com
             git add *.{js,md,html,css}
