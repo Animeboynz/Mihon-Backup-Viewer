@@ -44,7 +44,8 @@ jobs:
         run: |
           npm ci --silent
           npx prettier --write *.{js,md,html,css}
-          if [ ! $(git status | grep 'nothing to commit') ]; then
+          git diff --quiet
+          if [ $? == 1 ]; then
             git config user.name github-actions
             git config user.email github-actions@github.com
             git add *.{js,md,html,css}
