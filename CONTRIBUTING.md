@@ -15,6 +15,7 @@ Pull requests are the best way to propose changes to the codebase. We actively w
 2. Make necessary changes.
 3. Add code comments.
 4. Use Prettier for formatting using the following config file `.prettierrc.yaml`.
+   4.1 Either [integrate with your editor](https://prettier.io/docs/en/editors) or `npm install` to use the pre-commit hook
 5. Create that pull request!
 
 ## Any contributions you make will be under the GNU GPLv2 Software License
