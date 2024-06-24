@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: prettier --write --ignore-unknown
+        language: node
+        files: \.(js|md|html|css)$
+ci:
+  autofix_commit_msg: Reformatted Files
