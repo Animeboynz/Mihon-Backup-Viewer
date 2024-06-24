@@ -32,7 +32,7 @@ jobs:
 
       - name: Prettify code format
         run: |
-          npm install --silent prettier postcss prettier-plugin-css-order
+          npm install --silent prettier@2.8.8 postcss prettier-plugin-css-order
           npx prettier --write *.{js,md,html,css} --plugin prettier-plugin-css-order
           if [ ! $(git status | grep 'nothing added to commit') ]; then
             git config user.name github-actions

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -15,6 +15,20 @@
     <div class="container">
       <div id="load-modal" class="modal active">
         <div class="modal-content">
+          <div align="left">
+            <a
+              href="https://github.com/Animeboynz/Mihon-Backup-Viewer"
+              target="_blank"
+              title="GitHub Project"
+              alt="GitHub Icon"
+            >
+              <object
+                data="https://github.githubassets.com/favicons/favicon-dark.svg"
+                type="image/svg+xml"
+                height="24"
+              ></object>
+            </a>
+          </div>
           <h2>Load your .json, .tachibk or .proto.gz file</h2>
           <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
           <button id="use-demo-data">Use Demo Data</button>
@@ -85,8 +99,8 @@
         <div class="settings-inline">
           <label for="sort-order">Sort Order</label>
           <select id="sort-order">
-            <option value="ascending">Ascending</option>
-            <option value="descending">Descending</option>
+            <option value="title-asc">Title (Asc.)</option>
+            <option value="title-desc">Title (Desc.)</option>
             <option value="recently-updated">Recently Updated</option>
           </select>
         </div>
@@ -99,7 +113,7 @@
         </div>
         <div class="settings-inline">
           <label for="filter-status">Filter by Status</label>
-          <select id="filter-status">
+          <select multiple id="filter-status">
             <option value="-1">All Statuses</option>
             <option value="0">Unknown</option>
             <option value="1">Ongoing</option>
@@ -112,7 +126,7 @@
         </div>
         <div class="settings-inline">
           <label for="filter-source">Filter by Source</label>
-          <select id="filter-source">
+          <select multiple id="filter-source">
             <!-- Sources will be loaded here -->
           </select>
         </div>
@@ -132,7 +146,8 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/6.11.2/protobuf.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
     <script src="script.js"></script>
   </body>

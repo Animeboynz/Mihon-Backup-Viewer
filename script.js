@@ -1,7 +1,7 @@
 const re = RegExp('^https?://');
-var sortOrder = localStorage.getItem('MBV_SortOrder') || 'ascending';
-var filterStatus = -1;
-var filterSource = 'all';
+var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title-asc';
+var filterStatus = ['-1'];
+var filterSource = ['all'];
 var filterTracking = 'all-entries';
 var activeTabId = null;
 var data;
@@ -119,8 +119,9 @@ function initializeLibrary() {
   let mangaItems = data.backupManga;
 
   mangaItems = mangaItems.filter(manga => {
-    let matchesStatus = filterStatus == -1 || manga.status == filterStatus;
-    let matchesSource = filterSource == 'all' || manga.source == filterSource;
+    let matchesStatus =
+      filterStatus.includes('-1') || filterStatus.includes(manga.status?.toString());
+    let matchesSource = filterSource.includes('all') || filterSource.includes(manga.source);
     let matchesTracking =
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
@@ -175,7 +176,7 @@ function initializeLibrary() {
 
       tabButton.onclick = () => showTab(category.name);
       tabButton.appendChild(badge);
-      if (badge.textContent === '0' && category.order === 65535) return; // Don't bother creating empty elements
+      if (badge.textContent === '0' && [-1, 65535].includes(category.order)) return; // Don't create empty meta-categories
       tabsContainer.appendChild(tabButton);
 
       // Create tab content container
@@ -193,9 +194,9 @@ function initializeLibrary() {
           return (
             (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
           );
-        case 'ascending':
+        case 'title-asc':
           return a.title.localeCompare(b.title);
-        case 'descending':
+        case 'title-desc':
           return b.title.localeCompare(a.title);
         default:
           // Default to recently-updated if sortOrder is not recognized
@@ -213,7 +214,9 @@ function initializeLibrary() {
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
         mangaItem.innerHTML = `
-                <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
+                <img src="${
+                  manga.customThumbnailUrl || manga.thumbnailUrl
+                }" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
                 <p>${manga.customTitle || manga.title}</p>`;
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
@@ -248,12 +251,22 @@ function addOptionsFromData() {
   filterSource.add(defaultOption);
 
   // Iterate over the data and add options to the select element
-  data.backupSources.forEach(function (source) {
-    let newOption = document.createElement('option');
-    newOption.value = source.sourceId;
-    newOption.text = source.name;
-    filterSource.add(newOption);
-  });
+  [...new Set(data.backupSources.map(source => source.name))]
+    .sort()
+    .map(name => {
+      obj = new Object();
+      obj.name = name;
+      obj.sourceId = data.backupSources
+        .filter(source => source.name === name)
+        .map(source => source.sourceId);
+      return obj;
+    })
+    .forEach(function (source) {
+      let newOption = document.createElement('option');
+      newOption.value = source.sourceId;
+      newOption.text = source.name;
+      filterSource.add(newOption);
+    });
 }
 
 function disableMissingStatusOptions() {
@@ -284,11 +297,13 @@ function showTab(tabId) {
   tabButtons.forEach(button => button.classList.remove('active'));
 
   // Show the selected tab content
-  const selectedTab = document.getElementById(tabId);
+  const selectedTab = document.getElementById(tabId) || document.querySelector('.tab-content');
   selectedTab.classList.add('active');
 
   // Add active class to the selected tab button
-  const selectedTabButton = Array.from(tabButtons).find(button => button.id === `btn${tabId}`);
+  const selectedTabButton = Array.from(tabButtons).find(
+    button => button.id === `btn${selectedTab.id}`
+  );
   if (selectedTabButton) {
     selectedTabButton.classList.add('active');
   }
@@ -458,8 +473,16 @@ dlTachibkBtn.addEventListener('click', encodeToProtobuf);
 function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
   sortOrderSelect.value = sortOrder;
-  filterStatusSelect.value = filterStatus;
-  filterSourceSelect.value = filterSource;
+  for (const option of filterStatusSelect.options) {
+    if (filterStatus.includes(option.value)) {
+      option.selected = true;
+    }
+  }
+  for (const option of filterSourceSelect.options) {
+    if (option.value.split(',').every(uid => filterSource.includes(uid))) {
+      option.selected = true;
+    }
+  }
   filterTrackedSelect.value = filterTracking;
   showModal('settings-modal');
 }
@@ -473,8 +496,20 @@ function applySettings() {
   // Store the current active tab ID before reinitializing
   activeTabId = document.querySelector('.tab-content.active').id;
   sortOrder = sortOrderSelect.value;
-  filterStatus = filterStatusSelect.value;
-  filterSource = filterSourceSelect.value;
+  filterStatus = [];
+  for (const option of filterStatusSelect.options) {
+    if (option.selected) {
+      filterStatus.push(option.value);
+    }
+  }
+
+  filterSource = [];
+  for (const option of filterSourceSelect.options) {
+    if (option.selected) {
+      option.value.split(',').forEach(uid => filterSource.push(uid));
+    }
+  }
+
   filterTracking = filterTrackedSelect.value;
 
   // Save sortOrder to local storage

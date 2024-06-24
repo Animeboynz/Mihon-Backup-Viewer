@@ -99,6 +99,7 @@ body {
 }
 
 .manga-item {
+  cursor: pointer;
   margin: 10px;
   width: 150px;
   text-align: center;
@@ -359,6 +360,11 @@ body {
 }
 
 /* Scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #e7e7e7 #363636;
+}
+
 *::-webkit-scrollbar {
   width: 12px;
 }
