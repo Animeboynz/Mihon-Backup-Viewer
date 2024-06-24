@@ -592,10 +592,10 @@ function encodeToProtobuf() {
 
 function dlJSON() {
   var jsonString = JSON.stringify(window.data, null, 2);
-  var blob = new Blob([jsonString], { type: "application/json" });
-  var a = document.createElement("a");
+  var blob = new Blob([jsonString], { type: 'application/json' });
+  var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = "EditedBackup";
+  a.download = 'EditedBackup';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
