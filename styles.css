@@ -167,6 +167,12 @@ body {
   z-index: 2;
 }
 
+.gh-logo {
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  z-index: 2;
+}
 #file-input {
   margin: 10px 0;
 }
@@ -377,9 +383,12 @@ body {
   display: none !important;
 }
 
-/* Scrollbar styles */
+/* Dark theme */
 * {
-  scrollbar-color: #e7e7e7 #363636;
+  color-scheme: dark;
+}
+object {
+  color-scheme: light; /* override for the GitHub icons */
 }
 
 /* Switch styles */
@@ -461,11 +470,16 @@ label.switch {
   background-color: #555;
 }
 
-.settings-button:first-of-type {
+#apply-settings {
   margin-top: 0; /* Remove top margin for the first button */
 }
 
 /**/
+#load-modal h2{padding-top: .5em;}
+
+#settings-modal h2{
+  margin-top: 0;
+}
 
 .settings-inline {
   align-items: center;
@@ -481,5 +495,24 @@ label.switch {
 
 .settings-inline select {
   margin: 20px auto 0px 5px; /* Additional space for better alignment */
+  width: 100%;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}
+@media only screen and (orientation: portrait) {
+  .download-buttons {
+    align-items: center;
+    flex-direction: column; /* Stack buttons on portrait window */
+    gap: 0.25em;
+  }
+}
+.settings-buttons-container > label {
+  border-top: dotted #444;
+  margin: 0.75em auto 0.25em;
+  padding-top: 5px;
   width: 100%;
 }
