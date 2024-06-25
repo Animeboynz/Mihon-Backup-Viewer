@@ -27,11 +27,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # Make sure the actual branch is checked out when running on pull requests
-          ref: ${{ github.head_ref }}
-          # Only fetch the latest commit
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
