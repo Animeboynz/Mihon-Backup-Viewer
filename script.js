@@ -7,11 +7,24 @@ var activeTabId = null;
 var data;
 
 document.addEventListener('DOMContentLoaded', () => {
+  // File Load
   const fileInput = document.getElementById('file-input');
   const useDemoDataButton = document.getElementById('use-demo-data');
+  // Modals
+  const mangaModal = document.getElementById('manga-modal');
+  const settingsModal = document.getElementById('settings-modal');
+  // Settings
+  const settingsIcon = document.getElementById('settings-icon');
+  const closeSettingsModalBtn = document.getElementById('close-settings-modal');
+  const applySettingsBtn = document.getElementById('apply-settings');
+  const closeSettingsBtn = document.getElementById('close-manga-modal');
+  // Re-encode
+  const dlJSONBtn = document.getElementById('download-json');
+  const dlTachibkBtn = document.getElementById('download-tachibk');
+  const expandDescriptionArrow = document.querySelector('.fade-out');
 
-  fileInput.addEventListener('change', handleFileLoad);
-  //Loads Demo Data from data.json when button pressed on Load Modal
+  fileInput.addEventListener('change', handleFileLoad); //Handles File Upload
+  //Loads Demo Data from data.json on trigger
   useDemoDataButton.addEventListener('click', () => {
     fetch('data.json')
       .then(response => response.json())
@@ -20,17 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => console.error('Error loading demo data:', error));
     closeModal('load-modal'); // Closes the Load Modal
   });
-
-  // Closes the Manga Model is the X button is pressed
-  document.getElementById('close-manga-modal').addEventListener('click', () => {
-    closeModal('manga-modal');
-  });
-
-  document.querySelector('.fade-out').addEventListener('click', toggleExpand);
-
+  settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
+  closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
+  applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
+  dlJSONBtn.addEventListener('click', dlJSON); // Downloads backup as JSON on click
+  dlTachibkBtn.addEventListener('click', encodeToProtobuf); // Downloads backup as Protobuf on click
+  closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
+  expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
+  // Closes Modal
   document.addEventListener('mousedown', event => {
-    const mangaModal = document.getElementById('manga-modal');
-    const settingsModal = document.getElementById('settings-modal');
     if (event.target === mangaModal && mangaModal.classList.contains('active')) {
       closeModal('manga-modal');
     } else if (event.target === settingsModal && settingsModal.classList.contains('active')) {
@@ -111,7 +122,7 @@ function showModal(modalId) {
   modal.classList.add('active');
 }
 
-// Function to Initialise the Tab Contents and Library from the JSON data passed to it.
+// Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 function initializeLibrary() {
   const tabsContainer = document.getElementById('tabs');
   const tabContentsContainer = document.getElementById('tab-contents');
@@ -451,7 +462,7 @@ function showMangaDetails(manga, categories, source) {
   mangaModalContent.scrollTop = 0;
 }
 
-function toggleExpand() {
+function toggleExpandDescription() {
   const mangaDescriptionDiv = document.getElementById('manga-description-div');
   if (document.querySelector('.fade-out').parentNode.classList.toggle('expanded')) {
     const mangaDescription = document.getElementById('manga-description');
@@ -475,11 +486,6 @@ function addMaterialSymbol(element, symbol) {
 
 ///////////////////////////////
 
-const settingsIcon = document.getElementById('settings-icon');
-const closeSettingsModalBtn = document.getElementById('close-settings-modal');
-const applySettingsBtn = document.getElementById('apply-settings');
-const dlJSONBtn = document.getElementById('download-json');
-const dlTachibkBtn = document.getElementById('download-tachibk');
 const sortOrderSelect = document.getElementById('sort-order');
 const filterStatusSelect = document.getElementById('filter-status');
 const filterSourceSelect = document.getElementById('filter-source');
@@ -487,11 +493,6 @@ const filterSourceSelect = document.getElementById('filter-source');
 const filterTrackedSelect = document.getElementById('filter-tracked');
 
 //filterTrackedSelect.addEventListener('change', applySettings);
-settingsIcon.addEventListener('click', openSettingsModal);
-closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
-applySettingsBtn.addEventListener('click', applySettings);
-dlJSONBtn.addEventListener('click', dlJSON);
-dlTachibkBtn.addEventListener('click', encodeToProtobuf);
 
 function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
