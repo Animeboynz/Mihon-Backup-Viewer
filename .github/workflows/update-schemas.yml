@@ -23,7 +23,9 @@ jobs:
       run: pip install requests
 
     - name: Run schema generation script
-      run: python .github/scripts/generate_schemas.py
+      run: |
+        curl -o 'generate_schemas.py' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/tachibk-converter.py
+        python generate_schemas.py --dump-schemas
 
     - name: Commit and push changes
       env:
@@ -34,7 +36,7 @@ jobs:
         git add schemas/*.proto
 
         # Check if there are any changes
-        if git diff-index --quiet HEAD --; then
+        if git diff-index --cached --quiet HEAD --; then
           echo "No changes to commit"
         else
           git commit -m 'Update Protobuf schemas'
