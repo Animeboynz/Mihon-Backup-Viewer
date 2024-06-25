@@ -464,7 +464,7 @@ label.switch {
   background-color: #555;
 }
 
-.settings-button:first-of-type {
+#apply-settings {
   margin-top: 0; /* Remove top margin for the first button */
 }
 
@@ -484,5 +484,24 @@ label.switch {
 
 .settings-inline select {
   margin: 20px auto 0px 5px; /* Additional space for better alignment */
+  width: 100%;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}
+@media only screen and (orientation: portrait) {
+  .download-buttons {
+    align-items: center;
+    flex-direction: column; /* Stack buttons on portrait window */
+    gap: 0.25em;
+  }
+}
+.settings-buttons-container > label {
+  border-top: dotted #444;
+  margin: 0.75em auto 0.25em;
+  padding-top: 5px;
   width: 100%;
 }
