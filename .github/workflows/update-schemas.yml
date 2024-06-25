@@ -7,7 +7,7 @@ permissions:
   contents: write  # Request write permissions for the workflow
 
 jobs:
-  generate-schemas:
+  update-schemas:
     runs-on: ubuntu-latest
 
     steps:
