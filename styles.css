@@ -377,9 +377,12 @@ body {
   display: none !important;
 }
 
-/* Scrollbar styles */
+/* Dark theme */
 * {
-  scrollbar-color: #e7e7e7 #363636;
+  color-scheme: dark;
+}
+object {
+  color-scheme: light; /* override for the GitHub icons */
 }
 
 /* Switch styles */
