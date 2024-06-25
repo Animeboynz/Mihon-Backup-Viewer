@@ -167,6 +167,12 @@ body {
   z-index: 2;
 }
 
+.gh-logo {
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  z-index: 2;
+}
 #file-input {
   margin: 10px 0;
 }
@@ -469,6 +475,11 @@ label.switch {
 }
 
 /**/
+#load-modal h2{padding-top: .5em;}
+
+#settings-modal h2{
+  margin-top: 0;
+}
 
 .settings-inline {
   align-items: center;
