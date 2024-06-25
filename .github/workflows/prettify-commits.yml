@@ -34,14 +34,12 @@ jobs:
           cache: npm
 
       - name: Prettify code format
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci --silent
           npx prettier --write *.{js,md,html,css}
-          git diff --quiet
-          if [ $? == 1 ]; then
+          if ! $(git diff --quiet); then
             git config user.name github-actions
             git config user.email github-actions@github.com
             git add *.{js,md,html,css}
