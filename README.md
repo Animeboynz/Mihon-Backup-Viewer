@@ -1,6 +1,6 @@
 # Mihon Backup Viewer
 
-This is a tool to explore your Tachiyomi Backup once its been decoded using the [TACHIBK to JSON Converter](https://github.com/BrutuZ/tachibk-converter) created by BrutuZ
+This is a tool to explore your Mihon/Tachiyomi backup and convert it between JSON <-> .tachibk
 
 ## Usage - Mihon Backup Viewer
 
