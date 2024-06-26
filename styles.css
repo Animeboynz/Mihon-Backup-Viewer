@@ -16,21 +16,14 @@ body {
   width: 90%;
 }
 
-.settings-icon {
-  cursor: pointer;
-  font-size: 24px;
+.gh-logo {
+  left: 1em;
   position: absolute;
-  right: 10px;
-  top: 10px;
+  top: 1em;
+  z-index: 2;
 }
 
-.settings-icon .material-symbols-outlined {
-  font-size: 35px;
-  font-variation-settings: 'wght' 200;
-  margin: 0px;
-  transition: transform 0.4s;
-}
-
+/* ---Tabs--- */
 .tabs {
   display: flex;
   flex-wrap: wrap; /* Expand vertically instead of horizontally and off-screen */
@@ -98,6 +91,7 @@ body {
   justify-content: space-around;
 }
 
+/* ---Manga Item--- */
 .manga-item {
   cursor: pointer;
   margin: 10px;
@@ -123,7 +117,7 @@ body {
   margin-top: 10px;
 }
 
-/* Modal styles */
+/* ---Modals--- */
 .modal {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
@@ -167,11 +161,9 @@ body {
   z-index: 2;
 }
 
-.gh-logo {
-  left: 1em;
-  position: absolute;
-  top: 1em;
-  z-index: 2;
+/* ---Load Modal--- */
+#load-modal h2 {
+  padding-top: 0.5em;
 }
 #file-input {
   margin: 10px 0;
@@ -191,6 +183,7 @@ body {
   background-color: #555;
 }
 
+/* ---Manga Details Modal--- */
 .modal-content img {
   height: 225px;
   width: 150px;
@@ -391,7 +384,23 @@ object {
   color-scheme: light; /* override for the GitHub icons */
 }
 
-/* Switch styles */
+/* ---Settings--- */
+
+.settings-icon {
+  cursor: pointer;
+  font-size: 24px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.settings-icon .material-symbols-outlined {
+  font-size: 35px;
+  font-variation-settings: 'wght' 200;
+  margin: 0px;
+  transition: transform 0.4s;
+}
+
 .switch {
   display: inline-block;
   height: 20px;
@@ -472,11 +481,6 @@ label.switch {
 
 #apply-settings {
   margin-top: 0; /* Remove top margin for the first button */
-}
-
-/**/
-#load-modal h2 {
-  padding-top: 0.5em;
 }
 
 #settings-modal h2 {
