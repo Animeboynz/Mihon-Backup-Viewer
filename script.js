@@ -68,7 +68,7 @@ function handleFileLoad(event) {
         closeModal('load-modal'); // Closes the Load Modal
       } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
         // Load protobuf schema
-        protobuf.load('schema.proto', (err, root) => {
+        protobuf.load('schemas/schema-mihon.proto', (err, root) => {
           if (err) {
             alert('Error loading protobuf schema.');
             return;
