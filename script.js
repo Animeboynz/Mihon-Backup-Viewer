@@ -141,7 +141,7 @@ function initializeLibrary() {
   });
 
   // Sets the order to 0 if a category has no order property
-  //if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
+  if (categories[0] && !categories[0].hasOwnProperty('order')) categories[0].order = '0';
 
   // Clear existing content
   tabsContainer.innerHTML = '';
@@ -240,8 +240,6 @@ function initializeLibrary() {
       });
     });
 
-  // Show the first tab on page load
-  //showTab(document.querySelector(".tab-content").id);
   const tabToShow = activeTabId ? activeTabId : document.querySelector('.tab-content').id;
   showTab(tabToShow);
   addOptionsFromData();
@@ -483,8 +481,6 @@ function addMaterialSymbol(element, symbol) {
   symbolSpan.textContent = symbol;
   element.appendChild(symbolSpan);
 }
-
-///////////////////////////////
 
 const sortOrderSelect = document.getElementById('sort-order');
 const filterStatusSelect = document.getElementById('filter-status');
