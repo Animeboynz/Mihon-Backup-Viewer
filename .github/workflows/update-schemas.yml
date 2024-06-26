@@ -21,6 +21,7 @@ jobs:
 
     - name: Generate Schemas
       run: |
+        cd schemas
         curl -o 'requirements.txt' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/requirements.txt
         pip install -r requirements.txt
         curl -o 'generate_schemas.py' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/tachibk-converter.py
