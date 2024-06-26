@@ -1,5 +1,5 @@
 {
+  "labels": ["Dependencies"],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "labels": ["Dependencies"]
+  "extends": ["config:recommended"]
 }
