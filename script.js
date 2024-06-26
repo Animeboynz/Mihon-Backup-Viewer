@@ -126,7 +126,7 @@ function showModal(modalId) {
 function initializeLibrary() {
   const tabsContainer = document.getElementById('tabs');
   const tabContentsContainer = document.getElementById('tab-contents');
-  const categories = data.backupCategories;
+  const categories = data.backupCategories || [];
   let mangaItems = data.backupManga;
 
   mangaItems = mangaItems.filter(manga => {
@@ -141,7 +141,7 @@ function initializeLibrary() {
   });
 
   // Sets the order to 0 if a category has no order property
-  if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
+  //if (!categories[0].hasOwnProperty('order')) categories[0].order = '0';
 
   // Clear existing content
   tabsContainer.innerHTML = '';
