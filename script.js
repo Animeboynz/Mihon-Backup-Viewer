@@ -641,4 +641,3 @@ function deleteCategory(index) {
     console.error('Invalid index. Cannot delete Category.');
   }
 }
-
