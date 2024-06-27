@@ -121,7 +121,7 @@ export function initializeLibrary() {
           </div>
           <p>${manga.customTitle || manga.title}</p>`;
 
-        mangaItem.querySelector('.kebab-menu').addEventListener('click', (event) => {
+        mangaItem.querySelector('.kebab-menu').addEventListener('click', event => {
           event.stopPropagation(); // Prevent triggering the manga item click
           const index = event.currentTarget.getAttribute('data-index');
           const title = event.currentTarget.getAttribute('data-title');

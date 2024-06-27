@@ -118,22 +118,22 @@ body {
 }
 
 .manga-item-container {
-  position: relative;
   display: inline-block;
+  position: relative;
 }
 
 .kebab-menu {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px;
 }
 
 .kebab-menu span {
