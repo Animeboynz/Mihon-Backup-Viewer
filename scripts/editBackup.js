@@ -1,6 +1,6 @@
 export function deleteManga(index) {
   if (index >= 0 && index < window.data.backupManga.length) {
-    wnidow.data.backupManga.splice(index, 1);
+    window.data.backupManga.splice(index, 1);
     initializeLibrary(); // Re-initialize the library to reflect changes
     console.log(`Manga at index ${index} deleted successfully.`);
   } else {
