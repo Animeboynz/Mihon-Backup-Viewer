@@ -31,7 +31,7 @@ export function handleFileLoad(event) {
               const inflated = pako.inflate(new Uint8Array(arrayBuffer)); // Decompress the gzip file
               const message = Backup.decode(inflated); // Decode the protobuf encoded binary data
               // Convert the decoded message to JSON format
-              data = Backup.toObject(message, {
+              window.data = Backup.toObject(message, {
                 longs: String,
                 enums: String,
                 bytes: String,
