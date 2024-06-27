@@ -1,8 +1,8 @@
-import { dlJSON, encodeToProtobuf } from './export.js'
-import { deleteManga, deleteCategory } from './editBackup.js'
-import { handleFileLoad, loadDemoData } from './loadBackup.js'
-import { closeModal, showModal } from './modals.js'
-import { toggleExpandDescription } from './library.js'
+import { dlJSON, encodeToProtobuf } from './export.js';
+import { deleteManga, deleteCategory } from './editBackup.js';
+import { handleFileLoad, loadDemoData } from './loadBackup.js';
+import { closeModal, showModal } from './modals.js';
+import { toggleExpandDescription } from './library.js';
 import { openSettingsModal, closeSettingsModal, applySettings } from './settings.js';
 
 var data;
