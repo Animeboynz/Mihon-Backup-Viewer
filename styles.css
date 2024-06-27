@@ -117,6 +117,30 @@ body {
   margin-top: 10px;
 }
 
+.manga-item-container {
+  position: relative;
+  display: inline-block;
+}
+
+.kebab-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.kebab-menu span {
+  color: white;
+  font-size: 20px;
+}
+
 /* ---Modals--- */
 .modal {
   align-items: center;

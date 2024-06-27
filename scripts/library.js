@@ -104,8 +104,8 @@ export function initializeLibrary() {
           );
       }
     })
-    .forEach(manga => {
-      const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1]; // -1 = Default | 65535 = History
+    .forEach((manga, index) => {
+      const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1];
       itemCategories.forEach(catOrder => {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.getElementById(category.name);
@@ -113,10 +113,21 @@ export function initializeLibrary() {
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
         mangaItem.innerHTML = `
-                <img src="${
-                  manga.customThumbnailUrl || manga.thumbnailUrl
-                }" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
-                <p>${manga.customTitle || manga.title}</p>`;
+          <div class="manga-item-container">
+            <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
+            <div class="kebab-menu" data-index="${index}" data-title="${manga.customTitle || manga.title}">
+              <span class="material-symbols-outlined">more_vert</span>
+            </div>
+          </div>
+          <p>${manga.customTitle || manga.title}</p>`;
+
+        mangaItem.querySelector('.kebab-menu').addEventListener('click', (event) => {
+          event.stopPropagation(); // Prevent triggering the manga item click
+          const index = event.currentTarget.getAttribute('data-index');
+          const title = event.currentTarget.getAttribute('data-title');
+          alert(`Title: ${title}\nIndex: ${index}`);
+        });
+
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
             manga,
