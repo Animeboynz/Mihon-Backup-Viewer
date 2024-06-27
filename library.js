@@ -8,6 +8,10 @@ var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var activeTabId = null;
 const re = RegExp('^https?://');
 
+export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId }
+
+
+
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
     const tabsContainer = document.getElementById('tabs');
@@ -346,3 +350,38 @@ function showMangaDetails(manga, categories, source) {
     mangaModalContent.scrollTop = 0;
 }
 
+export function toggleExpandDescription() {
+    const mangaDescriptionDiv = document.getElementById('manga-description-div');
+    if (document.querySelector('.fade-out').parentNode.classList.toggle('expanded')) {
+        const mangaDescription = document.getElementById('manga-description');
+        const maxDivSize =
+            mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) +
+            5;
+        mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
+        document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
+    } else {
+        document.getElementById('description-expand-icon').style.transform = 'none';
+        mangaDescriptionDiv.style.maxHeight = '3.6em';
+    }
+}
+
+export function setActiveTabId(data)
+{
+    activeTabId = data;
+}
+export function setFilterStatus(data)
+{
+    filterStatus = data;
+}
+export function setFilterSource(data)
+{
+    filterSource = data;
+}
+export function setFilterTracking(data)
+{
+    filterTracking = data;
+}
+export function setSortOrder(data)
+{
+    sortOrder = data;
+}
