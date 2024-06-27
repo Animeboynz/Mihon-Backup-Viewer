@@ -1,3 +1,6 @@
+import { dlJSON, encodeToProtobuf } from './export.js'
+import { deleteManga, deleteCategory } from './editBackup.js'
+
 const re = RegExp('^https?://');
 var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var filterStatus = ['-1'];
@@ -126,8 +129,8 @@ function showModal(modalId) {
 function initializeLibrary() {
   const tabsContainer = document.getElementById('tabs');
   const tabContentsContainer = document.getElementById('tab-contents');
-  const categories = data.backupCategories || [];
-  let mangaItems = data.backupManga;
+  const categories = window.data.backupCategories || [];
+  let mangaItems = window.data.backupManga;
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =
@@ -232,8 +235,8 @@ function initializeLibrary() {
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
             manga,
-            data.backupCategories,
-            data.backupSources.find(source => source.sourceId === manga.source).name
+              window.data.backupCategories,
+              window.data.backupSources.find(source => source.sourceId === manga.source).name
           );
         });
         tabContent.appendChild(mangaItem);
@@ -260,12 +263,12 @@ function addOptionsFromData() {
   filterSource.add(defaultOption);
 
   // Iterate over the data and add options to the select element
-  [...new Set(data.backupSources.map(source => source.name))]
+  [...new Set(window.data.backupSources.map(source => source.name))]
     .sort()
     .map(name => {
-      obj = new Object();
+      var obj = new Object();
       obj.name = name;
-      obj.sourceId = data.backupSources
+      obj.sourceId = window.data.backupSources
         .filter(source => source.name === name)
         .map(source => source.sourceId);
       return obj;
@@ -283,7 +286,7 @@ function disableMissingStatusOptions() {
   let filterStatus = document.getElementById('filter-status');
 
   // Get the unique statuses from the data
-  let validStatuses = new Set(data.backupManga.map(manga => manga.status));
+  let validStatuses = new Set(window.data.backupManga.map(manga => manga.status));
 
   // Iterate over the options and disable those that are not in the validStatuses set
   for (let i = 0; i < filterStatus.options.length; i++) {
@@ -541,103 +544,4 @@ function applySettings() {
 
   closeSettingsModal();
   initializeLibrary();
-}
-
-function encodeToProtobuf() {
-  // Load protobuf schema
-  protobuf.load('schema.proto', function (err, root) {
-    if (err) throw err;
-
-    // Resolve Backup message type
-    var Backup = root.lookupType('Backup');
-
-    try {
-      var parsedData = window.data;
-
-      parsedData.backupCategories = parsedData.backupCategories.filter(
-        category => category.order !== -1 && category.order !== 65535
-      );
-
-      // Encode the JSON data using the protobuf schema
-      var encodedData = Backup.encode(Backup.fromObject(parsedData)).finish();
-
-      // Compress the encoded data
-      var compressedData = pako.gzip(encodedData);
-
-      // Create Blob from compressed data
-      var blob = new Blob([compressedData], { type: 'application/octet-stream' });
-
-      // Create download link
-      var downloadLink = document.createElement('a');
-      downloadLink.href = URL.createObjectURL(blob);
-      downloadLink.download = 'output.tachibk';
-
-      // Append to body to ensure it is part of the document
-      document.body.appendChild(downloadLink);
-
-      // Programmatically click the download link
-      downloadLink.click();
-
-      // Remove the download link from the document
-      document.body.removeChild(downloadLink);
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error: Invalid JSON data');
-    }
-  });
-}
-
-function dlJSON() {
-  var parsedData = window.data;
-  parsedData.backupCategories = parsedData.backupCategories.filter(
-    category => category.order !== -1 && category.order !== 65535
-  );
-
-  var jsonString = JSON.stringify(parsedData, null, 2);
-  var blob = new Blob([jsonString], { type: 'application/json' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'EditedBackup';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
-function deleteManga(index) {
-  if (index >= 0 && index < data.backupManga.length) {
-    data.backupManga.splice(index, 1);
-    initializeLibrary(); // Re-initialize the library to reflect changes
-    console.log(`Manga at index ${index} deleted successfully.`);
-  } else {
-    console.error('Invalid index. Cannot delete manga.');
-  }
-}
-
-function deleteCategory(index) {
-  if (index >= 0 && index < data.backupCategories.length) {
-    // Get the order value of the category to be deleted
-    const categoryOrderToDelete = data.backupCategories[index].order;
-
-    // Delete the category
-    data.backupCategories.splice(index, 1);
-
-    // Iterate over all manga items to update their categories
-    data.backupManga.forEach(manga => {
-      if (manga.categories) {
-        // Remove the categoryOrderToDelete from the manga's categories
-        manga.categories = manga.categories.filter(order => order !== categoryOrderToDelete);
-
-        // If the categories array becomes empty, delete it
-        if (manga.categories.length === 0) {
-          delete manga.categories;
-        }
-      }
-    });
-
-    // Re-initialize the library to reflect changes
-    initializeLibrary();
-    console.log(`Category at index ${index} deleted successfully.`);
-  } else {
-    console.error('Invalid index. Cannot delete Category.');
-  }
 }
