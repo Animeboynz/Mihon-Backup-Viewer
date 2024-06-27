@@ -69,7 +69,7 @@ export function applySettings() {
   setFilterTracking(filterTrackedSelect.value);
 
   // Save sortOrder to local storage
-  localStorage.setItem('MBV_SortOrder', window.sortOrder);
+  localStorage.setItem('MBV_SortOrder', sortOrder);
 
   //const highlightTracker = highlightTrackerCheckbox.checked;
 
