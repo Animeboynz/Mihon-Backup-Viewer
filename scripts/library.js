@@ -1,10 +1,12 @@
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 
+const url = new URL(window.location);
 var filterStatus = ['-1'];
 var filterSource = ['all'];
 var filterTracking = 'all-entries';
-var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title-asc';
+var sortOrder =
+  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var activeTabId = null;
 const re = RegExp('^https?://');
 
@@ -377,4 +379,6 @@ export function setFilterTracking(data) {
 }
 export function setSortOrder(data) {
   sortOrder = data;
+  url.searchParams.set('sort-order', data);
+  window.history.replaceState(data, 'Foo', url.toString());
 }
