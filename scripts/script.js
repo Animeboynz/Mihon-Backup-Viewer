@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
   expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
   loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
+    data = '';
+    document.getElementById('tabs').innerHTML = '';
+    document.getElementById('tab-contents').innerHTML = '';
     showModal('load-modal');
   });
   // Closes Modal
