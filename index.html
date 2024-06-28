@@ -5,41 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="no-referrer" />
     <title>Manga Library</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0"
-    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0" />
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
   </head>
+
   <body>
     <div class="container">
       <div id="load-modal" class="modal active">
         <div class="modal-content">
           <span class="gh-logo">
-            <a
-              href="https://github.com/Animeboynz/Mihon-Backup-Viewer"
-              target="_blank"
-              title="GitHub Project"
-              alt="GitHub Icon"
-            >
-              <object
-                data="https://github.githubassets.com/favicons/favicon-dark.svg"
-                type="image/svg+xml"
-                height="24"
-              ></object>
+            <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
+              <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24"></object>
             </a>
           </span>
           <h2>Load your .json, .tachibk or .proto.gz file</h2>
+          <label for="fork-select"
+            >Backup from:
+            <select id="fork-select">
+              <option value="mihon">Mihon / Tachiyomi</option>
+              <option value="sy">TachiyomiSY</option>
+              <option value="j2k">TachiyomiJ2K</option>
+            </select>
+          </label>
           <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
           <button id="use-demo-data">Use Demo Data</button>
         </div>
       </div>
-      <div class="settings-icon" id="settings-icon"
-        ><span class="material-symbols-outlined">settings</span></div
-      >
+      <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
       <div class="tabs" id="tabs">
         <!-- Tabs will be generated here -->
       </div>
@@ -68,11 +63,7 @@
         <div class="manga-body">
           <div id="manga-description-div">
             <p id="manga-description"></p>
-            <span class="fade-out"
-              ><span class="material-symbols-outlined" id="description-expand-icon"
-                >keyboard_arrow_down</span
-              ></span
-            >
+            <span class="fade-out"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
           </div>
           <ul id="manga-genres"></ul>
         </div>
@@ -84,17 +75,8 @@
     <div id="settings-modal" class="modal">
       <div class="modal-content">
         <span class="gh-logo">
-          <a
-            href="https://github.com/Animeboynz/Mihon-Backup-Viewer"
-            target="_blank"
-            title="GitHub Project"
-            alt="GitHub Icon"
-          >
-            <object
-              data="https://github.githubassets.com/favicons/favicon-dark.svg"
-              type="image/svg+xml"
-              height="24"
-            ></object>
+          <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
+            <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24"></object>
           </a>
         </span>
         <span id="close-settings-modal" class="close-button">&times;</span>
@@ -147,8 +129,8 @@
           ><span class="download-buttons">
             <button id="download-json" class="settings-button">JSON</button>
             <button id="download-tachibk" class="settings-button">.tachibk</button>
-          </span></div
-        >
+          </span>
+        </div>
       </div>
     </div>
 

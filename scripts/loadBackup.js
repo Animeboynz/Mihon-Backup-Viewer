@@ -1,7 +1,7 @@
 import { closeModal } from './modals.js';
 import { initializeLibrary, showTab } from './library.js';
 
-export function handleFileLoad(event) {
+export function handleFileLoad(event, fork = 'mihon') {
   const file = event.target.files[0];
   const reader = new FileReader();
 
@@ -16,7 +16,7 @@ export function handleFileLoad(event) {
         closeModal('load-modal'); // Closes the Load Modal
       } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
         // Load protobuf schema
-        protobuf.load('schemas/schema-mihon.proto', (err, root) => {
+        protobuf.load(`schemas/schema-${fork}.proto`, (err, root) => {
           if (err) {
             alert('Error loading protobuf schema.');
             return;

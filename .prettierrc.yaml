@@ -7,3 +7,7 @@ trailingComma: es5
 htmlWhitespaceSensitivity: strict
 plugins: ['prettier-plugin-css-order']
 cssDeclarationSorterOrder: alphabetical
+overrides:
+  - files: '*.html'
+    options:
+      printWidth: 150
