@@ -55,7 +55,7 @@ export function initializeLibrary() {
       const tabButton = document.createElement('button');
       tabButton.className = 'tab-button';
       tabButton.id = `btn${category.name}`;
-      tabButton.textContent = category.name;
+      tabButton.title = tabButton.textContent = category.name;
       if (category.order === 65535) {
         tabButton.textContent = null;
         addMaterialSymbol(tabButton, 'history');
