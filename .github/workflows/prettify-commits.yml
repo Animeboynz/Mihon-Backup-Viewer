@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.repository }}
+          repository: ${{ github.event.repository.full_name }}
 
       - uses: actions/setup-node@v4
         with:
