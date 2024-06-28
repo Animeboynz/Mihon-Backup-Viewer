@@ -30,6 +30,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.repository }}
 
       - uses: actions/setup-node@v4
         with:
@@ -49,6 +50,7 @@ jobs:
             git commit -m 'Reformatted file'
             git push
             if [ ${{ github.event_name }} == 'pull_request' ]; then
-              gh pr comment ${{ github.event.number }} --body 'Reformatted your code. Remember to `git pull` if you plan to continue working on this PR'
+              gh pr comment ${{ github.event.number }} --body 'Reformatted your code following [our guidelines](https://github.com/Animeboynz/Mihon-Backup-Viewer/blob/main/CONTRIBUTING.md#formatting-your-code).
+              Remember to `git pull` if you plan to continue working on this PR'
             fi
           fi
