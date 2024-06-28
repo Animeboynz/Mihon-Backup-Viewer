@@ -1,10 +1,15 @@
 :root {
   --manga-header-bg: 'url()';
+  --color-page-bg: #1d1d1d;
+  --color-button-bg: #444;
+  --color-button-bg-active: #333;
+  --color-button-bg-hover: #555;
+  --color-genres-bg: #222;
 }
 
 body {
-  background-color: #1d1d1d;
-  color: #fff;
+  background-color: var(--color-page-bg);
+  color: white;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -55,7 +60,7 @@ body {
 }
 
 .tab-button.active {
-  background-color: #333;
+  background-color: var(--color-button-bg-active);
   color: white;
 }
 
@@ -136,7 +141,7 @@ body {
 }
 
 .modal-content {
-  background-color: #333;
+  background-color: var(--color-button-bg-active);
   border-radius: 5px;
   max-height: calc(100% - 120px);
   max-width: 80%;
@@ -147,7 +152,7 @@ body {
 }
 
 .close-button {
-  background-color: #555;
+  background-color: var(--color-button-bg-hover);
   border-radius: 100%;
   color: white;
   cursor: pointer;
@@ -170,7 +175,7 @@ body {
 }
 
 #use-demo-data {
-  background-color: #444;
+  background-color: var(--color-button-bg);
   border: none;
   border-radius: 15px;
   color: white;
@@ -180,7 +185,7 @@ body {
 }
 
 #use-demo-data:hover {
-  background-color: #555;
+  background-color: var(--color-button-bg-hover);
 }
 
 /* ---Manga Details Modal--- */
@@ -313,7 +318,7 @@ body {
 }
 
 #manga-genres li {
-  background: #222;
+  background: var(--color-genres-br);
   border: 1px solid;
   border-radius: 5px;
   display: inline;
@@ -346,7 +351,7 @@ body {
 
 .chapter-box {
   align-items: center;
-  background-color: #444;
+  background-color: var(--color-button-bg);
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -464,7 +469,7 @@ label.switch {
 }
 
 .settings-button {
-  background-color: #444;
+  background-color: var(--color-button-bg);
   border: none;
   border-radius: 15px;
   color: white;
@@ -476,7 +481,7 @@ label.switch {
 }
 
 .settings-button:hover {
-  background-color: #555;
+  background-color: var(--color-button-bg-hover);
 }
 
 #apply-settings {
@@ -517,7 +522,7 @@ label.switch {
   }
 }
 .settings-buttons-container > label {
-  border-top: dotted #444;
+  border-top: dotted var(--color-button-bg);
   margin: 0.75em auto 0.25em;
   padding-top: 5px;
   width: 100%;
