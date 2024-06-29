@@ -94,6 +94,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  row-gap: 3em;
 }
 
 /* ---Manga Item--- */
@@ -117,9 +118,18 @@ body {
   width: 150px;
 }
 
-.manga-item p {
+.manga-item-title {
+  background: rgba(29, 29, 29, 0.84);
   font-size: 0.9em;
   margin-top: 10px;
+  max-height: 3.5em;
+  overflow: hidden;
+  position: absolute;
+  width: inherit;
+}
+.full-title {
+  max-height: unset;
+  overflow: unset;
 }
 
 /* ---Modals--- */

@@ -39,7 +39,7 @@ export function handleFileLoad(event, fork = 'mihon') {
               initializeLibrary(); // Initialises Library with the Converter protobuf
               closeModal('load-modal'); // Closes the Load Modal
             } catch (error) {
-              alert('Error decoding protobuf file.');
+              alert(`Error decoding protobuf file.\n${error}`);
             }
           };
 
