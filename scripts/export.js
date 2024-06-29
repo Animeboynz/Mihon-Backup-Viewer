@@ -1,6 +1,6 @@
-export function encodeToProtobuf() {
+export function encodeToProtobuf(fork = 'mihon') {
   // Load protobuf schema
-  protobuf.load('schemas/schema-mihon.proto', function (err, root) {
+  protobuf.load(`schemas/schema-${fork}.proto`, function (err, root) {
     if (err) throw err;
 
     // Resolve Backup message type

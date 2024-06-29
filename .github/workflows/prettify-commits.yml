@@ -6,17 +6,17 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'scripts/**.js'
-      - '**.html'
-      - '**.css'
-      - '**.md'
+      - 'scripts/*.js'
+      - '*.html'
+      - '*.css'
+      - '*.md'
   push:
     branches: [main]
     paths:
-      - 'scripts/**.js'
-      - '**.html'
-      - '**.css'
-      - '**.md'
+      - 'scripts/*.js'
+      - '*.html'
+      - '*.css'
+      - '*.md'
 
 jobs:
   prettier:
@@ -29,7 +29,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - uses: actions/setup-node@v4
         with:
@@ -41,14 +42,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci --silent
-          npx prettier --write 'scripts/**.js' '**.md' '**.html' '**.css'
+          npx prettier --write "scripts/*.js" "*.{md,html,css}"
           if ! $(git diff --quiet); then
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git add 'scripts/**.js' '**.md' '**.html' '**.css'
+            git add scripts/*.js *.{md,html,css}
             git commit -m 'Reformatted file'
             git push
             if [ ${{ github.event_name }} == 'pull_request' ]; then
-              gh pr comment ${{ github.event.number }} --body 'Reformatted your code. Remember to `git pull` if you plan to continue working on this PR'
+              gh pr comment ${{ github.event.number }} --body 'Reformatted your code following [our guidelines](https://github.com/Animeboynz/Mihon-Backup-Viewer/blob/main/CONTRIBUTING.md#formatting-your-code).
+              Remember to `git pull` if you plan to continue working on this PR'
             fi
           fi
