@@ -110,13 +110,19 @@ export function initializeLibrary() {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.getElementById(category.name);
 
+        const titleFull = manga.customTitle || manga.title;
+        const titleTrimmed = titleFull.length > 30 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
-        mangaItem.innerHTML = `
-                <img src="${
-                  manga.customThumbnailUrl || manga.thumbnailUrl
-                }" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
-                <p>${manga.customTitle || manga.title}</p>`;
+        mangaItem.title = titleFull;
+        const cover = document.createElement('img');
+        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
+        cover.loading = 'lazy';
+        cover.alt = '';
+        const entryTitle = document.createElement('p');
+        entryTitle.innerText = titleTrimmed;
+        mangaItem.appendChild(cover);
+        mangaItem.appendChild(entryTitle);
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
             manga,
@@ -124,6 +130,14 @@ export function initializeLibrary() {
             window.data.backupSources.find(source => source.sourceId === manga.source).name
           );
         });
+        mangaItem.addEventListener(
+          'mouseenter',
+          event => (event.target.querySelector('p').innerText = titleFull)
+        );
+        mangaItem.addEventListener(
+          'mouseleave',
+          event => (event.target.querySelector('p').innerText = titleTrimmed)
+        );
         tabContent.appendChild(mangaItem);
       });
     });
