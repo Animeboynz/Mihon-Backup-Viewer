@@ -4,6 +4,10 @@ printWidth: 100
 tabWidth: 2
 semi: true
 trailingComma: es5
-htmlWhitespaceSensitivity: strict
+htmlWhitespaceSensitivity: css
 plugins: ['prettier-plugin-css-order']
 cssDeclarationSorterOrder: alphabetical
+overrides:
+  - files: '*.html'
+    options:
+      printWidth: 150

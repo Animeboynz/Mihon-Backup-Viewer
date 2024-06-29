@@ -10,6 +10,6 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,md,html,css}": "prettier --write"
+    "**/*.{js,md,html,css}": "prettier --write"
   }
 }
