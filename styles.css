@@ -136,7 +136,7 @@ body {
   width: 24px;
 }
 
-.kebab-menu span {
+.kebab-menu > .material-symbols-outlined {
   color: white;
   font-size: 20px;
 }
