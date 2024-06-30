@@ -26,7 +26,10 @@ export function initializeLibrary() {
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
-    let matchesSearch = search(`${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`);
+    let matchesSearch = search(
+      document.querySelector('#search > input')?.value || url.searchParams.get('search') || '',
+      `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
+    );
     return matchesStatus && matchesSource && matchesTracking && matchesSearch;
   });
 
@@ -136,10 +139,9 @@ export function initializeLibrary() {
   disableMissingStatusOptions();
 }
 
-export function search(text) {
+export function search(searchQuery = '', text = '') {
   let results = [];
-  const query = document.querySelector('#search > input')?.value || '';
-  const queryParams = query.matchAll(
+  const queryParams = searchQuery.matchAll(
     /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
   );
   for (const match of queryParams) {
@@ -152,7 +154,7 @@ export function search(text) {
     if (group.phrase || group.word) results.push(text.match(re) !== null);
   }
 
-  if (query) url.searchParams.set('search', query);
+  if (searchQuery) url.searchParams.set('search', searchQuery);
   else url.searchParams.delete('search');
 
   if (url.toString() != window.location.toString())
