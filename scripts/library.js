@@ -138,26 +138,26 @@ export function initializeLibrary() {
 
 export function search(text) {
   let results = [];
-  const query = document.getElementById('search')?.value || '';
+  const query = document.querySelector('#search > input')?.value || '';
   const queryParams = query.matchAll(
     /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
   );
   for (const match of queryParams) {
     const group = match.groups;
-    if (group.excludephrase || group.exclude)
-      results.push(
-        text.toLowerCase().search((group.excludephrase || group.exclude).toLowerCase()) === -1
-      );
-    if (group.phrase || group.word)
-      results.push(text.toLowerCase().search((group.phrase || group.word).toLowerCase()) !== -1);
+    const re =
+      group.phrase || group.excludephrase
+        ? new RegExp(`\\b${group.phrase || group.excludephrase}\\b`, 'gi')
+        : new RegExp(group.word || group.exclude, 'gi');
+    if (group.excludephrase || group.exclude) results.push(text.match(re) === null);
+    if (group.phrase || group.word) results.push(text.match(re) !== null);
   }
-  if (query) {
-    url.searchParams.set('search', query);
-  } else {
-    url.searchParams.delete('search');
-  }
+
+  if (query) url.searchParams.set('search', query);
+  else url.searchParams.delete('search');
+
   if (url.toString() != window.location.toString())
     window.history.replaceState(null, '', url.toString());
+
   return results.indexOf(false) === -1;
 }
 
