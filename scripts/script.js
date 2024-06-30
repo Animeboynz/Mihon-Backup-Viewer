@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dlTachibkBtn = document.getElementById('download-tachibk');
   const expandDescriptionArrow = document.querySelector('.fade-out');
   // Search
-  const search = document.querySelector('.search > button');
+  const searchButton = document.querySelector('#search > .search-icon');
+  const searchField = document.querySelector('#search > input');
 
   fileInput.addEventListener('change', e => handleFileLoad(e, fork)); //Handles File Upload
   //Loads Demo Data from data.json on trigger
@@ -36,7 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
   dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(e, fork)); // Downloads backup as Protobuf on click
   closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
   expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
-  search.addEventListener('click', initializeLibrary); // Search Library
+  // Search Library
+  searchButton.addEventListener('click', () => {
+    searchField.toggleAttribute('disabled');
+    if (!searchField.disabled) searchField.focus();
+  });
+  searchField.addEventListener('input', () => {
+    let cooldown;
+    clearTimeout(cooldown);
+    cooldown = setTimeout(initializeLibrary, 1300);
+  });
+
   // Closes Modal
   document.addEventListener('mousedown', event => {
     if (event.target === mangaModal && mangaModal.classList.contains('active')) {

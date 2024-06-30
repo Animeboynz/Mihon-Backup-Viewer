@@ -389,6 +389,41 @@ object {
   color-scheme: light; /* override for the GitHub icons */
 }
 
+/* --- Search --- */
+
+#search {
+  cursor: pointer;
+  left: 10px;
+  position: absolute;
+  top: 10px;
+  z-index: 1;
+}
+
+#search .material-symbols-outlined {
+  font-size: 35px;
+  margin: 0px;
+}
+
+#search > input {
+  font-size: small;
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#search > input:disabled {
+  border: 0;
+  opacity: 0;
+  padding: 0;
+  width: 0;
+}
+
+#search > input:enabled {
+  border: 2px;
+  opacity: 0.8;
+  padding: 1px 2px;
+  width: 16em;
+}
+
 /* ---Settings--- */
 
 .settings-icon {

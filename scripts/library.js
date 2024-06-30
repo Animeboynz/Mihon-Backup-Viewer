@@ -1,6 +1,7 @@
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 
+const url = new URL(window.location);
 var filterStatus = ['-1'];
 var filterSource = ['all'];
 var filterTracking = 'all-entries';
@@ -137,14 +138,26 @@ export function initializeLibrary() {
 
 export function search(text) {
   let results = [];
-  const query = document.getElementById('search').value;
-  const queryParams = query.matchAll(/(?:"(?<phrase>.+)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi);
+  const query = document.getElementById('search')?.value || '';
+  const queryParams = query.matchAll(
+    /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
+  );
   for (const match of queryParams) {
     const group = match.groups;
-    if (group.phrase) results.push(text.toLowerCase().search(group.phrase.toLowerCase()) !== -1);
-    if (group.exclude) results.push(text.toLowerCase().search(group.exclude.toLowerCase()) === -1);
-    if (group.word) results.push(text.toLowerCase().search(group.word.toLowerCase()) !== -1);
+    if (group.excludephrase || group.exclude)
+      results.push(
+        text.toLowerCase().search((group.excludephrase || group.exclude).toLowerCase()) === -1
+      );
+    if (group.phrase || group.word)
+      results.push(text.toLowerCase().search((group.phrase || group.word).toLowerCase()) !== -1);
   }
+  if (query) {
+    url.searchParams.set('search', query);
+  } else {
+    url.searchParams.delete('search');
+  }
+  if (url.toString() != window.location.toString())
+    window.history.replaceState(null, '', url.toString());
   return results.indexOf(false) === -1;
 }
 
