@@ -6,6 +6,11 @@
     "prettier": "3.3.2",
     "prettier-plugin-css-order": "2.1.2"
   },
+  "optionalDependencies": {
+    "long": "^5.2.3",
+    "pako": "^2.1.0",
+    "protobufjs": "^7.3.2"
+  },
   "scripts": {
     "prepare": "husky"
   },
