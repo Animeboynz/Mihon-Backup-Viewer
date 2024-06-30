@@ -42,7 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
     searchField.toggleAttribute('disabled');
     if (!searchField.disabled) searchField.focus();
   });
-  searchField.addEventListener('blur', () => setTimeout(() => (searchField.disabled = true), 200));
+  searchField.addEventListener('blur', () =>
+    setTimeout(() => {
+      searchField.disabled = true;
+      if (searchField.value)
+        searchButton.setAttribute('style', 'color: var(--color-filter-active);');
+      else searchButton.removeAttribute('style');
+    }, 200)
+  );
   searchField.addEventListener('input', () => {
     clearTimeout(searchCooldown);
     searchCooldown = setTimeout(initializeLibrary, 1300);

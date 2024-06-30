@@ -1,10 +1,11 @@
 :root {
   --manga-header-bg: 'url()';
-  --color-page-bg: #1d1d1d;
   --color-button-bg: #444;
   --color-button-bg-active: #333;
   --color-button-bg-hover: #555;
+  --color-filter-active: #0c0;
   --color-genres-bg: #222;
+  --color-page-bg: #1d1d1d;
 }
 
 body {
@@ -394,7 +395,7 @@ object {
 #search {
   cursor: pointer;
   left: 10px;
-  position: absolute;
+  position: fixed;
   top: 10px;
   z-index: 1;
 }
