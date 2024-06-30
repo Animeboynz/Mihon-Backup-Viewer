@@ -384,5 +384,5 @@ export function setFilterTracking(data) {
 export function setSortOrder(data) {
   sortOrder = data;
   url.searchParams.set('sort-order', data);
-  window.history.replaceState(data, 'Foo', url.toString());
+  window.history.replaceState(data, '', url.toString());
 }
