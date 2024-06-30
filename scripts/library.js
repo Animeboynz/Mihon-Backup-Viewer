@@ -27,7 +27,7 @@ export function initializeLibrary() {
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
     let matchesSearch = search(
-      document.querySelector('#search > input')?.value || url.searchParams.get('search') || '',
+      document.querySelector('#search > input').value,
       `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
     );
     return matchesStatus && matchesSource && matchesTracking && matchesSearch;
