@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchField.toggleAttribute('disabled');
     if (!searchField.disabled) searchField.focus();
   });
+  searchField.addEventListener('blur', () => (searchField.disabled = true));
   searchField.addEventListener('input', () => {
     let cooldown;
     clearTimeout(cooldown);
