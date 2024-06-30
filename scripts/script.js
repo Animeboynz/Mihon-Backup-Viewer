@@ -4,7 +4,7 @@ import { closeModal, showModal } from './modals.js';
 import { initializeLibrary, toggleExpandDescription } from './library.js';
 import { openSettingsModal, closeSettingsModal, applySettings } from './settings.js';
 
-var data;
+var searchCooldown;
 
 document.addEventListener('DOMContentLoaded', () => {
   // File Load
@@ -42,11 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     searchField.toggleAttribute('disabled');
     if (!searchField.disabled) searchField.focus();
   });
-  searchField.addEventListener('blur', () => (searchField.disabled = true));
+  searchField.addEventListener('blur', () => setTimeout(() => (searchField.disabled = true), 200));
   searchField.addEventListener('input', () => {
-    let cooldown;
-    clearTimeout(cooldown);
-    cooldown = setTimeout(initializeLibrary, 1300);
+    clearTimeout(searchCooldown);
+    searchCooldown = setTimeout(initializeLibrary, 1300);
   });
 
   // Closes Modal
