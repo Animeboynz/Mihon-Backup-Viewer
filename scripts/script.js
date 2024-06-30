@@ -1,8 +1,7 @@
 import { dlJSON, encodeToProtobuf } from './export.js';
-import { deleteManga, deleteCategory } from './editBackup.js';
 import { handleFileLoad, loadDemoData } from './loadBackup.js';
 import { closeModal, showModal } from './modals.js';
-import { toggleExpandDescription } from './library.js';
+import { initializeLibrary, toggleExpandDescription } from './library.js';
 import { openSettingsModal, closeSettingsModal, applySettings } from './settings.js';
 
 var data;
@@ -24,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dlJSONBtn = document.getElementById('download-json');
   const dlTachibkBtn = document.getElementById('download-tachibk');
   const expandDescriptionArrow = document.querySelector('.fade-out');
+  // Search
+  const search = document.querySelector('.search > button');
 
   fileInput.addEventListener('change', e => handleFileLoad(e, fork)); //Handles File Upload
   //Loads Demo Data from data.json on trigger
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(e, fork)); // Downloads backup as Protobuf on click
   closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
   expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
+  search.addEventListener('click', initializeLibrary); // Search Library
   // Closes Modal
   document.addEventListener('mousedown', event => {
     if (event.target === mangaModal && mangaModal.classList.contains('active')) {

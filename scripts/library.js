@@ -25,7 +25,8 @@ export function initializeLibrary() {
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
-    return matchesStatus && matchesSource && matchesTracking;
+    let matchesSearch = search(`${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`);
+    return matchesStatus && matchesSource && matchesTracking && matchesSearch;
   });
 
   // Sets the order to 0 if a category has no order property
@@ -132,6 +133,19 @@ export function initializeLibrary() {
   showTab(tabToShow);
   addOptionsFromData();
   disableMissingStatusOptions();
+}
+
+export function search(text) {
+  let results = [];
+  const query = document.getElementById('search').value;
+  const queryParams = query.matchAll(/(?:"(?<phrase>.+)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi);
+  for (const match of queryParams) {
+    const group = match.groups;
+    if (group.phrase) results.push(text.toLowerCase().search(group.phrase.toLowerCase()) !== -1);
+    if (group.exclude) results.push(text.toLowerCase().search(group.exclude.toLowerCase()) === -1);
+    if (group.word) results.push(text.toLowerCase().search(group.word.toLowerCase()) !== -1);
+  }
+  return results.indexOf(false) === -1;
 }
 
 export function showTab(tabId) {
