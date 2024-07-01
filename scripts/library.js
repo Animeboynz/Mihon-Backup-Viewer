@@ -27,7 +27,11 @@ export function initializeLibrary() {
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
-    return matchesStatus && matchesSource && matchesTracking;
+    let matchesSearch = search(
+      document.querySelector('#search > input').value,
+      `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
+    );
+    return matchesStatus && matchesSource && matchesTracking && matchesSearch;
   });
 
   // Sets the order to 0 if a category has no order property
@@ -163,6 +167,30 @@ export function initializeLibrary() {
   showTab(tabToShow);
   addOptionsFromData();
   disableMissingStatusOptions();
+}
+
+export function search(searchQuery = '', text = '') {
+  let results = [];
+  const queryParams = searchQuery.matchAll(
+    /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
+  );
+  for (const match of queryParams) {
+    const group = match.groups;
+    const re =
+      group.phrase || group.excludephrase
+        ? new RegExp(`\\b${group.phrase || group.excludephrase}\\b`, 'gi')
+        : new RegExp(group.word || group.exclude, 'gi');
+    if (group.excludephrase || group.exclude) results.push(text.match(re) === null);
+    if (group.phrase || group.word) results.push(text.match(re) !== null);
+  }
+
+  if (searchQuery) url.searchParams.set('search', searchQuery);
+  else url.searchParams.delete('search');
+
+  if (url.toString() != window.location.toString())
+    window.history.replaceState(null, '', url.toString());
+
+  return results.indexOf(false) === -1;
 }
 
 export function showTab(tabId) {

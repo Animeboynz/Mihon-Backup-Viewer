@@ -1,11 +1,10 @@
 import { dlJSON, encodeToProtobuf } from './export.js';
-import { deleteManga, deleteCategory } from './editBackup.js';
 import { handleFileLoad, loadDemoData } from './loadBackup.js';
 import { closeModal, showModal } from './modals.js';
-import { toggleExpandDescription } from './library.js';
+import { initializeLibrary, toggleExpandDescription } from './library.js';
 import { openSettingsModal, closeSettingsModal, applySettings } from './settings.js';
 
-var data;
+var searchCooldown;
 const urlParams = new URLSearchParams(window.location.search);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const dlJSONBtn = document.getElementById('download-json');
   const dlTachibkBtn = document.getElementById('download-tachibk');
   const expandDescriptionArrow = document.querySelector('.fade-out');
+  // Search
+  const searchButton = document.querySelector('#search > .search-icon');
+  const searchField = document.querySelector('#search > input');
 
   fileInput.addEventListener('change', e => handleFileLoad(e, fork)); //Handles File Upload
   settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
@@ -41,6 +43,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('tab-contents').innerHTML = '';
     showModal('load-modal');
   });
+  // Search Library
+  searchButton.addEventListener('click', () => {
+    searchField.toggleAttribute('disabled');
+    if (!searchField.disabled) searchField.focus();
+  });
+  searchField.addEventListener('blur', () =>
+    setTimeout(() => {
+      searchField.disabled = true;
+      if (searchField.value)
+        searchButton.setAttribute('style', 'color: var(--color-filter-active);');
+      else searchButton.removeAttribute('style');
+    }, 200)
+  );
+  searchField.addEventListener('input', () => {
+    clearTimeout(searchCooldown);
+    searchCooldown = setTimeout(initializeLibrary, 1300);
+  });
+
   // Closes Modal
   document.addEventListener('mousedown', event => {
     if (event.target === mangaModal && mangaModal.classList.contains('active')) {

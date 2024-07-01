@@ -1,10 +1,11 @@
 :root {
   --manga-header-bg: 'url()';
-  --color-page-bg: #1d1d1d;
   --color-button-bg: #444;
   --color-button-bg-active: #333;
   --color-button-bg-hover: #555;
+  --color-filter-active: #0c0;
   --color-genres-bg: #222;
+  --color-page-bg: #1d1d1d;
 }
 
 body {
@@ -401,6 +402,41 @@ body {
 }
 object {
   color-scheme: light; /* override for the GitHub icons */
+}
+
+/* --- Search --- */
+
+#search {
+  cursor: pointer;
+  left: 10px;
+  position: fixed;
+  top: 10px;
+  z-index: 1;
+}
+
+#search .material-symbols-outlined {
+  font-size: 35px;
+  margin: 0px;
+}
+
+#search > input {
+  font-size: small;
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#search > input:disabled {
+  left: 7em;
+  opacity: 0;
+  top: -100%;
+  width: 0em;
+}
+
+#search > input:enabled {
+  left: 2em;
+  opacity: 0.8;
+  top: 0%;
+  width: 16em;
 }
 
 /* ---Settings--- */
