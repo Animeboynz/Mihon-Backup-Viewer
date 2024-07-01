@@ -36,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
   dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(e, fork)); // Downloads backup as Protobuf on click
   closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
   expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
+  document
+    .querySelector('#chapters-sort-button')
+    .addEventListener('click', () =>
+      document.querySelector('#manga-chapters').classList.toggle('desc')
+    ); // Sort chapters
   loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
     data = null;
