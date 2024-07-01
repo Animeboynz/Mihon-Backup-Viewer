@@ -49,7 +49,7 @@ export function handleFileLoad(event, fork = 'mihon') {
         alert('Unsupported file type. Please pick a valid .json, .tachibk, or .proto.gz file.');
       }
     } catch (error) {
-      alert('Error processing the file. Please pick a valid file.');
+      alert('Error processing the file. Please pick a valid file.\n' + error);
     }
   };
 

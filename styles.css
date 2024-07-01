@@ -85,6 +85,10 @@ body {
   position: static; /* Position it next to the text */
 }
 
+.tab-button > .material-symbols-outlined {
+  margin: 0;
+}
+
 .tab-content {
   display: none;
   margin-top: 20px;
