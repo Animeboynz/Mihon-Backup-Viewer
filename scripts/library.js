@@ -5,7 +5,8 @@ const url = new URL(window.location);
 var filterStatus = ['-1'];
 var filterSource = ['all'];
 var filterTracking = 'all-entries';
-var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title-asc';
+var sortOrder =
+  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var activeTabId = null;
 const re = RegExp('^https?://');
 
@@ -58,7 +59,11 @@ export function initializeLibrary() {
       const tabButton = document.createElement('button');
       tabButton.className = 'tab-button';
       tabButton.id = `btn${category.name}`;
-      tabButton.textContent = category.order === 65535 ? '⌛' : category.name;
+      tabButton.title = tabButton.textContent = category.name;
+      if (category.order === 65535) {
+        tabButton.textContent = null;
+        addMaterialSymbol(tabButton, 'history');
+      }
 
       const badge = document.createElement('span');
       badge.className = 'badge';
@@ -115,19 +120,44 @@ export function initializeLibrary() {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.getElementById(category.name);
 
+        const titleFull = manga.customTitle || manga.title;
+        const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
-        mangaItem.innerHTML = `
-                <img src="${
-                  manga.customThumbnailUrl || manga.thumbnailUrl
-                }" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
-                <p>${manga.customTitle || manga.title}</p>`;
+        var title = `Chapters: ${manga.chapters?.length}`;
+        title += ` | Read: ${manga.chapters?.filter(c => c.read).length}`;
+        if (manga.dateAdded) title += `\nAdded: ${parseDate(manga.dateAdded)}`;
+        if (manga.history)
+          title += `\nLast Read: ${parseDate(
+            Math.max.apply(
+              0,
+              manga.history.map(h => parseInt(h.lastRead || '0'))
+            )
+          )}`;
+        mangaItem.title = title;
+        const cover = document.createElement('img');
+        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
+        cover.loading = 'lazy';
+        cover.alt = '';
+        const entryTitle = document.createElement('p');
+        entryTitle.innerText = titleTrimmed;
+        entryTitle.classList.add('manga-item-title');
+        mangaItem.appendChild(cover);
+        mangaItem.appendChild(entryTitle);
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
             manga,
             window.data.backupCategories,
             window.data.backupSources.find(source => source.sourceId === manga.source).name
           );
+        });
+        mangaItem.addEventListener('mouseenter', event => {
+          entryTitle.innerText = titleFull;
+          entryTitle.classList.add('full-title');
+        });
+        mangaItem.addEventListener('mouseleave', event => {
+          entryTitle.innerText = titleTrimmed;
+          entryTitle.classList.remove('full-title');
         });
         tabContent.appendChild(mangaItem);
       });
@@ -361,8 +391,7 @@ function showMangaDetails(manga, categories, source) {
       if (Array.isArray(manga.history)) {
         const historyItem = manga.history.find(history => history.url === chapter.url);
         if (historyItem) {
-          const date = new Date(parseInt(historyItem.lastRead));
-          lastReadDate.textContent = `${date.toLocaleString()}`;
+          lastReadDate.textContent = parseDate(historyItem.lastRead);
         }
       }
 
@@ -375,6 +404,11 @@ function showMangaDetails(manga, categories, source) {
   showModal('manga-modal');
   const mangaModalContent = document.querySelector('#manga-modal .modal-content');
   mangaModalContent.scrollTop = 0;
+}
+
+export function parseDate(timestamp) {
+  const date = new Date(parseInt(timestamp));
+  return date.toLocaleString();
 }
 
 export function toggleExpandDescription() {
@@ -406,4 +440,6 @@ export function setFilterTracking(data) {
 }
 export function setSortOrder(data) {
   sortOrder = data;
+  url.searchParams.set('sort-order', data);
+  window.history.replaceState(data, '', url.toString());
 }

@@ -39,7 +39,7 @@ export function handleFileLoad(event, fork = 'mihon') {
               initializeLibrary(); // Initialises Library with the Converter protobuf
               closeModal('load-modal'); // Closes the Load Modal
             } catch (error) {
-              alert('Error decoding protobuf file.');
+              alert(`Error decoding protobuf file.\n${error}`);
             }
           };
 
@@ -49,7 +49,7 @@ export function handleFileLoad(event, fork = 'mihon') {
         alert('Unsupported file type. Please pick a valid .json, .tachibk, or .proto.gz file.');
       }
     } catch (error) {
-      alert('Error processing the file. Please pick a valid file.');
+      alert('Error processing the file. Please pick a valid file.\n' + error);
     }
   };
 
