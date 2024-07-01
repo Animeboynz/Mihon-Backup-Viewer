@@ -1,10 +1,12 @@
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 
+const url = new URL(window.location);
 var filterStatus = ['-1'];
 var filterSource = ['all'];
 var filterTracking = 'all-entries';
-var sortOrder = localStorage.getItem('MBV_SortOrder') || 'title-asc';
+var sortOrder =
+  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var activeTabId = null;
 const re = RegExp('^https?://');
 
@@ -25,7 +27,11 @@ export function initializeLibrary() {
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
-    return matchesStatus && matchesSource && matchesTracking;
+    let matchesSearch = search(
+      document.querySelector('#search > input').value,
+      `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
+    );
+    return matchesStatus && matchesSource && matchesTracking && matchesSearch;
   });
 
   // Sets the order to 0 if a category has no order property
@@ -53,7 +59,11 @@ export function initializeLibrary() {
       const tabButton = document.createElement('button');
       tabButton.className = 'tab-button';
       tabButton.id = `btn${category.name}`;
-      tabButton.textContent = category.order === 65535 ? '⌛' : category.name;
+      tabButton.title = tabButton.textContent = category.name;
+      if (category.order === 65535) {
+        tabButton.textContent = null;
+        addMaterialSymbol(tabButton, 'history');
+      }
 
       const badge = document.createElement('span');
       badge.className = 'badge';
@@ -110,30 +120,62 @@ export function initializeLibrary() {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.getElementById(category.name);
 
+        const titleFull = manga.customTitle || manga.title;
+        const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
-        mangaItem.innerHTML = `
-          <div class="manga-item-container">
-            <img src="${manga.customThumbnailUrl || manga.thumbnailUrl}" loading="lazy" title="${manga.customTitle || manga.title}" alt="">
-            <div class="kebab-menu" data-index="${index}" data-title="${manga.customTitle || manga.title}">
-              <span class="material-symbols-outlined">more_vert</span>
-            </div>
-          </div>
-          <p>${manga.customTitle || manga.title}</p>`;
 
-        mangaItem.querySelector('.kebab-menu').addEventListener('click', event => {
+        var title = `Chapters: ${manga.chapters?.length}`;
+        title += ` | Read: ${manga.chapters?.filter(c => c.read).length}`;
+        if (manga.dateAdded) title += `\nAdded: ${parseDate(manga.dateAdded)}`;
+        if (manga.history)
+          title += `\nLast Read: ${parseDate(
+            Math.max.apply(
+              0,
+              manga.history.map(h => parseInt(h.lastRead || '0'))
+            )
+          )}`;
+        mangaItem.title = title;
+        const cover = document.createElement('img');
+        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
+        cover.loading = 'lazy';
+        cover.alt = '';
+        const entryTitle = document.createElement('p');
+        entryTitle.innerText = titleTrimmed;
+        entryTitle.classList.add('manga-item-title');
+
+        const coverContainer = document.createElement('div');
+        coverContainer.classList.add('manga-item-container');
+        const kebabMenu = document.createElement('div');
+        kebabMenu.classList.add('kebab-menu');
+        kebabMenu.setAttribute('data-index', index);
+        kebabMenu.setAttribute('data-title', title);
+        kebabMenu.innerHTML = '<span class="material-symbols-outlined">more_vert</span>';
+        kebabMenu.addEventListener('click', event => {
           event.stopPropagation(); // Prevent triggering the manga item click
           const index = event.currentTarget.getAttribute('data-index');
           const title = event.currentTarget.getAttribute('data-title');
           alert(`Title: ${title}\nIndex: ${index}`);
         });
 
+        coverContainer.appendChild(cover);
+        coverContainer.appendChild(kebabMenu);
+        mangaItem.appendChild(coverContainer);
+        mangaItem.appendChild(entryTitle);
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
             manga,
             window.data.backupCategories,
             window.data.backupSources.find(source => source.sourceId === manga.source).name
           );
+        });
+        mangaItem.addEventListener('mouseenter', event => {
+          entryTitle.innerText = titleFull;
+          entryTitle.classList.add('full-title');
+        });
+        mangaItem.addEventListener('mouseleave', event => {
+          entryTitle.innerText = titleTrimmed;
+          entryTitle.classList.remove('full-title');
         });
         tabContent.appendChild(mangaItem);
       });
@@ -143,6 +185,30 @@ export function initializeLibrary() {
   showTab(tabToShow);
   addOptionsFromData();
   disableMissingStatusOptions();
+}
+
+export function search(searchQuery = '', text = '') {
+  let results = [];
+  const queryParams = searchQuery.matchAll(
+    /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
+  );
+  for (const match of queryParams) {
+    const group = match.groups;
+    const re =
+      group.phrase || group.excludephrase
+        ? new RegExp(`\\b${group.phrase || group.excludephrase}\\b`, 'gi')
+        : new RegExp(group.word || group.exclude, 'gi');
+    if (group.excludephrase || group.exclude) results.push(text.match(re) === null);
+    if (group.phrase || group.word) results.push(text.match(re) !== null);
+  }
+
+  if (searchQuery) url.searchParams.set('search', searchQuery);
+  else url.searchParams.delete('search');
+
+  if (url.toString() != window.location.toString())
+    window.history.replaceState(null, '', url.toString());
+
+  return results.indexOf(false) === -1;
 }
 
 export function showTab(tabId) {
@@ -343,8 +409,7 @@ function showMangaDetails(manga, categories, source) {
       if (Array.isArray(manga.history)) {
         const historyItem = manga.history.find(history => history.url === chapter.url);
         if (historyItem) {
-          const date = new Date(parseInt(historyItem.lastRead));
-          lastReadDate.textContent = `${date.toLocaleString()}`;
+          lastReadDate.textContent = parseDate(historyItem.lastRead);
         }
       }
 
@@ -357,6 +422,11 @@ function showMangaDetails(manga, categories, source) {
   showModal('manga-modal');
   const mangaModalContent = document.querySelector('#manga-modal .modal-content');
   mangaModalContent.scrollTop = 0;
+}
+
+export function parseDate(timestamp) {
+  const date = new Date(parseInt(timestamp));
+  return date.toLocaleString();
 }
 
 export function toggleExpandDescription() {
@@ -388,4 +458,6 @@ export function setFilterTracking(data) {
 }
 export function setSortOrder(data) {
   sortOrder = data;
+  url.searchParams.set('sort-order', data);
+  window.history.replaceState(data, '', url.toString());
 }

@@ -19,6 +19,8 @@ Pull requests are the best way to propose changes to the codebase. We actively w
 
 #### Formatting your code
 
+[![Format Commits](https://github.com/Animeboynz/Mihon-Backup-Viewer/actions/workflows/prettify-commits.yml/badge.svg?branch=main)](https://github.com/Animeboynz/Mihon-Backup-Viewer/actions/workflows/prettify-commits.yml) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
 1. Install [Node.js](https://nodejs.org)
 2. Run `npm ci` in the repo folder to install [Prettier](https://prettier.io) and setup the pre-commit hook
 3. [Optional] [Setup prettier on your editor](https://prettier.io/docs/en/editors)

@@ -1,10 +1,11 @@
 :root {
   --manga-header-bg: 'url()';
-  --color-page-bg: #1d1d1d;
   --color-button-bg: #444;
   --color-button-bg-active: #333;
   --color-button-bg-hover: #555;
+  --color-filter-active: #0c0;
   --color-genres-bg: #222;
+  --color-page-bg: #1d1d1d;
 }
 
 body {
@@ -85,6 +86,10 @@ body {
   position: static; /* Position it next to the text */
 }
 
+.tab-button > .material-symbols-outlined {
+  margin: 0;
+}
+
 .tab-content {
   display: none;
   margin-top: 20px;
@@ -94,6 +99,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  row-gap: 3em;
 }
 
 /* ---Manga Item--- */
@@ -117,14 +123,43 @@ body {
   width: 150px;
 }
 
-.manga-item p {
+.manga-item-title {
+  background: rgba(29, 29, 29, 0.84);
   font-size: 0.9em;
   margin-top: 10px;
+  max-height: 3.5em;
+  overflow: hidden;
+  position: absolute;
+  width: inherit;
+}
+.full-title {
+  max-height: unset;
+  overflow: unset;
 }
 
 .manga-item-container {
   display: inline-block;
   position: relative;
+}
+
+.kebab-menu {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px;
+}
+
+.kebab-menu > .material-symbols-outlined {
+  color: white;
+  font-size: 20px;
+  margin: 0;
 }
 
 .kebab-menu {
@@ -342,7 +377,7 @@ body {
 }
 
 #manga-genres li {
-  background: var(--color-genres-br);
+  background: var(--color-genres-bg);
   border: 1px solid;
   border-radius: 5px;
   display: inline;
@@ -411,6 +446,41 @@ body {
 }
 object {
   color-scheme: light; /* override for the GitHub icons */
+}
+
+/* --- Search --- */
+
+#search {
+  cursor: pointer;
+  left: 10px;
+  position: fixed;
+  top: 10px;
+  z-index: 1;
+}
+
+#search .material-symbols-outlined {
+  font-size: 35px;
+  margin: 0px;
+}
+
+#search > input {
+  font-size: small;
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#search > input:disabled {
+  left: 7em;
+  opacity: 0;
+  top: -100%;
+  width: 0em;
+}
+
+#search > input:enabled {
+  left: 2em;
+  opacity: 0.8;
+  top: 0%;
+  width: 16em;
 }
 
 /* ---Settings--- */

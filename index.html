@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0" />
     <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js"></script>
@@ -18,7 +18,11 @@
 
   <body>
     <div class="container">
-      <div id="load-modal" class="modal active">
+      <div id="search">
+        <span class="material-symbols-outlined search-icon">search</span
+        ><input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
+      </div>
+      <div id="load-modal" class="modal">
         <div class="modal-content">
           <span class="gh-logo">
             <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
@@ -35,7 +39,6 @@
             </select>
           </label>
           <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
-          <button id="use-demo-data">Use Demo Data</button>
         </div>
       </div>
       <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
@@ -85,6 +88,7 @@
         </span>
         <span id="close-settings-modal" class="close-button">&times;</span>
         <h2>Settings</h2>
+        <button id="load-backup" class="settings-button">Load Backup</button>
         <div class="settings-inline">
           <label for="sort-order">Sort Order</label>
           <select id="sort-order">
