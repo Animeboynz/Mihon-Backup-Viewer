@@ -2,12 +2,9 @@ import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 
 const url = new URL(window.location);
-const url = new URL(window.location);
 var filterStatus = ['-1'];
 var filterSource = ['all'];
 var filterTracking = 'all-entries';
-var sortOrder =
-  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var sortOrder =
   url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || 'title-asc';
 var activeTabId = null;
@@ -30,11 +27,6 @@ export function initializeLibrary() {
       filterTracking === 'all-entries' ||
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
-    let matchesSearch = search(
-      document.querySelector('#search > input').value,
-      `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
-    );
-    return matchesStatus && matchesSource && matchesTracking && matchesSearch;
     let matchesSearch = search(
       document.querySelector('#search > input').value,
       `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
@@ -67,11 +59,6 @@ export function initializeLibrary() {
       const tabButton = document.createElement('button');
       tabButton.className = 'tab-button';
       tabButton.id = `btn${category.name}`;
-      tabButton.title = tabButton.textContent = category.name;
-      if (category.order === 65535) {
-        tabButton.textContent = null;
-        addMaterialSymbol(tabButton, 'history');
-      }
       tabButton.title = tabButton.textContent = category.name;
       if (category.order === 65535) {
         tabButton.textContent = null;
@@ -135,8 +122,6 @@ export function initializeLibrary() {
 
         const titleFull = manga.customTitle || manga.title;
         const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
-        const titleFull = manga.customTitle || manga.title;
-        const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
 
@@ -192,14 +177,6 @@ export function initializeLibrary() {
           entryTitle.innerText = titleTrimmed;
           entryTitle.classList.remove('full-title');
         });
-        mangaItem.addEventListener('mouseenter', event => {
-          entryTitle.innerText = titleFull;
-          entryTitle.classList.add('full-title');
-        });
-        mangaItem.addEventListener('mouseleave', event => {
-          entryTitle.innerText = titleTrimmed;
-          entryTitle.classList.remove('full-title');
-        });
         tabContent.appendChild(mangaItem);
       });
     });
@@ -208,30 +185,6 @@ export function initializeLibrary() {
   showTab(tabToShow);
   addOptionsFromData();
   disableMissingStatusOptions();
-}
-
-export function search(searchQuery = '', text = '') {
-  let results = [];
-  const queryParams = searchQuery.matchAll(
-    /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
-  );
-  for (const match of queryParams) {
-    const group = match.groups;
-    const re =
-      group.phrase || group.excludephrase
-        ? new RegExp(`\\b${group.phrase || group.excludephrase}\\b`, 'gi')
-        : new RegExp(group.word || group.exclude, 'gi');
-    if (group.excludephrase || group.exclude) results.push(text.match(re) === null);
-    if (group.phrase || group.word) results.push(text.match(re) !== null);
-  }
-
-  if (searchQuery) url.searchParams.set('search', searchQuery);
-  else url.searchParams.delete('search');
-
-  if (url.toString() != window.location.toString())
-    window.history.replaceState(null, '', url.toString());
-
-  return results.indexOf(false) === -1;
 }
 
 export function search(searchQuery = '', text = '') {
@@ -457,7 +410,6 @@ function showMangaDetails(manga, categories, source) {
         const historyItem = manga.history.find(history => history.url === chapter.url);
         if (historyItem) {
           lastReadDate.textContent = parseDate(historyItem.lastRead);
-          lastReadDate.textContent = parseDate(historyItem.lastRead);
         }
       }
 
@@ -470,11 +422,6 @@ function showMangaDetails(manga, categories, source) {
   showModal('manga-modal');
   const mangaModalContent = document.querySelector('#manga-modal .modal-content');
   mangaModalContent.scrollTop = 0;
-}
-
-export function parseDate(timestamp) {
-  const date = new Date(parseInt(timestamp));
-  return date.toLocaleString();
 }
 
 export function parseDate(timestamp) {
@@ -511,8 +458,6 @@ export function setFilterTracking(data) {
 }
 export function setSortOrder(data) {
   sortOrder = data;
-  url.searchParams.set('sort-order', data);
-  window.history.replaceState(data, '', url.toString());
   url.searchParams.set('sort-order', data);
   window.history.replaceState(data, '', url.toString());
 }
