@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchButton = document.querySelector('#search > .search-icon');
   const searchField = document.querySelector('#search > input');
 
-  fileInput.addEventListener('change', e => handleFileLoad(e, fork)); //Handles File Upload
+  fileInput.addEventListener('change', e => handleFileLoad(e, fork)); //Handles File Loading
   settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
   closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
   applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
