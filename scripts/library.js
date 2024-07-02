@@ -162,11 +162,9 @@ export function initializeLibrary() {
           const index = event.currentTarget.getAttribute('data-index');
           const title = event.currentTarget.getAttribute('data-title');
           //alert(`Title: ${title}\nOriginal Index: ${index}`);
-          console.log(`Title: ${title}\\nOriginal Index: ${index}`)
+          console.log(`Title: ${title}\\nOriginal Index: ${index}`);
           showEditMenu(event, manga, index);
         });
-
-
 
         coverContainer.appendChild(cover);
         coverContainer.appendChild(kebabMenu);
@@ -472,15 +470,6 @@ export function setSortOrder(data) {
   window.history.replaceState(data, '', url.toString());
 }
 
-
-
-
-
-
-
-
-
-
 const editMenu = document.getElementById('edit-menu');
 
 function showEditMenu(event, manga, index) {
@@ -507,7 +496,7 @@ function showEditMenu(event, manga, index) {
     if (confirm(`Do you really want to delete ${manga.title}`) == true) {
       deleteManga(index);
     } else {
-      console.log("not-delete");
+      console.log('not-delete');
     }
     // Add your delete functionality here
     hideEditMenu();
