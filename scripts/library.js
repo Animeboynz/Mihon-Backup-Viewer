@@ -148,14 +148,18 @@ export function initializeLibrary() {
         coverContainer.classList.add('manga-item-container');
         const kebabMenu = document.createElement('div');
         kebabMenu.classList.add('kebab-menu');
-        kebabMenu.setAttribute('data-index', index);
+
+        // Capture original index before sorting
+        const originalIndex = window.data.backupManga.indexOf(manga);
+
+        kebabMenu.setAttribute('data-index', originalIndex); // Use original index
         kebabMenu.setAttribute('data-title', title);
         kebabMenu.innerHTML = '<span class="material-symbols-outlined">more_vert</span>';
         kebabMenu.addEventListener('click', event => {
           event.stopPropagation(); // Prevent triggering the manga item click
           const index = event.currentTarget.getAttribute('data-index');
           const title = event.currentTarget.getAttribute('data-title');
-          alert(`Title: ${title}\nIndex: ${index}`);
+          alert(`Title: ${title}\nOriginal Index: ${index}`);
         });
 
         coverContainer.appendChild(cover);
