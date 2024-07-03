@@ -1,3 +1,4 @@
+import Constants from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 
@@ -14,8 +15,6 @@ export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
-  const tabsContainer = document.getElementById('tabs');
-  const tabContentsContainer = document.getElementById('tab-contents');
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
 
@@ -28,7 +27,7 @@ export function initializeLibrary() {
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
     let matchesSearch = search(
-      document.querySelector('#search > input').value,
+      Constants.searchField.value,
       `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
     );
     return matchesStatus && matchesSource && matchesTracking && matchesSearch;
@@ -38,8 +37,8 @@ export function initializeLibrary() {
   if (categories[0] && !categories[0].hasOwnProperty('order')) categories[0].order = '0';
 
   // Clear existing content
-  tabsContainer.innerHTML = '';
-  tabContentsContainer.innerHTML = '';
+  Constants.tabsContainer.innerHTML = '';
+  Constants.tabContentsContainer.innerHTML = '';
 
   // Add 'History' tab if it doesn't exist
   if (!categories.some(category => category.name === 'History')) {
@@ -86,13 +85,13 @@ export function initializeLibrary() {
       tabButton.onclick = () => showTab(category.name);
       tabButton.appendChild(badge);
       if (badge.textContent === '0' && [-1, 65535].includes(category.order)) return; // Don't create empty meta-categories
-      tabsContainer.appendChild(tabButton);
+      Constants.tabsContainer.appendChild(tabButton);
 
       // Create tab content container
       const tabContent = document.createElement('div');
       tabContent.className = 'tab-content';
       tabContent.id = category.name;
-      tabContentsContainer.appendChild(tabContent);
+      Constants.tabContentsContainer.appendChild(tabContent);
     });
 
   // Populate manga items into the correct tab content
@@ -163,7 +162,9 @@ export function initializeLibrary() {
       });
     });
 
-  const tabToShow = activeTabId ? activeTabId : document.querySelector('.tab-content').id;
+  const tabToShow = document.getElementById(activeTabId)
+    ? activeTabId
+    : document.querySelector('.tab-content').id;
   showTab(tabToShow);
   addOptionsFromData();
   disableMissingStatusOptions();
@@ -222,16 +223,15 @@ export function showTab(tabId) {
 
 function addOptionsFromData() {
   // Get the filter-source select element
-  let filterSource = document.getElementById('filter-source');
 
   // Clear existing options (optional, if you want to remove the placeholder option)
-  filterSource.innerHTML = '';
+  Constants.filterSource.innerHTML = '';
 
   // Add the default "All Sources" option
   let defaultOption = document.createElement('option');
   defaultOption.value = 'all';
   defaultOption.text = 'All Sources';
-  filterSource.add(defaultOption);
+  Constants.filterSource.add(defaultOption);
 
   // Iterate over the data and add options to the select element
   [...new Set(window.data.backupSources.map(source => source.name))]
@@ -248,7 +248,7 @@ function addOptionsFromData() {
       let newOption = document.createElement('option');
       newOption.value = source.sourceId;
       newOption.text = source.name;
-      filterSource.add(newOption);
+      Constants.filterSource.add(newOption);
     });
 }
 
@@ -271,45 +271,41 @@ function disableMissingStatusOptions() {
 }
 
 function showMangaDetails(manga, categories, source) {
-  document.getElementById('manga-title').textContent = manga.customTitle || manga.title;
-  document.getElementById('manga-source').textContent = source;
-  const mangaThumbnail = document.getElementById('manga-thumbnail');
-  mangaThumbnail.src = manga.customThumbnailUrl || manga.thumbnailUrl;
-  document.documentElement.style.setProperty('--manga-header-bg', `url('${mangaThumbnail.src}')`);
-  const mangaAuthor = document.getElementById('manga-author');
-  const mangaArtist = document.getElementById('manga-artist');
-  const mangaDescription = document.getElementById('manga-description');
-  const mangaStatus = document.getElementById('manga-status');
+  Constants.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
+  Constants.modalSource.forEach(element => (element.textContent = source));
+  Constants.modalThumb.forEach(
+    element => (element.src = manga.customThumbnailUrl || manga.thumbnailUrl)
+  );
+  document.documentElement.style.setProperty(
+    '--manga-header-bg',
+    `url('${Constants.modalThumb[0].src}')`
+  );
 
-  mangaStatus.innerHTML = '';
   const mangaStatusText = (() => {
     switch (manga.status) {
       case 1:
-        addMaterialSymbol(mangaStatus, 'schedule');
+        addMaterialSymbol(Constants.modalStatus, 'schedule');
         return 'Ongoing';
       case 2:
-        addMaterialSymbol(mangaStatus, 'done_all');
+        addMaterialSymbol(Constants.modalStatus, 'done_all');
         return 'Completed';
       case 3:
-        addMaterialSymbol(mangaStatus, 'attach_money');
+        addMaterialSymbol(Constants.modalStatus, 'attach_money');
         return 'Licensed';
       case 4:
-        addMaterialSymbol(mangaStatus, 'check');
+        addMaterialSymbol(Constants.modalStatus, 'check');
         return 'Publishing Finished';
       case 5:
-        addMaterialSymbol(mangaStatus, 'close');
+        addMaterialSymbol(Constants.modalStatus, 'close');
         return 'Cancelled';
       case 6:
-        addMaterialSymbol(mangaStatus, 'pause');
+        addMaterialSymbol(Constants.modalStatus, 'pause');
         return 'On Hiatus';
       default:
-        addMaterialSymbol(mangaStatus, 'block');
+        addMaterialSymbol(Constants.modalStatus, 'block');
         return 'Unknown';
     }
   })();
-
-  mangaAuthor.innerHTML = '';
-  mangaArtist.innerHTML = '';
 
   const genres = document.getElementById('manga-genres');
   genres.innerHTML = '';
@@ -318,49 +314,62 @@ function showMangaDetails(manga, categories, source) {
     li.innerText = tag;
     genres.appendChild(li);
   });
-  addMaterialSymbol(mangaAuthor, 'person');
-  mangaAuthor.innerHTML += manga.customAuthor || manga.author;
-  mangaAuthor.hidden = !manga.customAuthor && !manga.author ? true : false;
-  addMaterialSymbol(mangaArtist, 'brush');
-  mangaArtist.innerHTML += manga.customArtist || manga.artist;
-  mangaArtist.hidden = !manga.customArtist && !manga.artist ? true : false;
-  mangaDescription.innerText = manga.customDescription || manga.description;
-  mangaDescription.parentNode.classList.remove('expanded');
-  mangaDescription.parentNode.style.maxHeight = '3.6em';
+  Constants.modalAuthor.forEach(element => {
+    element.innerHTML = '';
+    addMaterialSymbol(element, 'person');
+    element.innerHTML += manga.customAuthor || manga.author;
+    element.hidden = !manga.customAuthor && !manga.author ? true : false;
+  });
+
+  Constants.modalArtist.forEach(element => {
+    element.innerHTML = '';
+    addMaterialSymbol(element, 'brush');
+    element.innerHTML += manga.customArtist || manga.artist;
+    element.hidden = !manga.customArtist && !manga.artist ? true : false;
+  });
+
+  Constants.modalDescription.innerText = manga.customDescription || manga.description;
+  Constants.modalDescription.parentNode.classList.remove('expanded');
+  Constants.modalDescription.parentNode.style.maxHeight = 'var(--manga-desc-collapsed-height)';
   document.getElementById('description-expand-icon').style.transform = 'none';
-  document.getElementById('manga-status').innerHTML += mangaStatusText;
+  Constants.modalStatus.forEach(element => {
+    element.innerHTML = '';
+    element.innerHTML += mangaStatusText;
+  });
 
-  const mangaCategories = document.getElementById('manga-categories');
-  mangaCategories.innerHTML = '';
+  // const mangaCategories = document.getElementById('manga-categories');
+  Constants.modalCategories.forEach(mangaCategories => {
+    mangaCategories.innerHTML = '';
 
-  if (manga.categories && manga.categories.length > 0) {
-    manga.categories
-      .map(catOrder => {
-        const category = categories.find(cat => cat.order === catOrder);
-        return category ? category.name : 'Default';
-      })
-      .forEach(cat => {
-        const li = document.createElement('li');
-        li.id = cat;
-        addMaterialSymbol(li, 'label');
-        li.innerHTML += cat;
-        li.addEventListener('click', function () {
-          closeModal('manga-modal');
-          showTab(this.id);
+    if (manga.categories && manga.categories.length > 0) {
+      manga.categories
+        .map(catOrder => {
+          const category = categories.find(cat => cat.order === catOrder);
+          return category ? category.name : 'Default';
+        })
+        .forEach(cat => {
+          const li = document.createElement('li');
+          li.id = cat;
+          addMaterialSymbol(li, 'label');
+          li.innerHTML += cat;
+          li.addEventListener('click', function () {
+            closeModal('manga-modal');
+            showTab(this.id);
+          });
+          mangaCategories.appendChild(li);
         });
-        mangaCategories.appendChild(li);
+    } else {
+      const li = document.createElement('li');
+      addMaterialSymbol(li, 'label');
+      li.id = 'Default';
+      li.innerHTML += 'Default';
+      li.addEventListener('click', function () {
+        closeModal('manga-modal');
+        showTab(this.id);
       });
-  } else {
-    const li = document.createElement('li');
-    addMaterialSymbol(li, 'label');
-    li.id = 'Default';
-    li.innerHTML += 'Default';
-    li.addEventListener('click', function () {
-      closeModal('manga-modal');
-      showTab(this.id);
-    });
-    mangaCategories.appendChild(li);
-  }
+      mangaCategories.appendChild(li);
+    }
+  });
 
   const chaptersContainer = document.getElementById('manga-chapters');
   chaptersContainer.innerHTML = '';
@@ -412,17 +421,16 @@ export function parseDate(timestamp) {
 }
 
 export function toggleExpandDescription() {
-  const mangaDescriptionDiv = document.getElementById('manga-description-div');
   if (document.querySelector('.fade-out').parentNode.classList.toggle('expanded')) {
-    const mangaDescription = document.getElementById('manga-description');
     const maxDivSize =
-      mangaDescription.offsetHeight / parseInt(window.getComputedStyle(mangaDescription).fontSize) +
+      Constants.modalDescription.offsetHeight /
+        parseInt(window.getComputedStyle(Constants.modalDescription).fontSize) +
       5;
-    mangaDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
+    Constants.modalDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
     document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
   } else {
     document.getElementById('description-expand-icon').style.transform = 'none';
-    mangaDescriptionDiv.style.maxHeight = '3.6em';
+    Constants.modalDescriptionDiv.style.maxHeight = '3.6em';
   }
 }
 
