@@ -326,6 +326,7 @@ body {
   align-items: center;
   display: inline-flex;
   flex-wrap: wrap;
+  gap: 0.25em;
   margin: 3px 0 0.75em;
 }
 
