@@ -1,6 +1,6 @@
 :root {
   --manga-header-bg: 'url()';
-  --manga-desc-collapsed-height: '3.6em';
+  --manga-desc-collapsed-height: 3.6em;
   --color-button-bg: #444;
   --color-button-bg-active: #333;
   --color-button-bg-hover: #555;
@@ -280,17 +280,13 @@ body {
 
 .status-source {
   align-items: center;
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
   margin: 3px 0 0.75em;
 }
 
+#manga-status,
 #manga-source {
-  font-size: 13px;
-  margin-left: 5px;
-  margin-top: 0px;
-}
-
-#manga-status {
   align-items: center;
   display: flex;
   font-size: 13px;
@@ -602,9 +598,15 @@ label.switch {
 }
 .portrait .manga-meta #manga-thumbnail {
   grid-area: cover;
+  margin: auto 0.5em auto 0.5em;
 }
 
-@media only screen and (orientation: portrait) {
+@media only screen and (min-width: 1040px) {
+  .portrait {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1039px) {
   .landscape {
     display: none;
   }
@@ -612,11 +614,5 @@ label.switch {
     align-items: center;
     flex-direction: column; /* Stack buttons on portrait window */
     gap: 0.25em;
-  }
-}
-
-@media only screen and (orientation: landscape) {
-  .portrait {
-    display: none;
   }
 }

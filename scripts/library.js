@@ -1,4 +1,4 @@
-import Constants from './constants.js';
+import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 
@@ -27,7 +27,7 @@ export function initializeLibrary() {
       (filterTracking === 'tracked' && manga.tracking) ||
       (filterTracking === 'untracked' && !manga.tracking);
     let matchesSearch = search(
-      Constants.searchField.value,
+      consts.searchField.value,
       `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
     );
     return matchesStatus && matchesSource && matchesTracking && matchesSearch;
@@ -37,8 +37,8 @@ export function initializeLibrary() {
   if (categories[0] && !categories[0].hasOwnProperty('order')) categories[0].order = '0';
 
   // Clear existing content
-  Constants.tabsContainer.innerHTML = '';
-  Constants.tabContentsContainer.innerHTML = '';
+  consts.tabsContainer.innerHTML = '';
+  consts.tabContentsContainer.innerHTML = '';
 
   // Add 'History' tab if it doesn't exist
   if (!categories.some(category => category.name === 'History')) {
@@ -85,13 +85,13 @@ export function initializeLibrary() {
       tabButton.onclick = () => showTab(category.name);
       tabButton.appendChild(badge);
       if (badge.textContent === '0' && [-1, 65535].includes(category.order)) return; // Don't create empty meta-categories
-      Constants.tabsContainer.appendChild(tabButton);
+      consts.tabsContainer.appendChild(tabButton);
 
       // Create tab content container
       const tabContent = document.createElement('div');
       tabContent.className = 'tab-content';
       tabContent.id = category.name;
-      Constants.tabContentsContainer.appendChild(tabContent);
+      consts.tabContentsContainer.appendChild(tabContent);
     });
 
   // Populate manga items into the correct tab content
@@ -225,13 +225,13 @@ function addOptionsFromData() {
   // Get the filter-source select element
 
   // Clear existing options (optional, if you want to remove the placeholder option)
-  Constants.filterSource.innerHTML = '';
+  consts.filterSource.innerHTML = '';
 
   // Add the default "All Sources" option
   let defaultOption = document.createElement('option');
   defaultOption.value = 'all';
   defaultOption.text = 'All Sources';
-  Constants.filterSource.add(defaultOption);
+  consts.filterSource.add(defaultOption);
 
   // Iterate over the data and add options to the select element
   [...new Set(window.data.backupSources.map(source => source.name))]
@@ -248,7 +248,7 @@ function addOptionsFromData() {
       let newOption = document.createElement('option');
       newOption.value = source.sourceId;
       newOption.text = source.name;
-      Constants.filterSource.add(newOption);
+      consts.filterSource.add(newOption);
     });
 }
 
@@ -271,39 +271,35 @@ function disableMissingStatusOptions() {
 }
 
 function showMangaDetails(manga, categories, source) {
-  Constants.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
-  Constants.modalSource.forEach(element => (element.textContent = source));
-  Constants.modalThumb.forEach(
+  consts.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
+  consts.modalSource.forEach(element => {
+    addMaterialSymbol(element, 'language');
+    element.append(source);
+  });
+  consts.modalThumb.forEach(
     element => (element.src = manga.customThumbnailUrl || manga.thumbnailUrl)
   );
   document.documentElement.style.setProperty(
     '--manga-header-bg',
-    `url('${Constants.modalThumb[0].src}')`
+    `url('${consts.modalThumb[0].src}')`
   );
 
   const mangaStatusText = (() => {
     switch (manga.status) {
       case 1:
-        addMaterialSymbol(Constants.modalStatus, 'schedule');
-        return 'Ongoing';
+        return ['schedule', 'Ongoing'];
       case 2:
-        addMaterialSymbol(Constants.modalStatus, 'done_all');
-        return 'Completed';
+        return ['done_all', 'Completed'];
       case 3:
-        addMaterialSymbol(Constants.modalStatus, 'attach_money');
-        return 'Licensed';
+        return ['attach_money', 'Licensed'];
       case 4:
-        addMaterialSymbol(Constants.modalStatus, 'check');
-        return 'Publishing Finished';
+        return ['check', 'Publishing Finished'];
       case 5:
-        addMaterialSymbol(Constants.modalStatus, 'close');
-        return 'Cancelled';
+        return ['close', 'Cancelled'];
       case 6:
-        addMaterialSymbol(Constants.modalStatus, 'pause');
-        return 'On Hiatus';
+        return ['pause', 'On Hiatus'];
       default:
-        addMaterialSymbol(Constants.modalStatus, 'block');
-        return 'Unknown';
+        return ['block', 'Unknown'];
     }
   })();
 
@@ -314,31 +310,31 @@ function showMangaDetails(manga, categories, source) {
     li.innerText = tag;
     genres.appendChild(li);
   });
-  Constants.modalAuthor.forEach(element => {
+  consts.modalAuthor.forEach(element => {
     element.innerHTML = '';
     addMaterialSymbol(element, 'person');
     element.innerHTML += manga.customAuthor || manga.author;
     element.hidden = !manga.customAuthor && !manga.author ? true : false;
   });
 
-  Constants.modalArtist.forEach(element => {
+  consts.modalArtist.forEach(element => {
     element.innerHTML = '';
     addMaterialSymbol(element, 'brush');
     element.innerHTML += manga.customArtist || manga.artist;
     element.hidden = !manga.customArtist && !manga.artist ? true : false;
   });
 
-  Constants.modalDescription.innerText = manga.customDescription || manga.description;
-  Constants.modalDescription.parentNode.classList.remove('expanded');
-  Constants.modalDescription.parentNode.style.maxHeight = 'var(--manga-desc-collapsed-height)';
+  consts.modalDescription.innerText = manga.customDescription || manga.description;
+  consts.modalDescription.parentNode.classList.remove('expanded');
+  consts.modalDescription.parentNode.style.maxHeight = 'var(--manga-desc-collapsed-height)';
   document.getElementById('description-expand-icon').style.transform = 'none';
-  Constants.modalStatus.forEach(element => {
-    element.innerHTML = '';
-    element.innerHTML += mangaStatusText;
+  consts.modalStatus.forEach(element => {
+    addMaterialSymbol(element, mangaStatusText[0]);
+    element.append(mangaStatusText[1]);
   });
 
   // const mangaCategories = document.getElementById('manga-categories');
-  Constants.modalCategories.forEach(mangaCategories => {
+  consts.modalCategories.forEach(mangaCategories => {
     mangaCategories.innerHTML = '';
 
     if (manga.categories && manga.categories.length > 0) {
@@ -423,14 +419,14 @@ export function parseDate(timestamp) {
 export function toggleExpandDescription() {
   if (document.querySelector('.fade-out').parentNode.classList.toggle('expanded')) {
     const maxDivSize =
-      Constants.modalDescription.offsetHeight /
-        parseInt(window.getComputedStyle(Constants.modalDescription).fontSize) +
+      consts.modalDescription.offsetHeight /
+        parseInt(window.getComputedStyle(consts.modalDescription).fontSize) +
       5;
-    Constants.modalDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
+    consts.modalDescriptionDiv.style.maxHeight = `${maxDivSize}em`;
     document.getElementById('description-expand-icon').style.transform = 'scaleY(-1)';
   } else {
     document.getElementById('description-expand-icon').style.transform = 'none';
-    Constants.modalDescriptionDiv.style.maxHeight = '3.6em';
+    consts.modalDescriptionDiv.style.maxHeight = 'var(--manga-desc-collapsed-height)';
   }
 }
 
