@@ -1,5 +1,6 @@
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
+import { deleteManga } from './editBackup.js';
 
 const url = new URL(window.location);
 var filterStatus = ['-1'];
@@ -114,8 +115,8 @@ export function initializeLibrary() {
           );
       }
     })
-    .forEach(manga => {
-      const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1]; // -1 = Default | 65535 = History
+    .forEach((manga, index) => {
+      const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1];
       itemCategories.forEach(catOrder => {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.getElementById(category.name);
@@ -124,7 +125,8 @@ export function initializeLibrary() {
         const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
-        var title = `Chapters: ${manga.chapters?.length}`;
+
+        var title = `${manga.title} Chapters: ${manga.chapters?.length}`;
         title += ` | Read: ${manga.chapters?.filter(c => c.read).length}`;
         if (manga.dateAdded) title += `\nAdded: ${parseDate(manga.dateAdded)}`;
         if (manga.history)
@@ -142,7 +144,31 @@ export function initializeLibrary() {
         const entryTitle = document.createElement('p');
         entryTitle.innerText = titleTrimmed;
         entryTitle.classList.add('manga-item-title');
-        mangaItem.appendChild(cover);
+
+        const coverContainer = document.createElement('div');
+        coverContainer.classList.add('manga-item-container');
+        const kebabMenu = document.createElement('div');
+        kebabMenu.classList.add('kebab-menu');
+
+        // Capture original index before sorting
+        const originalIndex = window.data.backupManga.indexOf(manga);
+
+        kebabMenu.setAttribute('data-index', originalIndex); // Use original index
+        kebabMenu.setAttribute('data-title', title);
+        kebabMenu.innerHTML = '<span class="material-symbols-outlined">more_vert</span>';
+
+        kebabMenu.addEventListener('click', event => {
+          event.stopPropagation(); // Prevent triggering the manga item click
+          const index = event.currentTarget.getAttribute('data-index');
+          const title = event.currentTarget.getAttribute('data-title');
+          //alert(`Title: ${title}\nOriginal Index: ${index}`);
+          console.log(`Title: ${title}\\nOriginal Index: ${index}`);
+          showEditMenu(event, manga, index);
+        });
+
+        coverContainer.appendChild(cover);
+        coverContainer.appendChild(kebabMenu);
+        mangaItem.appendChild(coverContainer);
         mangaItem.appendChild(entryTitle);
         mangaItem.addEventListener('click', () => {
           showMangaDetails(
@@ -443,3 +469,48 @@ export function setSortOrder(data) {
   url.searchParams.set('sort-order', data);
   window.history.replaceState(data, '', url.toString());
 }
+
+const editMenu = document.getElementById('edit-menu');
+
+function showEditMenu(event, manga, index) {
+  event.stopPropagation(); // Prevent triggering other click events
+  const kebabMenu = event.currentTarget;
+
+  // Position the edit menu next to the kebab menu
+  const rect = kebabMenu.getBoundingClientRect();
+  editMenu.style.top = `${rect.top + window.scrollY}px`;
+  editMenu.style.left = `${rect.left + window.scrollX}px`;
+
+  // Show the edit menu
+  editMenu.classList.add('active');
+
+  // Add event listeners to edit and delete options
+  /*
+  document.getElementById('edit').onclick = () => {
+    console.log(`Edit clicked for manga: ${manga.title}`);
+    // Add your edit functionality here
+    hideEditMenu();
+  };
+  */
+  document.getElementById('delete').onclick = () => {
+    console.log(`Delete clicked for manga: ${manga.title}`);
+    if (confirm(`Do you really want to delete ${manga.title}`) == true) {
+      deleteManga(index);
+    } else {
+      console.log('not-delete');
+    }
+    // Add your delete functionality here
+    hideEditMenu();
+  };
+}
+
+function hideEditMenu() {
+  editMenu.classList.remove('active');
+}
+
+// Hide the edit menu when clicking outside
+document.addEventListener('click', event => {
+  if (!editMenu.contains(event.target)) {
+    hideEditMenu();
+  }
+});

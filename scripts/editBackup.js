@@ -1,3 +1,5 @@
+import { initializeLibrary } from './library.js';
+
 export function deleteManga(index) {
   if (index >= 0 && index < window.data.backupManga.length) {
     window.data.backupManga.splice(index, 1);
