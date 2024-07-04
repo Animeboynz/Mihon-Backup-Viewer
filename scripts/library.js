@@ -273,6 +273,7 @@ function disableMissingStatusOptions() {
 function showMangaDetails(manga, categories, source) {
   consts.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
   consts.modalSource.forEach(element => {
+    element.innerHTML = '';
     addMaterialSymbol(element, 'language');
     element.append(source);
   });
@@ -329,6 +330,7 @@ function showMangaDetails(manga, categories, source) {
   consts.modalDescription.parentNode.style.maxHeight = 'var(--manga-desc-collapsed-height)';
   document.getElementById('description-expand-icon').style.transform = 'none';
   consts.modalStatus.forEach(element => {
+    element.innerHTML = '';
     addMaterialSymbol(element, mangaStatusText[0]);
     element.append(mangaStatusText[1]);
   });
