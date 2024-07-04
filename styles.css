@@ -600,15 +600,16 @@ label.switch {
   grid-area: cover;
   margin: auto 0.5em auto 0.5em;
 }
-
-@media only screen and (min-width: 1040px) {
-  .portrait {
-    display: none;
-  }
+.portrait {
+  display: none;
 }
-@media only screen and (max-width: 1039px) {
+
+@media only screen and (max-width: 640px) {
   .landscape {
     display: none;
+  }
+  .portrait {
+    display: flex;
   }
   .download-buttons {
     align-items: center;
