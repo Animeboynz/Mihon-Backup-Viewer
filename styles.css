@@ -138,6 +138,50 @@ body {
   overflow: unset;
 }
 
+.manga-item-container {
+  display: inline-block;
+  position: relative;
+}
+
+.kebab-menu {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px;
+}
+
+.kebab-menu > .material-symbols-outlined {
+  color: white;
+  font-size: 20px;
+  margin: 0;
+}
+
+.kebab-menu {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px;
+}
+
+.kebab-menu > .material-symbols-outlined {
+  color: white;
+  font-size: 20px;
+}
+
 /* ---Modals--- */
 .modal {
   align-items: center;
@@ -581,6 +625,35 @@ label.switch {
   margin: 0.75em auto 0.25em;
   padding-top: 5px;
   width: 100%;
+}
+
+.edit-menu {
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: none;
+  position: absolute;
+  z-index: 10000;
+}
+
+.edit-menu.active {
+  display: block;
+}
+
+.edit-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.edit-menu li {
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 20px;
+}
+
+.edit-menu li:hover {
+  background-color: #444;
 }
 
 .portrait .manga-meta {

@@ -8,7 +8,7 @@ import { openSettingsModal, closeSettingsModal, applySettings } from './settings
 var searchCooldown;
 
 document.addEventListener('DOMContentLoaded', () => {
-  consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork)); //Handles File Upload
+  consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork)); //Handles File Loading
   consts.settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
   consts.closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
   consts.applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
