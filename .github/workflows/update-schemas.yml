@@ -1,7 +1,9 @@
 name: Update Schemas
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}  # Manual Trigger
+  schedule: 
+    - cron: 0 6 * * 1  # Mondays 6AM UTC
 
 permissions:
   contents: write  # Request write permissions for the workflow
