@@ -485,12 +485,13 @@ function showEditMenu(event, manga, index) {
   editMenu.classList.add('active');
 
   // Add event listeners to edit and delete options
+  /*
   document.getElementById('edit').onclick = () => {
     console.log(`Edit clicked for manga: ${manga.title}`);
     // Add your edit functionality here
     hideEditMenu();
   };
-
+  */
   document.getElementById('delete').onclick = () => {
     console.log(`Delete clicked for manga: ${manga.title}`);
     if (confirm(`Do you really want to delete ${manga.title}`) == true) {
