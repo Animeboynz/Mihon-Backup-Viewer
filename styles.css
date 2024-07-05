@@ -1,5 +1,6 @@
 :root {
   --manga-header-bg: 'url()';
+  --manga-desc-collapsed-height: 3.6em;
   --color-button-bg: #444;
   --color-button-bg-active: #333;
   --color-button-bg-hover: #555;
@@ -323,17 +324,14 @@ body {
 
 .status-source {
   align-items: center;
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
   margin: 3px 0 0.75em;
 }
 
+#manga-status,
 #manga-source {
-  font-size: 13px;
-  margin-left: 5px;
-  margin-top: 0px;
-}
-
-#manga-status {
   align-items: center;
   display: flex;
   font-size: 13px;
@@ -622,13 +620,7 @@ label.switch {
   gap: 1em;
   width: 100%;
 }
-@media only screen and (orientation: portrait) {
-  .download-buttons {
-    align-items: center;
-    flex-direction: column; /* Stack buttons on portrait window */
-    gap: 0.25em;
-  }
-}
+
 .settings-buttons-container > label {
   border-top: dotted var(--color-button-bg);
   margin: 0.75em auto 0.25em;
@@ -663,4 +655,39 @@ label.switch {
 
 .edit-menu li:hover {
   background-color: #444;
+}
+
+.portrait .manga-meta {
+  display: grid;
+  grid-template-areas: 'title title' 'cover info';
+}
+.portrait .manga-details {
+  display: flex;
+  flex-direction: column;
+  grid-area: info;
+}
+.portrait .manga-meta #manga-title {
+  grid-area: title;
+  text-align: center;
+}
+.portrait .manga-meta #manga-thumbnail {
+  grid-area: cover;
+  margin: auto 0.5em auto 0.5em;
+}
+.portrait {
+  display: none;
+}
+
+@media only screen and (max-width: 640px) {
+  .landscape {
+    display: none;
+  }
+  .portrait {
+    display: flex;
+  }
+  .download-buttons {
+    align-items: center;
+    flex-direction: column; /* Stack buttons on portrait window */
+    gap: 0.25em;
+  }
 }
