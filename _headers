@@ -1,0 +1,56 @@
+/launch.bat
+  X-Frame-Options: DENY
+
+/schemas
+  X-Frame-Options: DENY
+
+/script
+  X-Frame-Options: DENY
+
+/CODE_OF_CONDUCT.md
+  X-Frame-Options: DENY
+
+/CONTRIBUTING.md
+  X-Frame-Options: DENY
+
+/LICENSE
+  X-Frame-Options: DENY
+
+/README.md
+  X-Frame-Options: DENY
+
+/android-chrome-192x192.png
+  X-Frame-Options: DENY
+
+/android-chrome-512x512.png
+  X-Frame-Options: DENY
+
+/apple-touch-icon.png
+  X-Frame-Options: DENY
+
+/data.json
+  X-Frame-Options: DENY
+
+/favicon-16x16.png
+  X-Frame-Options: DENY
+
+/favicon-32x32.png
+  X-Frame-Options: DENY
+
+/favicon.ico
+  X-Frame-Options: DENY
+
+/nocover.jpg
+  X-Frame-Options: DENY
+
+/package-lock.json
+  X-Frame-Options: DENY
+
+/package.json
+  X-Frame-Options: DENY
+
+/site.webmanifest
+  X-Frame-Options: DENY
+
+/styles.css
+  X-Frame-Options: DENY
