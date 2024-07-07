@@ -170,8 +170,8 @@ export function initializeLibrary() {
           )}`;
         mangaItem.title = title;
         const cover = document.createElement('img');
-        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
         cover.loading = 'lazy';
+        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
         cover.alt = '';
         const entryTitle = document.createElement('p');
         entryTitle.innerText = titleTrimmed;
