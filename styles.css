@@ -134,8 +134,10 @@ body {
   width: inherit;
 }
 .full-title {
+  border-radius: 0 0 5px 5px;
   max-height: unset;
   overflow: unset;
+  z-index: 2;
 }
 
 .manga-item-container {
@@ -613,6 +615,14 @@ label.switch {
 .settings-inline select {
   margin: 20px auto 0px 5px; /* Additional space for better alignment */
   width: 100%;
+}
+
+.sort-ascending {
+  display: inline-flex;
+  margin-top: 20px;
+}
+.sort-ascending label {
+  margin: 0;
 }
 
 .download-buttons {

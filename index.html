@@ -18,15 +18,17 @@
 
   <body>
     <div class="container">
+      <!-- Search Icon + Field -->
       <div id="search">
-        <span class="material-symbols-outlined search-icon">search</span
-        ><input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
       </div>
+      <!-- Welcome / Load File Screen -->
       <div id="load-modal" class="modal">
         <div class="modal-content">
           <span class="gh-logo">
             <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
-              <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24"></object>
+              <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24" alt="GitHub Icon"></object>
             </a>
           </span>
           <h2>Load your .json, .tachibk or .proto.gz file</h2>
@@ -41,15 +43,27 @@
           <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
         </div>
       </div>
+      <!-- Settings Icon -->
       <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
+      <!-- Categories Buttons -->
       <div class="tabs" id="tabs">
         <!-- Tabs will be generated here -->
       </div>
+      <!-- Manga Entries -->
       <div id="tab-contents">
         <!-- Tab contents will be generated here -->
       </div>
     </div>
 
+    <!-- Entry's Kebab Menu -->
+    <div id="edit-menu" class="edit-menu">
+      <ul>
+        <!--<li id="edit">Edit</li>-->
+        <li id="delete">Delete</li>
+      </ul>
+    </div>
+
+    <!-- Manga Details Screen -->
     <div id="manga-modal" class="modal">
       <div class="modal-content">
         <span id="close-manga-modal" class="close-button">&times;</span>
@@ -93,11 +107,12 @@
       </div>
     </div>
 
+    <!-- Settings Screen -->
     <div id="settings-modal" class="modal">
       <div class="modal-content">
         <span class="gh-logo">
           <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
-            <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24"></object>
+            <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24" alt="GitHub Icon"></object>
           </a>
         </span>
         <span id="close-settings-modal" class="close-button">&times;</span>
@@ -106,10 +121,18 @@
         <div class="settings-inline">
           <label for="sort-order">Sort Order</label>
           <select id="sort-order">
-            <option value="title-asc">Title (Asc.)</option>
-            <option value="title-desc">Title (Desc.)</option>
-            <option value="recently-updated">Recently Updated</option>
+            <option value="0">Alphabetically</option>
+            <option value="16">Total Chapters</option>
+            <option value="4">Last Read</option>
+            <option value="8">Last Update Check</option>
+            <option value="12">Unread Count</option>
+            <option value="20">Latest Chapter</option>
+            <option value="24">Chapter Fetch Date</option>
+            <option value="28">Date Added</option>
+            <!-- <option value="32">Tracker Score</option> -->
+            <!-- <option value="36">Tag List</option> -->
           </select>
+          <span class="sort-ascending"><input type="checkbox" id="sort-ascending" checked /><label for="sort-ascending">Ascending</label></span>
         </div>
         <div class="settings-inline">
           <!-- <label for="highlight-tracker">Highlight Tracker</label>
@@ -121,7 +144,7 @@
         <div class="settings-inline">
           <label for="filter-status">Filter by Status</label>
           <select multiple id="filter-status">
-            <option value="-1">All Statuses</option>
+            <option value="-1" disabled>All Statuses</option>
             <option value="0">Unknown</option>
             <option value="1">Ongoing</option>
             <option value="2">Completed</option>
@@ -140,7 +163,7 @@
         <div class="settings-inline">
           <label for="filter-tracked">Filter by Tracking</label>
           <select id="filter-tracked">
-            <option value="all-entries">All Entries</option>
+            <option value="all-entries" disabled>All Entries</option>
             <option value="tracked">Tracked</option>
             <option value="untracked">Untracked</option>
           </select>
@@ -154,13 +177,6 @@
           </span>
         </div>
       </div>
-    </div>
-
-    <div id="edit-menu" class="edit-menu">
-      <ul>
-        <!--<li id="edit">Edit</li>-->
-        <li id="delete">Delete</li>
-      </ul>
     </div>
 
     <script type="module" src="scripts/script.js"></script>

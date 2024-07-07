@@ -7,8 +7,9 @@ const url = new URL(window.location);
 var filterStatus = ['-1'];
 var filterSource = ['all'];
 var filterTracking = 'all-entries';
-var sortOrder =
-  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || 'title-asc';
+var sortOrder = parseInt(
+  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || '64'
+);
 var activeTabId = null;
 const re = RegExp('^https?://');
 
@@ -98,20 +99,46 @@ export function initializeLibrary() {
   // Populate manga items into the correct tab content
   mangaItems
     .sort((a, b) => {
-      switch (sortOrder) {
-        case 'recently-updated':
-          return (
-            (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
-          );
-        case 'title-asc':
-          return a.title.localeCompare(b.title);
-        case 'title-desc':
-          return b.title.localeCompare(a.title);
+      const i1 = sortOrder < 64 ? b : a;
+      const i2 = sortOrder < 64 ? a : b;
+      switch (consts.sortFlags[sortOrder]) {
         default:
-          // Default to recently-updated if sortOrder is not recognized
+        case 'Alphabetical':
+          return i1.title.localeCompare(i2.title);
+        case 'LastRead':
+          return parseInt(i1.history?.lastRead || '0') - parseInt(i2.history?.lastRead || '0');
+        case 'LastUpdated':
+          return i1.lastModifiedAt - i2.lastModifiedAt;
+        case 'UnreadCount':
           return (
-            (b.history?.lastread || b.lastModifiedAt) - (a.history?.lastread || a.lastModifiedAt)
+            i1.chapters?.filter(c => !c.read).length - i2.chapters?.filter(c => !c.read).length
           );
+        case 'TotalChapters':
+          return i1.chapters.length - i2.chapters.length;
+        case 'LatestChapter':
+          return (
+            (Math.max.apply(
+              0,
+              i1.chapters?.map(h => parseInt(h.dateUpload || '0'))
+            ) || 0) -
+            (Math.max.apply(
+              0,
+              i2.chapters?.map(h => parseInt(h.dateUpload || '0'))
+            ) || 0)
+          );
+        case 'ChapterFetchDate':
+          return (
+            (Math.max.apply(
+              0,
+              i1.chapters?.map(h => parseInt(h.dateFetch || '0'))
+            ) || 0) -
+            (Math.max.apply(
+              0,
+              i2.chapters?.map(h => parseInt(h.dateFetch || '0'))
+            ) || 0)
+          );
+        case 'DateAdded':
+          return parseInt(i1.dateAdded || '0') - parseInt(i2.dateAdded || '0');
       }
     })
     .forEach((manga, index) => {
@@ -154,7 +181,8 @@ export function initializeLibrary() {
 
         kebabMenu.setAttribute('data-index', originalIndex); // Use original index
         kebabMenu.setAttribute('data-title', title);
-        kebabMenu.innerHTML = '<span class="material-symbols-outlined">more_vert</span>';
+        kebabMenu.hidden = true;
+        addMaterialSymbol(kebabMenu, 'more_vert');
 
         kebabMenu.addEventListener('click', event => {
           event.stopPropagation(); // Prevent triggering the manga item click
@@ -179,10 +207,12 @@ export function initializeLibrary() {
         mangaItem.addEventListener('mouseenter', event => {
           entryTitle.innerText = titleFull;
           entryTitle.classList.add('full-title');
+          kebabMenu.hidden = false;
         });
         mangaItem.addEventListener('mouseleave', event => {
           entryTitle.innerText = titleTrimmed;
           entryTitle.classList.remove('full-title');
+          kebabMenu.hidden = true;
         });
         tabContent.appendChild(mangaItem);
       });

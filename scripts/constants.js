@@ -1,6 +1,30 @@
 export default {
   // ----- GLOBALS -----
   urlParams: new URLSearchParams(window.location.search),
+  sortFlags: {
+    // Descending
+    0: 'Alphabetical',
+    4: 'LastRead',
+    8: 'LastUpdate',
+    12: 'UnreadCount',
+    16: 'TotalChapters',
+    20: 'LatestChapter',
+    24: 'ChapterFetchDate',
+    28: 'DateAdded',
+    // 32: 'TrackerMean',
+    // 36: 'TagList', // Descending // SY
+    // Ascending
+    64: 'Alphabetical',
+    68: 'LastRead',
+    72: 'LastUpdate',
+    76: 'UnreadCount',
+    80: 'TotalChapters',
+    84: 'LatestChapter',
+    88: 'ChapterFetchDate',
+    92: 'DateAdded',
+    // 96: 'TrackerMean',
+    // 100: 'TagList', // Ascending // SY
+  },
   // File Load
   fileInput: document.querySelector('#file-input'),
   fork: document.querySelector('#fork-select').value,
