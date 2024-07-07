@@ -9,3 +9,6 @@
 /httpRequests/
 # Node.js files (Prettier)
 /node_modules
+# Published files
+/min
+/site/data.json

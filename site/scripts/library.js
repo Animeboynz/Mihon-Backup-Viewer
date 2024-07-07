@@ -507,7 +507,7 @@ export function setFilterTracking(data) {
   filterTracking = data;
 }
 export function setSortOrder(data) {
-  sortOrder = data;
+  sortOrder = data.toString();
   url.searchParams.set('sort-order', data);
   window.history.replaceState(data, '', url.toString());
 }
