@@ -30,7 +30,13 @@ export function initializeLibrary() {
       (filterTracking === 'untracked' && !manga.tracking);
     let matchesSearch = search(
       consts.searchField.value,
-      `${manga.title}\n${manga.description}\n${manga.genre?.join(' ')}`
+      [
+        manga.title,
+        manga.artist || '',
+        manga.author || '',
+        manga.description || '',
+        manga.genre?.join('\n') || '',
+      ].join('\n')
     );
     return matchesStatus && matchesSource && matchesTracking && matchesSearch;
   });
