@@ -23,7 +23,7 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 
 export function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
-  sortOrderSelect.value = parseInt(sortOrder) < 64 ? sortOrder : toString(parseInt(sortOrder) - 64);
+  sortOrderSelect.value = parseInt(sortOrder) < 64 ? sortOrder : parseInt(sortOrder) - 64;
   sortAscending.checked = parseInt(sortOrder) >= 64;
   for (const option of filterStatusSelect.options) {
     if (filterStatus.includes(option.value)) {
