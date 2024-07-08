@@ -58,7 +58,7 @@
     <!-- Entry's Kebab Menu -->
     <div id="edit-menu" class="edit-menu">
       <ul>
-        <!--<li id="edit">Edit</li>-->
+        <li id="edit">Edit</li>
         <li id="delete">Delete</li>
       </ul>
     </div>
@@ -178,6 +178,35 @@
         </div>
       </div>
     </div>
+
+    <div id="edit-details-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-edit-details-modal" class="close-button">&times;</span>
+        <h2>Edit Details</h2>
+        <form id="edit-details-form">
+          <div class="form-group">
+            <label for="date-added">Date Added:</label>
+            <input type="text" id="date-added" name="date-added">
+          </div>
+          <div class="form-group">
+            <label for="categories">Categories:</label>
+            <input type="text" id="categories" name="categories">
+          </div>
+          <div class="form-group">
+            <label for="last-modified">Last Modified At:</label>
+            <input type="datetime-local" id="last-modified" name="last-modified">
+          </div>
+          <div class="form-group">
+            <label for="favorite-modified">Favorite Modified At:</label>
+            <input type="datetime-local" id="favorite-modified" name="favorite-modified">
+          </div>
+          <div class="form-group">
+            <button type="submit">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
 
     <script type="module" src="scripts/script.js"></script>
   </body>

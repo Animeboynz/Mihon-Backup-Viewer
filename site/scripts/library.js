@@ -548,6 +548,28 @@ function showEditMenu(event, manga, index) {
     // Add your delete functionality here
     hideEditMenu();
   };
+
+  document.getElementById('edit').onclick = () => {
+    //alert(`Edit pressed for ${manga.title} ${index}`)
+    showModal('edit-details-modal');
+    // Add your delete functionality here
+
+    const manga = data.backupManga[index]; // Assuming data is your JSON object
+
+    const unixToDateTimeLocal = (timestamp) => {
+      const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+      return date.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
+    };
+
+    // Prefill modal fields
+    document.getElementById('date-added').value = manga.dateAdded;
+    document.getElementById('categories').value = manga.categories;
+    document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
+    document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
+
+
+    hideEditMenu();
+  };
 }
 
 function hideEditMenu() {
