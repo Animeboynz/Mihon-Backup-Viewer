@@ -17,17 +17,8 @@ export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary(fork = "mihon") {
-  let categories, mangaItems;
-  if (fork == "ani") {
- categories = window.data.backupAnimeCategory || [];
-   mangaItems = window.data.backupAnime;
-  } else {
-  categories = window.data.backupCategories || [];
-  mangaItems = window.data.backupManga;
-  }
-  
-  window.data.backupManga = mangaItems;
-  window.data.backupCategories = categories;
+  let categories = window.data.backupCategories || [];
+  let mangaItems = window.data.backupManga;
 
 
   mangaItems = mangaItems.filter(manga => {
