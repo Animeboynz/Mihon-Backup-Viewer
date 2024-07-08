@@ -14,7 +14,7 @@
   "scripts": {
     "prepare": "husky",
     "test": "npx http-server -o \"site?demo=1\" -c-1",
-    "publish": "npx esbuild site/* site/schemas/* site/scripts/script.js --minify --bundle --loader:.jpg=copy --loader:.html=copy --loader:.ico=copy --loader:.png=copy --loader:.webmanifest=copy --loader:.proto=copy --loader:.json=empty --outdir=/min --analyze"
+    "publish": "npx esbuild /site/* /site/schemas/* /site/scripts/script.js --minify --bundle --loader:.jpg=copy --loader:.html=copy --loader:.ico=copy --loader:.png=copy --loader:.webmanifest=copy --loader:.proto=copy --loader:.json=empty --outdir=/min --analyze"
   },
   "lint-staged": {
     "**/*.{js,md,html,css}": "prettier --write"
