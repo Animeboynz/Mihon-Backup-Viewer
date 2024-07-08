@@ -13,6 +13,7 @@ import {
 } from './library.js';
 
 const sortOrderSelect = document.getElementById('sort-order');
+const sortAscending = document.getElementById('sort-ascending');
 const filterStatusSelect = document.getElementById('filter-status');
 const filterSourceSelect = document.getElementById('filter-source');
 //const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
@@ -22,7 +23,8 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 
 export function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
-  sortOrderSelect.value = sortOrder;
+  sortOrderSelect.value = parseInt(sortOrder) < 64 ? sortOrder : parseInt(sortOrder) - 64;
+  sortAscending.checked = parseInt(sortOrder) >= 64;
   for (const option of filterStatusSelect.options) {
     if (filterStatus.includes(option.value)) {
       option.selected = true;
@@ -47,7 +49,7 @@ export function applySettings() {
   //window.activeTabId = document.querySelector('.tab-content.active').id;
   setActiveTabId(document.querySelector('.tab-content.active').id);
   //window.sortOrder = sortOrderSelect.value;
-  setSortOrder(sortOrderSelect.value);
+  setSortOrder(parseInt(sortOrderSelect.value) + (sortAscending.checked ? 64 : 0));
 
   var tempFilterStatus = [];
   for (const option of filterStatusSelect.options) {

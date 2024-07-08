@@ -1,0 +1,6 @@
+[build]
+  publish = "site/"
+
+[context.production]
+  publish = "min/"
+  command = "npm run publish"

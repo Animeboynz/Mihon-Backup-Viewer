@@ -18,7 +18,7 @@ export function handleFileLoad(event, fork = 'mihon') {
         // Load protobuf schema
         protobuf.load(`schemas/schema-${fork}.proto`, (err, root) => {
           if (err) {
-            alert('Error loading protobuf schema.');
+            alert(`Error loading protobuf schema.\n${err}`);
             return;
           }
 

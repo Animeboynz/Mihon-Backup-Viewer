@@ -39,6 +39,21 @@ body {
   margin-top: 20px;
   white-space: nowrap; /* Prevent line break for tabs */
 }
+@media (pointer: coarse) {
+  .tabs {
+    flex-wrap: unset;
+    justify-content: unset;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* Edge <121 */
+    padding-bottom: 0.5em;
+  }
+  .tabs::-webkit-scrollbar {
+    background: transparent; /* Chrome/Safari/Webkit */
+    height: 0px;
+  }
+}
 
 .tab-button {
   align-items: center; /* Align items vertically centered */
@@ -134,8 +149,10 @@ body {
   width: inherit;
 }
 .full-title {
+  border-radius: 0 0 5px 5px;
   max-height: unset;
   overflow: unset;
+  z-index: 2;
 }
 
 .manga-item-container {
@@ -613,6 +630,14 @@ label.switch {
 .settings-inline select {
   margin: 20px auto 0px 5px; /* Additional space for better alignment */
   width: 100%;
+}
+
+.sort-ascending {
+  display: inline-flex;
+  margin-top: 20px;
+}
+.sort-ascending label {
+  margin: 0;
 }
 
 .download-buttons {

@@ -1,46 +1,46 @@
 name: Update Schemas
 
 on:
-  workflow_dispatch: {}  # Manual Trigger
-  schedule: 
-    - cron: 0 6 * * 1  # Mondays 6AM UTC
+  workflow_dispatch: {} # Manual Trigger
+  schedule:
+    - cron: 0 6 * * 1 # Mondays 6AM UTC
 
 permissions:
-  contents: write  # Request write permissions for the workflow
+  contents: write # Request write permissions for the workflow
 
 jobs:
   update-schemas:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'  # Adjust the Python version as needed
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x' # Adjust the Python version as needed
 
-    - name: Generate Schemas
-      run: |
-        cd schemas
-        curl -o 'requirements.txt' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/requirements.txt
-        pip install -r requirements.txt
-        curl -o 'generate_schemas.py' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/tachibk-converter.py
-        python generate_schemas.py --dump-schemas
+      - name: Generate Schemas
+        run: |
+          cd site/schemas
+          curl -o 'requirements.txt' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/requirements.txt
+          pip install -r requirements.txt
+          curl -o 'generate_schemas.py' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/tachibk-converter.py
+          python generate_schemas.py --dump-schemas
 
-    - name: Commit and push changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git config --global user.name 'Schema Assistant'
-        git config --global user.email 'schema-assistant@users.noreply.github.com'
-        git add schemas/*.proto
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'Schema Assistant'
+          git config --global user.email 'schema-assistant@users.noreply.github.com'
+          git add **/*.proto
 
-        # Check if there are any changes
-        if git diff-index --cached --quiet HEAD --; then
-          echo "No changes to commit"
-        else
-          git commit -m 'Update Protobuf schemas'
-          git push
-        fi
+          # Check if there are any changes
+          if git diff-index --cached --quiet HEAD --; then
+            echo "No changes to commit"
+          else
+            git commit -m 'Update Protobuf schemas'
+            git push
+          fi

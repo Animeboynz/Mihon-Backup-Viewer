@@ -22,6 +22,6 @@ cd /d "%DIR%"
 start "Tachibk Viewer" "cmd.exe" /k "python -m http.server %PORT%"
 
 :: Open the default web browser with index.html
-start "" "http://localhost:%PORT%?demo=1"
+start "" "http://localhost:%PORT%/site?demo=1"
 
 endlocal
