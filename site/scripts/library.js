@@ -112,7 +112,10 @@ export function initializeLibrary() {
         case 'Alphabetical':
           return i1.title.localeCompare(i2.title);
         case 'LastRead':
-          return parseInt(i1.history?.lastRead || '0') - parseInt(i2.history?.lastRead || '0');
+          return (
+            Math.max.apply(0, i1.history?.map(h => parseInt(h.lastRead || '0')) || [0]) -
+            Math.max.apply(0, i2.history?.map(h => parseInt(h.lastRead || '0')) || [0])
+          );
         case 'LastUpdated':
           return i1.lastModifiedAt - i2.lastModifiedAt;
         case 'UnreadCount':
@@ -123,25 +126,26 @@ export function initializeLibrary() {
           return i1.chapters.length - i2.chapters.length;
         case 'LatestChapter':
           return (
-            (Math.max.apply(
+            Math.max.apply(
               0,
               i1.chapters?.map(h => parseInt(h.dateUpload || '0'))
-            ) || 0) -
-            (Math.max.apply(
-              0,
-              i2.chapters?.map(h => parseInt(h.dateUpload || '0'))
-            ) || 0)
+            ) ||
+            [0] -
+              Math.max.apply(
+                0,
+                i2.chapters?.map(h => parseInt(h.dateUpload || '0'))
+              ) || [0]
           );
         case 'ChapterFetchDate':
           return (
             (Math.max.apply(
               0,
               i1.chapters?.map(h => parseInt(h.dateFetch || '0'))
-            ) || 0) -
+            ) || [0]) -
             (Math.max.apply(
               0,
               i2.chapters?.map(h => parseInt(h.dateFetch || '0'))
-            ) || 0)
+            ) || [0])
           );
         case 'DateAdded':
           return parseInt(i1.dateAdded || '0') - parseInt(i2.dateAdded || '0');
