@@ -12,7 +12,7 @@ message PreferenceValue {
 
 // Backup.kt
 message Backup {
-  repeated BackupAnime backupAnime = 3;
+  repeated BackupAnime backupManga = 3;
   repeated BackupAnimeCategory backupCategories = 4;
   repeated BrokenBackupAnimeSource backupBrokenSources = 102;
   repeated BackupAnimeSource backupSources = 103;
