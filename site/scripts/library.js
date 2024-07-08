@@ -175,7 +175,7 @@ export function initializeLibrary() {
         mangaItem.title = title;
         const cover = document.createElement('img');
         cover.loading = 'lazy';
-        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
+        cover.src = mangaCover(manga);
         cover.alt = '';
         const entryTitle = document.createElement('p');
         entryTitle.innerText = titleTrimmed;
@@ -343,9 +343,7 @@ function showMangaDetails(manga, categories, source) {
     addMaterialSymbol(element, 'language');
     element.append(source);
   });
-  consts.modalThumb.forEach(
-    element => (element.src = manga.customThumbnailUrl || manga.thumbnailUrl)
-  );
+  consts.modalThumb.forEach(element => (element.src = mangaCover(manga)));
   document.documentElement.style.setProperty(
     '--manga-header-bg',
     `url('${consts.modalThumb[0].src}')`
@@ -498,6 +496,12 @@ export function toggleExpandDescription() {
   }
 }
 
+function mangaCover(manga) {
+  return (manga.customThumbnailUrl || manga.thumbnailUrl || '').replace(
+    /(?:s.)?exhentai.org\/t/,
+    'ehgt.org'
+  );
+}
 export function setActiveTabId(data) {
   activeTabId = data;
 }
