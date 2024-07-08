@@ -16,9 +16,19 @@ const re = RegExp('^https?://');
 export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
-export function initializeLibrary() {
-  const categories = window.data.backupCategories || [];
-  let mangaItems = window.data.backupManga;
+export function initializeLibrary(fork = "mihon") {
+  let categories, mangaItems;
+  if (fork == "ani") {
+ categories = window.data.backupAnimeCategory || [];
+   mangaItems = window.data.backupAnime;
+  } else {
+  categories = window.data.backupCategories || [];
+  mangaItems = window.data.backupManga;
+  }
+  
+  window.data.backupManga = mangaItems;
+  window.data.backupCategories = categories;
+
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =
@@ -224,13 +234,13 @@ export function initializeLibrary() {
           entryTitle.classList.remove('full-title');
           kebabMenu.hidden = true;
         });
-        tabContent.appendChild(mangaItem);
+        tabContent?.appendChild(mangaItem);
       });
     });
 
   const tabToShow = document.getElementById(activeTabId)
     ? activeTabId
-    : document.querySelector('.tab-content').id;
+    : document.querySelector('.tab-content')?.id;
   showTab(tabToShow);
   addOptionsFromData();
   disableMissingStatusOptions();
@@ -271,7 +281,7 @@ export function showTab(tabId) {
 
   // Show the selected tab content
   const selectedTab = document.getElementById(tabId) || document.querySelector('.tab-content');
-  selectedTab.classList.add('active');
+  selectedTab?.classList.add('active');
 
   // Add active class to the selected tab button
   const selectedTabButton = Array.from(tabButtons).find(
