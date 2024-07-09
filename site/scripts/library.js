@@ -470,6 +470,7 @@ function showMangaDetails(manga, categories, source) {
       chapterBox.appendChild(lastReadDate);
       chaptersContainer.appendChild(chapterBox);
     });
+    consts.sortButton.hidden = false;
   } else consts.sortButton.hidden = true;
 
   showModal('manga-modal');
