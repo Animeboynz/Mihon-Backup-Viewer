@@ -16,10 +16,9 @@ const re = RegExp('^https?://');
 export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
-export function initializeLibrary(fork = "mihon") {
+export function initializeLibrary() {
   let categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
-
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =

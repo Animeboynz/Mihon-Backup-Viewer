@@ -5,8 +5,6 @@ export function handleFileLoad(event, fork = 'mihon') {
   const file = event.target.files[0];
   const reader = new FileReader();
 
-  console.log(fork);
-
   reader.onload = e => {
     const fileName = file.name; // Gets filename to check nested extensions e.g. proto.gz
     const extension = fileName.split('.').pop().toLowerCase(); // Used to check extensions (Future me replace with fileName.endsWith(''))
@@ -38,7 +36,7 @@ export function handleFileLoad(event, fork = 'mihon') {
                 enums: String,
                 bytes: String,
               });
-              initializeLibrary(fork); // Initialises Library with the Converter protobuf
+              initializeLibrary(); // Initialises Library with the Converter protobuf
               closeModal('load-modal'); // Closes the Load Modal
             } catch (error) {
               alert(`Error decoding protobuf file.\n${error}`);
