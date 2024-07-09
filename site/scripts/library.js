@@ -562,11 +562,10 @@ function showEditMenu(event, manga, index) {
     };
 
     // Prefill modal fields
-    document.getElementById('date-added').value = manga.dateAdded;
+    document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
     document.getElementById('categories').value = manga.categories;
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
-
 
     hideEditMenu();
   };
