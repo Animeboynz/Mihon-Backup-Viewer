@@ -29,15 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     consts.searchField.toggleAttribute('disabled');
     if (!consts.searchField.disabled) consts.searchField.focus();
   });
-  consts.searchField.addEventListener('blur', () =>
-    setTimeout(() => {
-      consts.searchField.disabled = true;
-      if (consts.searchField.value)
-        // Colours the icon if there's a search active
-        consts.searchButton.setAttribute('style', 'color: var(--color-filter-active);');
-      else consts.searchButton.removeAttribute('style');
-    }, 200)
-  );
+  consts.searchField.addEventListener('blur', () => (consts.searchField.disabled = true));
   consts.searchField.addEventListener('input', () => {
     clearTimeout(searchCooldown);
     searchCooldown = setTimeout(initializeLibrary, 1300);
