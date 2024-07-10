@@ -6,17 +6,17 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'scripts/*.js'
-      - '*.html'
-      - '*.css'
-      - '*.md'
+      - '**.js'
+      - '**.html'
+      - '**.css'
+      - '**.md'
   push:
     branches: [main]
     paths:
-      - 'scripts/*.js'
-      - '*.html'
-      - '*.css'
-      - '*.md'
+      - '**.js'
+      - '**.html'
+      - '**.css'
+      - '**.md'
 
 jobs:
   prettier:
@@ -42,11 +42,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci --silent --omit optional
-          npx prettier --write "**/*.js" "**/*.{md,html,css}"
+          npx prettier --write "**/*.{js,md,html,css}"
           if ! $(git diff --quiet); then
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git add **/*.js **/*.{md,html,css}
+            git add **/*.{js,md,html,css}
             git commit -m 'Reformatted file'
             git push
             if [ ${{ github.event_name }} == 'pull_request' ]; then
