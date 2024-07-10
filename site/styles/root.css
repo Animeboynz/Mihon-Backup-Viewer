@@ -1,0 +1,53 @@
+:root {
+  --manga-header-bg: 'url()';
+  --manga-desc-collapsed-height: 3.6em;
+  --color-button-bg: #444;
+  --color-button-bg-active: #333;
+  --color-button-bg-hover: #555;
+  --color-filter-active: #0c0;
+  --color-genres-bg: #222;
+  --color-page-bg: #1d1d1d;
+  --color-unread-badge-bg: #b0c6ffdd;
+  --color-unread-badge-text: #002d6edd;
+}
+
+/* Dark theme */
+* {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-page-bg);
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+}
+
+.portrait {
+  display: none;
+}
+
+.material-symbols-outlined {
+  font-size: 18px;
+  font-variation-settings: 'wght' 400;
+  margin-right: 15px;
+}
+
+@media only screen and (max-width: 640px) {
+  .landscape {
+    display: none;
+  }
+  .portrait {
+    display: flex;
+  }
+}

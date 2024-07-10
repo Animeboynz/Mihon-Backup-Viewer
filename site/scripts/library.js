@@ -173,6 +173,9 @@ export function initializeLibrary() {
             )
           )}`;
         mangaItem.title = title;
+        const unreadBadge = document.createElement('span');
+        unreadBadge.classList.add('unread-badge');
+        unreadBadge.innerText = manga.chapters?.filter(c => !c.read).length;
         const cover = document.createElement('img');
         cover.loading = 'lazy';
         cover.src = mangaCover(manga);
@@ -204,6 +207,7 @@ export function initializeLibrary() {
         });
 
         coverContainer.appendChild(cover);
+        coverContainer.appendChild(unreadBadge);
         coverContainer.appendChild(kebabMenu);
         mangaItem.appendChild(coverContainer);
         mangaItem.appendChild(entryTitle);
@@ -251,8 +255,13 @@ export function search(searchQuery = '', text = '') {
     if (group.phrase || group.word) results.push(text.match(re) !== null);
   }
 
-  if (searchQuery) url.searchParams.set('search', searchQuery);
-  else url.searchParams.delete('search');
+  if (searchQuery) {
+    url.searchParams.set('search', searchQuery);
+    consts.searchButton.setAttribute('style', 'color: var(--color-filter-active);');
+  } else {
+    url.searchParams.delete('search');
+    consts.searchButton.removeAttribute('style');
+  }
 
   if (url.toString() != window.location.toString())
     window.history.replaceState(null, '', url.toString());
@@ -373,6 +382,11 @@ function showMangaDetails(manga, categories, source) {
   (manga.customGenre || manga.genre || ['None']).forEach(tag => {
     const li = document.createElement('li');
     li.innerText = tag;
+    li.addEventListener('click', () => {
+      consts.searchField.value = `"${tag.replace(/^(?:tags?|demographic|content rating): ?/i, '')}"`;
+      closeModal('manga-modal');
+      initializeLibrary();
+    });
     genres.appendChild(li);
   });
   consts.modalAuthor.forEach(element => {

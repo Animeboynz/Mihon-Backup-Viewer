@@ -1,0 +1,142 @@
+/* ---Settings--- */
+
+.settings-icon {
+  cursor: pointer;
+  font-size: 24px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.settings-icon .material-symbols-outlined {
+  font-size: 35px;
+  font-variation-settings: 'wght' 200;
+  margin: 0px;
+  transition: transform 0.4s;
+}
+
+.switch {
+  display: inline-block;
+  height: 20px;
+  position: relative;
+  width: 34px;
+}
+
+.switch input {
+  height: 0;
+  opacity: 0;
+  width: 0;
+}
+
+.slider {
+  background-color: #ccc;
+  border-radius: 20px;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  background-color: white;
+  border-radius: 50%;
+  bottom: 4px;
+  content: '';
+  height: 12px;
+  left: 4px;
+  position: absolute;
+  transition: 0.4s;
+  width: 12px;
+}
+
+input:checked + .slider {
+  background-color: #124875;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+label.switch {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.settings-buttons-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 25px;
+}
+
+.settings-button {
+  background-color: var(--color-button-bg);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  margin-top: 5px;
+  max-width: 300px; /* Optional: set a max-width */
+  padding: 10px 20px;
+  width: 100%; /* Adjust the width as needed */
+}
+
+.settings-button:hover {
+  background-color: var(--color-button-bg-hover);
+}
+
+#apply-settings {
+  margin-top: 0; /* Remove top margin for the first button */
+}
+
+#settings-modal h2 {
+  margin-top: 0;
+}
+
+.settings-inline {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0px; /* Space between each setting */
+}
+
+.settings-inline label {
+  margin-right: 30px; /* Space between label and input */
+  white-space: nowrap;
+}
+
+.settings-inline select {
+  margin: 20px auto 0px 5px; /* Additional space for better alignment */
+  width: 100%;
+}
+
+.sort-ascending {
+  display: inline-flex;
+  margin-top: 20px;
+}
+.sort-ascending label {
+  margin: 0;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}
+
+.settings-buttons-container > label {
+  border-top: dotted var(--color-button-bg);
+  margin: 0.75em auto 0.25em;
+  padding-top: 5px;
+  width: 100%;
+}
+
+@media only screen and (max-width: 640px) {
+  .download-buttons {
+    align-items: center;
+    flex-direction: column; /* Stack buttons on portrait window */
+    gap: 0.25em;
+  }
+}

@@ -1,9 +1,9 @@
-import consts from './constants.js';
-import { dlJSON, encodeToProtobuf } from './export.js';
-import { handleFileLoad, loadDemoData } from './loadBackup.js';
-import { closeModal, showModal } from './modals.js';
-import { initializeLibrary, toggleExpandDescription } from './library.js';
-import { openSettingsModal, closeSettingsModal, applySettings } from './settings.js';
+import consts from './scripts/constants.js';
+import { dlJSON, encodeToProtobuf } from './scripts/export.js';
+import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
+import { closeModal, showModal } from './scripts/modals.js';
+import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
+import { openSettingsModal, closeSettingsModal, applySettings } from './scripts/settings.js';
 
 var searchCooldown;
 
@@ -29,14 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     consts.searchField.toggleAttribute('disabled');
     if (!consts.searchField.disabled) consts.searchField.focus();
   });
-  consts.searchField.addEventListener('blur', () =>
-    setTimeout(() => {
-      consts.searchField.disabled = true;
-      if (consts.searchField.value)
-        consts.searchButton.setAttribute('style', 'color: var(--color-filter-active);');
-      else consts.searchButton.removeAttribute('style');
-    }, 200)
-  );
+  consts.searchField.addEventListener('blur', () => (consts.searchField.disabled = true));
   consts.searchField.addEventListener('input', () => {
     clearTimeout(searchCooldown);
     searchCooldown = setTimeout(initializeLibrary, 1300);

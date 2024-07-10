@@ -1,0 +1,53 @@
+/* ---Modals--- */
+.modal {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background-color: var(--color-button-bg-active);
+  border-radius: 5px;
+  max-height: calc(100% - 120px);
+  max-width: 80%;
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+}
+
+.close-button {
+  background-color: var(--color-button-bg-hover);
+  border-radius: 100%;
+  color: white;
+  cursor: pointer;
+  font-size: 30px;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  z-index: 5;
+}
+
+.gh-logo {
+  left: 1em;
+  position: absolute;
+  top: 1em;
+  z-index: 2;
+}
+object {
+  color-scheme: light; /* override for the GitHub icons */
+}
