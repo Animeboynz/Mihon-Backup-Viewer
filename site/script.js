@@ -8,12 +8,12 @@ import { openSettingsModal, closeSettingsModal, applySettings } from './scripts/
 var searchCooldown;
 
 document.addEventListener('DOMContentLoaded', () => {
-  consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork)); //Handles File Loading
+  consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork.value)); //Handles File Loading
   consts.settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
   consts.closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
   consts.applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
   consts.dlJSONBtn.addEventListener('click', dlJSON); // Downloads backup as JSON on click
-  consts.dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(e, consts.fork)); // Downloads backup as Protobuf on click
+  consts.dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(consts.fork.value)); // Downloads backup as Protobuf on click
   consts.closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
   consts.expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
   consts.sortButton.addEventListener('click', () => consts.chapterList.classList.toggle('desc')); // Sort chapters
