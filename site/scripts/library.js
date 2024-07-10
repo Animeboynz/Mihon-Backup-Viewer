@@ -38,7 +38,11 @@ export function initializeLibrary() {
         manga.genre?.join('\n') || '',
       ].join('\n')
     );
-    return matchesStatus && matchesSource && matchesTracking && matchesSearch;
+    const matchesUnread =
+      (consts.filterUnread.value === 'unread' && manga.chapters?.filter(c => !c.read).length) ||
+      (consts.filterUnread.value === 'read' && !manga.chapters?.filter(c => !c.read).length) ||
+      consts.filterUnread.value === 'all-entries';
+    return matchesStatus && matchesSource && matchesTracking && matchesSearch && matchesUnread;
   });
 
   // Sets the order to 0 if a category has no order property
@@ -207,7 +211,7 @@ export function initializeLibrary() {
         });
 
         coverContainer.appendChild(cover);
-        coverContainer.appendChild(unreadBadge);
+        if (unreadBadge.innerText > 0) coverContainer.appendChild(unreadBadge);
         coverContainer.appendChild(kebabMenu);
         mangaItem.appendChild(coverContainer);
         mangaItem.appendChild(entryTitle);
