@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       consts.searchField.disabled = true;
       if (consts.searchField.value)
+        // Colours the icon if there's a search active
         consts.searchButton.setAttribute('style', 'color: var(--color-filter-active);');
       else consts.searchButton.removeAttribute('style');
     }, 200)

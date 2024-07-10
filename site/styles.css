@@ -1,6 +1,8 @@
-@import 'styles/root.css';
-@import 'styles/library.css';
-@import 'styles/modals.css';
+/* Lower takes priority in case of conflicting rules */
+
 @import 'styles/load-backup.css';
-@import 'styles/manga-details.css';
 @import 'styles/settings-modal.css';
+@import 'styles/manga-details.css';
+@import 'styles/modals.css';
+@import 'styles/library.css';
+@import 'styles/root.css';
