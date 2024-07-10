@@ -113,6 +113,20 @@
   width: 150px;
 }
 
+.manga-item-container .unread-badge {
+  background: var(--color-unread-badge-bg);
+  border-radius: 5px;
+  color: var(--color-unread-badge-text);
+  font-family: 'Roboto', sans-serif;
+  font-size: 10pt;
+  font-style: normal;
+  font-weight: 700;
+  left: 0.25em;
+  padding: 0.25em;
+  position: absolute;
+  top: 0.25em;
+}
+
 .manga-item-title {
   background: rgba(29, 29, 29, 0.84);
   font-size: 0.9em;

@@ -173,6 +173,9 @@ export function initializeLibrary() {
             )
           )}`;
         mangaItem.title = title;
+        const unreadBadge = document.createElement('span');
+        unreadBadge.classList.add('unread-badge');
+        unreadBadge.innerText = manga.chapters?.filter(c => !c.read).length;
         const cover = document.createElement('img');
         cover.loading = 'lazy';
         cover.src = mangaCover(manga);
@@ -204,6 +207,7 @@ export function initializeLibrary() {
         });
 
         coverContainer.appendChild(cover);
+        coverContainer.appendChild(unreadBadge);
         coverContainer.appendChild(kebabMenu);
         mangaItem.appendChild(coverContainer);
         mangaItem.appendChild(entryTitle);

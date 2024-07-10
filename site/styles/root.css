@@ -7,6 +7,8 @@
   --color-filter-active: #0c0;
   --color-genres-bg: #222;
   --color-page-bg: #1d1d1d;
+  --color-unread-badge-bg: #b0c6ffdd;
+  --color-unread-badge-text: #002d6edd;
 }
 
 /* Dark theme */
