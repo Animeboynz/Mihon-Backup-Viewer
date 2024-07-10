@@ -1,9 +1,9 @@
-import consts from './constants.js';
-import { dlJSON, encodeToProtobuf } from './export.js';
-import { handleFileLoad, loadDemoData } from './loadBackup.js';
-import { closeModal, showModal } from './modals.js';
-import { initializeLibrary, toggleExpandDescription } from './library.js';
-import { openSettingsModal, closeSettingsModal, applySettings } from './settings.js';
+import consts from './scripts/constants.js';
+import { dlJSON, encodeToProtobuf } from './scripts/export.js';
+import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
+import { closeModal, showModal } from './scripts/modals.js';
+import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
+import { openSettingsModal, closeSettingsModal, applySettings } from './scripts/settings.js';
 
 var searchCooldown;
 
