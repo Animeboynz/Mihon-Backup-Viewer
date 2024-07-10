@@ -4,10 +4,10 @@ import * as esbuild from 'esbuild';
 
 await esbuild.build({
   entryPoints: ['site/*', 'site/schemas/*', 'site/img/**'],
-  external: ['data.json'],
   outdir: 'min',
-  minify: true,
   bundle: true,
+  minify: true,
+  sourcemap: true,
   loader: {
     '.jpg': 'copy',
     '.html': 'copy',
@@ -17,5 +17,4 @@ await esbuild.build({
     '.proto': 'copy',
     '.json': 'empty',
   },
-  sourcemap: true,
 });
