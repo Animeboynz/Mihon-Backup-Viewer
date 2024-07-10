@@ -19,7 +19,8 @@
 body {
   background-color: var(--color-page-bg);
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
   margin: 0;
   padding: 0;
 }
