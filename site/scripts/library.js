@@ -73,7 +73,7 @@ export function initializeLibrary() {
       /////////////////////////////
       //const editCategoryOptions = document.getElementById("edit-category-options");
       const option = document.createElement("option");
-      option.value = category.name;
+      option.value = category.order;
       option.textContent = category.name;
       editCategoryOptions.appendChild(option);
       ///////////////////////////////////////
@@ -562,17 +562,17 @@ function showEditMenu(event, manga, index) {
 
   // Add event listeners to edit and delete options
   document.getElementById('delete').onclick = () => {
+    hideEditMenu();
     console.log(`Delete clicked for manga: ${manga.title}`);
     if (confirm(`Do you really want to delete ${manga.title}`) == true) {
       deleteManga(index);
     } else {
       console.log('not-delete');
     }
-    // Add your delete functionality here
-    hideEditMenu();
   };
 
   document.getElementById('edit').onclick = () => {
+    hideEditMenu();
     //alert(`Edit pressed for ${manga.title} ${index}`)
     showModal('edit-details-modal');
     // Add your delete functionality here
@@ -586,12 +586,26 @@ function showEditMenu(event, manga, index) {
 
     // Prefill modal fields
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
-    document.getElementById('categories').value = manga.categories;
+    //document.getElementById('categories').value = manga.categories;
+    console.log(`Debug Testing: ${manga.categories}`)
+
+    const selectBox = document.getElementById('edit-category-options');
+    const mangaValues = manga.categories;
+    for (let i = 0; i < selectBox.options.length; i++) {
+      selectBox.options[i].selected = false;
+    }
+
+    for (let i = 0; i < selectBox.options.length; i++) {
+      const option = selectBox.options[i];
+      if (mangaValues.includes(option.value)) {
+        option.selected = true;
+      }
+    }
+
+
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
 
-
-    hideEditMenu();
   };
 }
 
