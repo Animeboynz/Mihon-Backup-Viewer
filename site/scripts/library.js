@@ -19,6 +19,7 @@ export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
 export function initializeLibrary() {
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
+  const editCategoryOptions = document.getElementById("edit-category-options");
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =
@@ -47,6 +48,7 @@ export function initializeLibrary() {
   // Clear existing content
   consts.tabsContainer.innerHTML = '';
   consts.tabContentsContainer.innerHTML = '';
+  editCategoryOptions.innerHTML = '';
 
   // Add 'History' tab if it doesn't exist
   if (!categories.some(category => category.name === 'History')) {
@@ -67,6 +69,15 @@ export function initializeLibrary() {
       tabButton.className = 'tab-button';
       tabButton.id = `btn${category.name}`;
       tabButton.title = tabButton.textContent = category.name;
+
+      /////////////////////////////
+      //const editCategoryOptions = document.getElementById("edit-category-options");
+      const option = document.createElement("option");
+      option.value = category.name;
+      option.textContent = category.name;
+      editCategoryOptions.appendChild(option);
+      ///////////////////////////////////////
+
       if (category.order === 65535) {
         tabButton.textContent = null;
         addMaterialSymbol(tabButton, 'history');
