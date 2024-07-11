@@ -10,10 +10,12 @@ var filterTracking = 'all-entries';
 var sortOrder = parseInt(
   url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || '64'
 );
+var filterUnread =
+  url.searchParams.get('filter-unread') || localStorage.getItem('FilterUnread') || 'all-entries';
 var activeTabId = null;
 const httpRegex = RegExp('^https?://');
 
-export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
+export { filterStatus, filterTracking, filterSource, sortOrder, filterUnread, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
@@ -38,11 +40,13 @@ export function initializeLibrary() {
         manga.genre?.join('\n') || '',
       ].join('\n')
     );
-    const matchesUnread =
-      (consts.filterUnread.value === 'unread' && manga.chapters?.filter(c => !c.read).length) ||
-      (consts.filterUnread.value === 'read' && !manga.chapters?.filter(c => !c.read).length) ||
-      consts.filterUnread.value === 'all-entries';
-    return matchesStatus && matchesSource && matchesTracking && matchesSearch && matchesUnread;
+    return (
+      matchesStatus &&
+      matchesSource &&
+      matchesTracking &&
+      matchesSearch &&
+      matchesUnread(manga.chapters)
+    );
   });
 
   // Sets the order to 0 if a category has no order property
@@ -537,6 +541,26 @@ export function setSortOrder(data) {
   sortOrder = data.toString();
   url.searchParams.set('sort-order', data);
   window.history.replaceState(data, '', url.toString());
+}
+
+export function matchesUnread(chapters = []) {
+  let result;
+  url.searchParams.set('filter-unread', filterUnread);
+  localStorage.setItem('FilterUnread', filterUnread);
+  switch (consts.filterUnread.value) {
+    case 'unread':
+      result = chapters?.filter(c => !c.read).length;
+    case 'read':
+      result = !chapters?.filter(c => !c.read).length;
+    case 'all-entries':
+    default:
+      result = true;
+      url.searchParams.delete('search');
+      localStorage.removeItem('FilterUnread');
+  }
+  if (url.toString() != window.location.toString())
+    window.history.replaceState(null, '', url.toString());
+  return result;
 }
 
 const editMenu = document.getElementById('edit-menu');
