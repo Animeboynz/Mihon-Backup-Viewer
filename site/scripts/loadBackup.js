@@ -1,5 +1,5 @@
-import { closeModal } from './modals.js';
-import { initializeLibrary, showTab } from './library.js';
+import { closeModal, showModal } from './modals.js';
+import { initializeLibrary } from './library.js';
 
 export function handleFileLoad(event, fork = 'mihon') {
   const file = event.target.files[0];
@@ -59,10 +59,13 @@ export function handleFileLoad(event, fork = 'mihon') {
 }
 
 export function loadDemoData() {
-  fetch('data.json')
+  fetch('../data.json')
     .then(response => response.json())
     .then(data => (window.data = data))
     .then(data => initializeLibrary())
-    .catch(error => console.error('Error loading demo data:', error));
+    .catch(error => {
+      console.error('Error loading demo data:', error);
+      showModal('load-modal');
+    });
   closeModal('load-modal'); // Closes the Load Modal
 }

@@ -173,9 +173,12 @@ export function initializeLibrary() {
             )
           )}`;
         mangaItem.title = title;
+        const unreadBadge = document.createElement('span');
+        unreadBadge.classList.add('unread-badge');
+        unreadBadge.innerText = manga.chapters?.filter(c => !c.read).length;
         const cover = document.createElement('img');
         cover.loading = 'lazy';
-        cover.src = manga.customThumbnailUrl || manga.thumbnailUrl;
+        cover.src = mangaCover(manga);
         cover.alt = '';
         const entryTitle = document.createElement('p');
         entryTitle.innerText = titleTrimmed;
@@ -204,6 +207,7 @@ export function initializeLibrary() {
         });
 
         coverContainer.appendChild(cover);
+        coverContainer.appendChild(unreadBadge);
         coverContainer.appendChild(kebabMenu);
         mangaItem.appendChild(coverContainer);
         mangaItem.appendChild(entryTitle);
@@ -251,8 +255,13 @@ export function search(searchQuery = '', text = '') {
     if (group.phrase || group.word) results.push(text.match(re) !== null);
   }
 
-  if (searchQuery) url.searchParams.set('search', searchQuery);
-  else url.searchParams.delete('search');
+  if (searchQuery) {
+    url.searchParams.set('search', searchQuery);
+    consts.searchButton.setAttribute('style', 'color: var(--color-filter-active);');
+  } else {
+    url.searchParams.delete('search');
+    consts.searchButton.removeAttribute('style');
+  }
 
   if (url.toString() != window.location.toString())
     window.history.replaceState(null, '', url.toString());
@@ -343,9 +352,7 @@ function showMangaDetails(manga, categories, source) {
     addMaterialSymbol(element, 'language');
     element.append(source);
   });
-  consts.modalThumb.forEach(
-    element => (element.src = manga.customThumbnailUrl || manga.thumbnailUrl)
-  );
+  consts.modalThumb.forEach(element => (element.src = mangaCover(manga)));
   document.documentElement.style.setProperty(
     '--manga-header-bg',
     `url('${consts.modalThumb[0].src}')`
@@ -375,6 +382,11 @@ function showMangaDetails(manga, categories, source) {
   (manga.customGenre || manga.genre || ['None']).forEach(tag => {
     const li = document.createElement('li');
     li.innerText = tag;
+    li.addEventListener('click', () => {
+      consts.searchField.value = `"${tag.replace(/^(?:tags?|demographic|content rating): ?/i, '')}"`;
+      closeModal('manga-modal');
+      initializeLibrary();
+    });
     genres.appendChild(li);
   });
   consts.modalAuthor.forEach(element => {
@@ -472,7 +484,8 @@ function showMangaDetails(manga, categories, source) {
       chapterBox.appendChild(lastReadDate);
       chaptersContainer.appendChild(chapterBox);
     });
-  }
+    consts.sortButton.hidden = false;
+  } else consts.sortButton.hidden = true;
 
   showModal('manga-modal');
   const mangaModalContent = document.querySelector('#manga-modal .modal-content');
@@ -498,6 +511,12 @@ export function toggleExpandDescription() {
   }
 }
 
+function mangaCover(manga) {
+  return (manga.customThumbnailUrl || manga.thumbnailUrl || '').replace(
+    /(?:s.)?exhentai.org\/t/,
+    'ehgt.org'
+  );
+}
 export function setActiveTabId(data) {
   activeTabId = data;
 }
@@ -531,13 +550,6 @@ function showEditMenu(event, manga, index) {
   editMenu.classList.add('active');
 
   // Add event listeners to edit and delete options
-  /*
-  document.getElementById('edit').onclick = () => {
-    console.log(`Edit clicked for manga: ${manga.title}`);
-    // Add your edit functionality here
-    hideEditMenu();
-  };
-  */
   document.getElementById('delete').onclick = () => {
     console.log(`Delete clicked for manga: ${manga.title}`);
     if (confirm(`Do you really want to delete ${manga.title}`) == true) {
@@ -566,6 +578,7 @@ function showEditMenu(event, manga, index) {
     document.getElementById('categories').value = manga.categories;
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
+
 
     hideEditMenu();
   };

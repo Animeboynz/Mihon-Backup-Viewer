@@ -27,7 +27,7 @@ export default {
   },
   // File Load
   fileInput: document.querySelector('#file-input'),
-  fork: document.querySelector('#fork-select').value,
+  fork: document.querySelector('#fork-select'),
   loadBackup: document.querySelector('#load-backup'),
   // Modals
   mangaModal: document.querySelector('#manga-modal'),
@@ -61,5 +61,5 @@ export default {
   searchButton: document.querySelector('#search > .search-icon'),
   searchField: document.querySelector('#search > input'),
   // Edit Modal
-  closeEditDetailsModalBtn: document.querySelector('#close-edit-details-modal')
+  closeEditDetailsModalBtn: document.querySelector('#close-edit-details-modal'),
 };

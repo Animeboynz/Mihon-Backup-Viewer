@@ -1,0 +1,253 @@
+.container {
+  margin: auto;
+  overflow: auto; /* Enable scrolling within the container */
+  width: 90%;
+}
+
+/* ---Tabs--- */
+.tabs {
+  display: flex;
+  flex-wrap: wrap; /* Expand vertically instead of horizontally and off-screen */
+  gap: 20px;
+  justify-content: space-evenly; /* Distribute tabs across the width */
+  margin-top: 20px;
+  white-space: nowrap; /* Prevent line break for tabs */
+}
+@media (pointer: coarse) {
+  .tabs {
+    flex-wrap: unset;
+    justify-content: unset;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* Edge <121 */
+    padding-bottom: 0.5em;
+  }
+  .tabs::-webkit-scrollbar {
+    background: transparent; /* Chrome/Safari/Webkit */
+    height: 0px;
+  }
+}
+
+.tab-button {
+  align-items: center; /* Align items vertically centered */
+  background-color: transparent;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+  font-weight: normal;
+  justify-content: center; /* Align items horizontally centered */
+  padding: 10px 20px;
+  position: relative;
+  transition:
+    color 0.3s,
+    background-color 0.3s;
+}
+
+.tab-button:hover {
+  color: #1666a6;
+}
+
+.tab-button.active {
+  background-color: var(--color-button-bg-active);
+  color: white;
+}
+
+.tab-button.active::after {
+  background-color: #124875;
+  border-radius: 2px;
+  bottom: -10px;
+  content: '';
+  display: block;
+  height: 4px;
+  position: absolute;
+  width: 60%;
+}
+
+.tab-button .badge {
+  background-color: #124875;
+  border-radius: 10px;
+  color: white;
+  font-size: 12px;
+  margin-left: 8px;
+  padding: 2px 6px;
+  position: static; /* Position it next to the text */
+}
+
+.tab-button > .material-symbols-outlined {
+  margin: 0;
+}
+
+.tab-content {
+  display: none;
+  margin-top: 20px;
+}
+
+.tab-content.active {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  row-gap: 3em;
+}
+
+/* ---Manga Item--- */
+.manga-item {
+  cursor: pointer;
+  margin: 10px;
+  text-align: center;
+  width: 150px;
+}
+
+.manga-item img,
+#manga-thumbnail {
+  background-image: url('../img/nocover.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 5px;
+  box-sizing: content-box;
+  height: 225px;
+  object-fit: cover;
+  object-position: center;
+  width: 150px;
+}
+
+.manga-item-container .unread-badge {
+  background: var(--color-unread-badge-bg);
+  border-radius: 5px;
+  color: var(--color-unread-badge-text);
+  font-size: 10pt;
+  font-style: normal;
+  font-weight: 500;
+  left: 0.25em;
+  padding: 0.25em;
+  position: absolute;
+  top: 0.25em;
+}
+
+.manga-item-title {
+  background: rgba(29, 29, 29, 0.84);
+  font-size: 0.9em;
+  margin-top: 10px;
+  max-height: 3.5em;
+  overflow: hidden;
+  position: absolute;
+  width: inherit;
+}
+.full-title {
+  border-radius: 0 0 5px 5px;
+  max-height: unset;
+  overflow: unset;
+  z-index: 2;
+}
+
+.manga-item-container {
+  display: inline-block;
+  position: relative;
+}
+
+.kebab-menu {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px;
+}
+
+.kebab-menu > .material-symbols-outlined {
+  color: white;
+  font-size: 20px;
+  margin: 0;
+}
+
+.kebab-menu {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px;
+}
+
+.kebab-menu > .material-symbols-outlined {
+  color: white;
+  font-size: 20px;
+}
+
+/* --- Search --- */
+
+#search {
+  cursor: pointer;
+  left: 10px;
+  position: fixed;
+  top: 10px;
+  z-index: 1;
+}
+
+#search .material-symbols-outlined {
+  font-size: 35px;
+  margin: 0px;
+}
+
+#search > input {
+  font-size: small;
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#search > input:disabled {
+  left: 7em;
+  opacity: 0;
+  top: -100%;
+  width: 0em;
+}
+
+#search > input:enabled {
+  left: 2em;
+  opacity: 0.8;
+  top: 0%;
+  width: 16em;
+}
+
+.edit-menu {
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: none;
+  position: absolute;
+  z-index: 10000;
+}
+
+.edit-menu.active {
+  display: block;
+}
+
+.edit-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.edit-menu li {
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 20px;
+}
+
+.edit-menu li:hover {
+  background-color: #444;
+}
