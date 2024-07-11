@@ -543,24 +543,31 @@ export function setSortOrder(data) {
   window.history.replaceState(data, '', url.toString());
 }
 
-export function matchesUnread(chapters = []) {
-  let result;
-  url.searchParams.set('filter-unread', filterUnread);
-  localStorage.setItem('FilterUnread', filterUnread);
-  switch (consts.filterUnread.value) {
+export function matchesUnread(chapters = null) {
+  if (chapters === null) {
+    // Applying setting
+    filterUnread = consts.filterUnread.value;
+    if (filterUnread == 'all-entries') {
+      localStorage.removeItem('FilterUnread');
+      url.searchParams.delete('filter-unread');
+    } else {
+      localStorage.setItem('FilterUnread', filterUnread);
+      url.searchParams.set('filter-unread', filterUnread);
+    }
+    if (url.toString() != window.location.toString())
+      window.history.replaceState(null, '', url.toString());
+  }
+
+  // Filtering from initializeLibrary()
+  switch (filterUnread) {
     case 'unread':
-      result = chapters?.filter(c => !c.read).length;
+      return Boolean(chapters?.filter(c => !c.read).length);
     case 'read':
-      result = !chapters?.filter(c => !c.read).length;
+      return !Boolean(chapters?.filter(c => !c.read).length);
     case 'all-entries':
     default:
-      result = true;
-      url.searchParams.delete('filter-unread');
-      localStorage.removeItem('FilterUnread');
+      return true;
   }
-  if (url.toString() != window.location.toString())
-    window.history.replaceState(null, '', url.toString());
-  return result;
 }
 
 const editMenu = document.getElementById('edit-menu');
