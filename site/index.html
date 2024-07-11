@@ -12,11 +12,15 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto@300..700&display=swap" />
-    <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0"
+    />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -147,7 +151,7 @@
         <div class="settings-inline">
           <label for="filter-status">Filter by Status</label>
           <select multiple id="filter-status">
-            <option value="-1" disabled>All Statuses</option>
+            <option value="-1">All Statuses</option>
             <option value="0">Unknown</option>
             <option value="1">Ongoing</option>
             <option value="2">Completed</option>
@@ -169,6 +173,14 @@
             <option value="all-entries">All Entries</option>
             <option value="tracked">Tracked</option>
             <option value="untracked">Untracked</option>
+          </select>
+        </div>
+        <div class="settings-inline">
+          <label for="filter-unread">Filter by Read Status</label>
+          <select id="filter-unread">
+            <option value="all-entries">All Entries</option>
+            <option value="unread">Unread</option>
+            <option value="read">Fully Read</option>
           </select>
         </div>
         <div class="settings-buttons-container">

@@ -63,9 +63,9 @@ export function loadDemoData() {
     .then(response => response.json())
     .then(data => (window.data = data))
     .then(data => initializeLibrary())
+    .then(() => closeModal('load-modal'))
     .catch(error => {
       console.error('Error loading demo data:', error);
       showModal('load-modal');
     });
-  closeModal('load-modal'); // Closes the Load Modal
 }

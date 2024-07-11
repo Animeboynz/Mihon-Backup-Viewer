@@ -53,6 +53,7 @@ export default {
   applySettingsBtn: document.querySelector('#apply-settings'),
   closeSettingsBtn: document.querySelector('#close-manga-modal'),
   filterSource: document.querySelector('#filter-source'),
+  filterUnread: document.querySelector('#filter-unread'),
   // Re-encode
   dlJSONBtn: document.querySelector('#download-json'),
   dlTachibkBtn: document.querySelector('#download-tachibk'),
