@@ -555,7 +555,7 @@ export function matchesUnread(chapters = []) {
     case 'all-entries':
     default:
       result = true;
-      url.searchParams.delete('search');
+      url.searchParams.delete('filter-unread');
       localStorage.removeItem('FilterUnread');
   }
   if (url.toString() != window.location.toString())
