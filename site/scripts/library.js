@@ -11,7 +11,7 @@ var sortOrder = parseInt(
   url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || '64'
 );
 var activeTabId = null;
-const re = RegExp('^https?://');
+const httpRegex = RegExp('^https?://');
 
 export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
 
@@ -465,12 +465,12 @@ function showMangaDetails(manga, categories, source) {
       const chapterBox = document.createElement('div');
       chapterBox.className = 'chapter-box';
 
-      const chapterLink = document.createElement('a');
-      chapterLink.textContent = chapter.name;
-      if (chapter.url.match(re)) {
+      const chapterLink = document.createElement(chapter.url.match(httpRegex) ? 'a' : 'div');
+      if (chapter.url.match(httpRegex)) {
         chapterLink.href = chapter.url;
         chapterLink.target = '_blank';
       }
+      chapterLink.textContent = chapter.name;
       if (chapter.read) {
         chapterLink.classList.add('read');
       }
