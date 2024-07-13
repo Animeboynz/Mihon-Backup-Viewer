@@ -1,216 +1,215 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="referrer" content="no-referrer" />
-    <title>Manga Library</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png" />
-    <link rel="manifest" href="img/icons/site.webmanifest" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto@300..700&display=swap" />
-    <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Manga Library</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png" />
+  <link rel="manifest" href="img/icons/site.webmanifest" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,1,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto@300..700&display=swap" />
+  <script src="https://cdn.jsdelivr.net/npm/long@5.2.3/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.3.2/dist/protobuf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+</head>
 
-  <body>
-    <div class="container">
-      <!-- Search Icon + Field -->
-      <div id="search">
-        <span class="material-symbols-outlined search-icon">search</span>
-        <input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
-      </div>
-      <!-- Welcome / Load File Screen -->
-      <div id="load-modal" class="modal">
-        <div class="modal-content">
+<body>
+<div class="container">
+  <!-- Search Icon + Field -->
+  <div id="search">
+    <span class="material-symbols-outlined search-icon">search</span>
+    <input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
+  </div>
+  <!-- Welcome / Load File Screen -->
+  <div id="load-modal" class="modal">
+    <div class="modal-content">
           <span class="gh-logo">
             <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
               <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24" alt="GitHub Icon"></object>
             </a>
           </span>
-          <h2>Load your .json, .tachibk or .proto.gz file</h2>
-          <label for="fork-select"
-            >Backup from:
-            <select id="fork-select">
-              <option value="mihon">Mihon / Tachiyomi</option>
-              <option value="sy">TachiyomiSY</option>
-              <option value="j2k">TachiyomiJ2K</option>
-            </select>
-          </label>
-          <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
+      <h2>Load your .json, .tachibk or .proto.gz file</h2>
+      <label for="fork-select"
+      >Backup from:
+        <select id="fork-select">
+          <option value="mihon">Mihon / Tachiyomi</option>
+          <option value="sy">TachiyomiSY</option>
+          <option value="j2k">TachiyomiJ2K</option>
+        </select>
+      </label>
+      <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
+    </div>
+  </div>
+  <!-- Settings Icon -->
+  <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
+  <!-- Categories Buttons -->
+  <div class="tabs" id="tabs">
+    <!-- Tabs will be generated here -->
+  </div>
+  <!-- Manga Entries -->
+  <div id="tab-contents">
+    <!-- Tab contents will be generated here -->
+  </div>
+</div>
+
+<!-- Entry's Kebab Menu -->
+<div id="edit-menu" class="edit-menu">
+  <ul>
+    <li id="edit">Edit</li>
+    <li id="delete">Delete</li>
+  </ul>
+</div>
+
+<!-- Manga Details Screen -->
+<div id="manga-modal" class="modal">
+  <div class="modal-content">
+    <span id="close-manga-modal" class="close-button">&times;</span>
+    <div class="manga-header landscape">
+      <img id="manga-thumbnail" src="" />
+      <div class="manga-meta">
+        <h1 id="manga-title"></h1>
+        <p id="manga-author"></p>
+        <p id="manga-artist"></p>
+        <div class="status-source">
+          <span id="manga-status"></span>
+          <span id="manga-source"></span>
         </div>
-      </div>
-      <!-- Settings Icon -->
-      <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
-      <!-- Categories Buttons -->
-      <div class="tabs" id="tabs">
-        <!-- Tabs will be generated here -->
-      </div>
-      <!-- Manga Entries -->
-      <div id="tab-contents">
-        <!-- Tab contents will be generated here -->
+        <ul id="manga-categories"></ul>
       </div>
     </div>
-
-    <!-- Entry's Kebab Menu -->
-    <div id="edit-menu" class="edit-menu">
-      <ul>
-        <li id="edit">Edit</li>
-        <li id="delete">Delete</li>
-      </ul>
-    </div>
-
-    <!-- Manga Details Screen -->
-    <div id="manga-modal" class="modal">
-      <div class="modal-content">
-        <span id="close-manga-modal" class="close-button">&times;</span>
-        <div class="manga-header landscape">
-          <img id="manga-thumbnail" src="" />
-          <div class="manga-meta">
-            <h1 id="manga-title"></h1>
-            <p id="manga-author"></p>
-            <p id="manga-artist"></p>
-            <div class="status-source">
-              <span id="manga-status"></span>
-              <span id="manga-source"></span>
-            </div>
-            <ul id="manga-categories"></ul>
+    <div class="manga-header portrait">
+      <div class="manga-meta">
+        <h1 id="manga-title"></h1>
+        <img id="manga-thumbnail" src="" />
+        <div class="manga-details">
+          <p id="manga-author"></p>
+          <p id="manga-artist"></p>
+          <div class="status-source">
+            <span id="manga-status"></span>
+            <span id="manga-source"></span>
           </div>
+          <ul id="manga-categories"></ul>
         </div>
-        <div class="manga-header portrait">
-          <div class="manga-meta">
-            <h1 id="manga-title"></h1>
-            <img id="manga-thumbnail" src="" />
-            <div class="manga-details">
-              <p id="manga-author"></p>
-              <p id="manga-artist"></p>
-              <div class="status-source">
-                <span id="manga-status"></span>
-                <span id="manga-source"></span>
-              </div>
-              <ul id="manga-categories"></ul>
-            </div>
-          </div>
-        </div>
-        <div class="manga-body">
-          <div id="manga-description-div">
-            <p id="manga-description"></p>
-            <span class="fade-out"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
-          </div>
-          <ul id="manga-genres"></ul>
-        </div>
-        <span class="material-symbols-outlined" id="chapters-sort-button">swap_vert</span>
-        <div id="manga-chapters"></div>
       </div>
     </div>
+    <div class="manga-body">
+      <div id="manga-description-div">
+        <p id="manga-description"></p>
+        <span class="fade-out"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
+      </div>
+      <ul id="manga-genres"></ul>
+    </div>
+    <span class="material-symbols-outlined" id="chapters-sort-button">swap_vert</span>
+    <div id="manga-chapters"></div>
+  </div>
+</div>
 
-    <!-- Settings Screen -->
-    <div id="settings-modal" class="modal">
-      <div class="modal-content">
+<!-- Settings Screen -->
+<div id="settings-modal" class="modal">
+  <div class="modal-content">
         <span class="gh-logo">
           <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
             <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24" alt="GitHub Icon"></object>
           </a>
         </span>
-        <span id="close-settings-modal" class="close-button">&times;</span>
-        <h2>Settings</h2>
-        <button id="load-backup" class="settings-button">Load Backup</button>
-        <div class="settings-inline">
-          <label for="sort-order">Sort Order</label>
-          <select id="sort-order">
-            <option value="0">Alphabetically</option>
-            <option value="16">Total Chapters</option>
-            <option value="4">Last Read</option>
-            <option value="8">Last Update Check</option>
-            <option value="12">Unread Count</option>
-            <option value="20">Latest Chapter</option>
-            <option value="24">Chapter Fetch Date</option>
-            <option value="28">Date Added</option>
-            <!-- <option value="32">Tracker Score</option> -->
-            <!-- <option value="36">Tag List</option> -->
-          </select>
-          <span class="sort-ascending"><input type="checkbox" id="sort-ascending" checked /><label for="sort-ascending">Ascending</label></span>
-        </div>
-        <div class="settings-inline">
-          <!-- <label for="highlight-tracker">Highlight Tracker</label>
-          <label class="switch">
-            <input type="checkbox" id="highlight-tracker" />
-            <span class="slider"></span>
-          </label> -->
-        </div>
-        <div class="settings-inline">
-          <label for="filter-status">Filter by Status</label>
-          <select multiple id="filter-status">
-            <option value="-1" disabled>All Statuses</option>
-            <option value="0">Unknown</option>
-            <option value="1">Ongoing</option>
-            <option value="2">Completed</option>
-            <option value="3">Licensed</option>
-            <option value="4">Publishing Finished</option>
-            <option value="5">Cancelled</option>
-            <option value="6">On Hiatus</option>
-          </select>
-        </div>
-        <div class="settings-inline">
-          <label for="filter-source">Filter by Source</label>
-          <select multiple id="filter-source">
-            <!-- Sources will be loaded here -->
-          </select>
-        </div>
-        <div class="settings-inline">
-          <label for="filter-tracked">Filter by Tracking</label>
-          <select id="filter-tracked">
-            <option value="all-entries" disabled>All Entries</option>
-            <option value="tracked">Tracked</option>
-            <option value="untracked">Untracked</option>
-          </select>
-        </div>
-        <div class="settings-buttons-container">
-          <button id="apply-settings" class="settings-button">Apply</button>
-          <label>Download Backup</label
-          ><span class="download-buttons">
+    <span id="close-settings-modal" class="close-button">&times;</span>
+    <h2>Settings</h2>
+    <button id="load-backup" class="settings-button">Load Backup</button>
+    <div class="settings-inline">
+      <label for="sort-order">Sort Order</label>
+      <select id="sort-order">
+        <option value="0">Alphabetically</option>
+        <option value="16">Total Chapters</option>
+        <option value="4">Last Read</option>
+        <option value="8">Last Update Check</option>
+        <option value="12">Unread Count</option>
+        <option value="20">Latest Chapter</option>
+        <option value="24">Chapter Fetch Date</option>
+        <option value="28">Date Added</option>
+        <!-- <option value="32">Tracker Score</option> -->
+        <!-- <option value="36">Tag List</option> -->
+      </select>
+      <span class="sort-ascending"><input type="checkbox" id="sort-ascending" checked /><label for="sort-ascending">Ascending</label></span>
+    </div>
+    <div class="settings-inline">
+      <!-- <label for="highlight-tracker">Highlight Tracker</label>
+      <label class="switch">
+        <input type="checkbox" id="highlight-tracker" />
+        <span class="slider"></span>
+      </label> -->
+    </div>
+    <div class="settings-inline">
+      <label for="filter-status">Filter by Status</label>
+      <select multiple id="filter-status">
+        <option value="-1" disabled>All Statuses</option>
+        <option value="0">Unknown</option>
+        <option value="1">Ongoing</option>
+        <option value="2">Completed</option>
+        <option value="3">Licensed</option>
+        <option value="4">Publishing Finished</option>
+        <option value="5">Cancelled</option>
+        <option value="6">On Hiatus</option>
+      </select>
+    </div>
+    <div class="settings-inline">
+      <label for="filter-source">Filter by Source</label>
+      <select multiple id="filter-source">
+        <!-- Sources will be loaded here -->
+      </select>
+    </div>
+    <div class="settings-inline">
+      <label for="filter-tracked">Filter by Tracking</label>
+      <select id="filter-tracked">
+        <option value="all-entries" disabled>All Entries</option>
+        <option value="tracked">Tracked</option>
+        <option value="untracked">Untracked</option>
+      </select>
+    </div>
+    <div class="settings-buttons-container">
+      <button id="apply-settings" class="settings-button">Apply</button>
+      <label>Download Backup</label
+      ><span class="download-buttons">
             <button id="download-json" class="settings-button">JSON</button>
             <button id="download-tachibk" class="settings-button">.tachibk</button>
           </span>
-        </div>
-      </div>
     </div>
-    
-    <div id="edit-details-modal" class="modal">
-      <div class="modal-content">
-        <span id="close-edit-details-modal" class="close-button">&times;</span>
-        <h2>Edit Details</h2>
-        <form id="edit-details-form">
-          <div class="form-group">
-            <label for="date-added">Date Added:</label>
-            <input type="datetime-local" id="date-added" name="date-added">
-          </div>
-          <div class="form-group">
-            <label for="edit-category-options">Categories:</label>
-            <select multiple id="edit-category-options">
-              <!--  Generated -->
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="last-modified">Last Modified At:</label>
-            <input type="datetime-local" id="last-modified" name="last-modified">
-          </div>
-          <div class="form-group">
-            <label for="favorite-modified">Favorite Modified At:</label>
-            <input type="datetime-local" id="favorite-modified" name="favorite-modified">
-          </div>
-          <div class="form-group">
-            <button id="apply-edits" class="settings-button">Save</button>
-          </div>
-        </form>
-      </div>
+  </div>
+</div>
+
+<div id="edit-details-modal" class="modal">
+  <div class="modal-content">
+    <span id="close-edit-details-modal" class="close-button">&times;</span>
+    <h2>Edit Details</h2>
+    <div class="form-group">
+      <label for="date-added">Date Added:</label>
+      <input type="datetime-local" id="date-added" name="date-added">
     </div>
-    <script type="module" src="script.js"></script>
-  </body>
+    <div class="form-group">
+      <label for="edit-category-options">Categories:</label>
+      <select multiple id="edit-category-options">
+        <!-- Generated -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="last-modified">Last Modified At:</label>
+      <input type="datetime-local" id="last-modified" name="last-modified">
+    </div>
+    <div class="form-group">
+      <label for="favorite-modified">Favorite Modified At:</label>
+      <input type="datetime-local" id="favorite-modified" name="favorite-modified">
+    </div>
+    <div class="form-group">
+      <button id="apply-edits" class="settings-button">Save</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
 </html>

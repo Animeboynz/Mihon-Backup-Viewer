@@ -599,7 +599,9 @@ function showEditMenu(event, manga, index) {
 
     for (let i = 0; i < selectBox.options.length; i++) {
       const option = selectBox.options[i];
-      if (mangaValues.includes(option.value)) {
+
+      // Check if mangaValues is defined and not null
+      if (mangaValues && mangaValues.includes(option.value)) {
         option.selected = true;
       }
     }
@@ -608,6 +610,28 @@ function showEditMenu(event, manga, index) {
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
 
+  };
+
+  document.getElementById('apply-edits').onclick = () => {
+
+    const dateTimeLocalToUnix = (datetimeInput) => {
+      if (datetimeInput) {
+        const date = new Date(datetimeInput);
+        const unixTimestamp = Math.floor(date.getTime() / 1000);
+        return unixTimestamp.toString();
+      } else {
+        return null; // or handle the case where input is empty or invalid
+      }
+    };
+    const dateAdded = document.getElementById('date-added').value;
+    const lastModifiedAt = document.getElementById('last-modified').value;
+    const favoriteModifiedAt = document.getElementById('favorite-modified').value;
+
+    data.backupManga[index].dateAdded = `${dateTimeLocalToUnix(dateAdded)}000`;
+    data.backupManga[index].lastModifiedAt = dateTimeLocalToUnix(lastModifiedAt);
+    data.backupManga[index].favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
+
+    //alert(`Details edited for ${dateTimeLocalToUnix(datetimeInput)}`)
   };
 }
 
