@@ -72,10 +72,13 @@ export function initializeLibrary() {
 
       /////////////////////////////
       //const editCategoryOptions = document.getElementById("edit-category-options");
-      const option = document.createElement("option");
-      option.value = category.order;
-      option.textContent = category.name;
-      editCategoryOptions.appendChild(option);
+      if(category.order !== -1 && category.order !== 65535)
+      {
+        const option = document.createElement("option");
+        option.value = category.order;
+        option.textContent = category.name;
+        editCategoryOptions.appendChild(option);
+      }
       ///////////////////////////////////////
 
       if (category.order === 65535) {
@@ -587,7 +590,6 @@ function showEditMenu(event, manga, index) {
     // Prefill modal fields
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
     //document.getElementById('categories').value = manga.categories;
-    console.log(`Debug Testing: ${manga.categories}`)
 
     const selectBox = document.getElementById('edit-category-options');
     const mangaValues = manga.categories;
