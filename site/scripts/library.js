@@ -72,7 +72,7 @@ export function initializeLibrary() {
 
       /////////////////////////////
       //const editCategoryOptions = document.getElementById("edit-category-options");
-      if(category.order !== -1 && category.order !== 65535)
+      if(![-1, 65535].includes(category.order))
       {
         const option = document.createElement("option");
         option.value = category.order;
