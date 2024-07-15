@@ -21,7 +21,7 @@ export function initializeLibrary() {
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById("edit-category-options");
 
-  if (consts.fork.value === "sy")
+  if (consts.fork.value !== 'mihon')
   {
     toggleSyOnlyElements();
   }
