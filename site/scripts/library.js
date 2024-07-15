@@ -21,10 +21,9 @@ export { filterStatus, filterTracking, filterSource, sortOrder, filterUnread, ac
 export function initializeLibrary() {
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
-  const editCategoryOptions = document.getElementById("edit-category-options");
+  const editCategoryOptions = document.getElementById('edit-category-options');
 
-  if (consts.fork.value !== 'mihon')
-  {
+  if (consts.fork.value !== 'mihon') {
     toggleSyOnlyElements();
   }
 
@@ -85,9 +84,8 @@ export function initializeLibrary() {
 
       /////////////////////////////
       //const editCategoryOptions = document.getElementById("edit-category-options");
-      if(![-1, 65535].includes(category.order))
-      {
-        const option = document.createElement("option");
+      if (![-1, 65535].includes(category.order)) {
+        const option = document.createElement('option');
         option.value = category.order;
         option.textContent = category.name;
         editCategoryOptions.appendChild(option);
@@ -622,7 +620,7 @@ function showEditMenu(event, manga, index) {
 
     const manga = data.backupManga[index]; // Assuming data is your JSON object
 
-    const unixToDateTimeLocal = (timestamp) => {
+    const unixToDateTimeLocal = timestamp => {
       const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
       return date.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
     };
@@ -646,15 +644,14 @@ function showEditMenu(event, manga, index) {
       }
     }
 
-
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
-    document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
-
+    document.getElementById('favorite-modified').value = unixToDateTimeLocal(
+      manga.favoriteModifiedAt
+    );
   };
 
   document.getElementById('apply-edits').onclick = () => {
-
-    const dateTimeLocalToUnix = (datetimeInput) => {
+    const dateTimeLocalToUnix = datetimeInput => {
       if (datetimeInput) {
         const date = new Date(datetimeInput);
         const unixTimestamp = Math.floor(date.getTime() / 1000);

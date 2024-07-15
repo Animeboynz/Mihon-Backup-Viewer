@@ -23,53 +23,53 @@
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js" crossorigin="anonymous"></script>
   </head>
 
-<body>
-<div class="container">
-  <!-- Search Icon + Field -->
-  <div id="search">
-    <span class="material-symbols-outlined search-icon">search</span>
-    <input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
-  </div>
-  <!-- Welcome / Load File Screen -->
-  <div id="load-modal" class="modal">
-    <div class="modal-content">
+  <body>
+    <div class="container">
+      <!-- Search Icon + Field -->
+      <div id="search">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" name="search" placeholder='search "exact expression" -exclude' disabled />
+      </div>
+      <!-- Welcome / Load File Screen -->
+      <div id="load-modal" class="modal">
+        <div class="modal-content">
           <span class="gh-logo">
             <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
               <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24" alt="GitHub Icon"></object>
             </a>
           </span>
-      <h2>Load your .json, .tachibk or .proto.gz file</h2>
-      <label for="fork-select"
-      >Backup from:
-        <select id="fork-select">
-          <option value="mihon">Mihon / Tachiyomi</option>
-          <option value="sy">TachiyomiSY</option>
-          <option value="j2k">TachiyomiJ2K</option>
-        </select>
-      </label>
-      <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
+          <h2>Load your .json, .tachibk or .proto.gz file</h2>
+          <label for="fork-select"
+            >Backup from:
+            <select id="fork-select">
+              <option value="mihon">Mihon / Tachiyomi</option>
+              <option value="sy">TachiyomiSY</option>
+              <option value="j2k">TachiyomiJ2K</option>
+            </select>
+          </label>
+          <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
+        </div>
+      </div>
+      <!-- Settings Icon -->
+      <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
+      <!-- Categories Buttons -->
+      <div class="tabs" id="tabs">
+        <!-- Tabs will be generated here -->
+      </div>
+      <!-- Manga Entries -->
+      <div id="tab-contents">
+        <!-- Tab contents will be generated here -->
+      </div>
     </div>
-  </div>
-  <!-- Settings Icon -->
-  <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">settings</span></div>
-  <!-- Categories Buttons -->
-  <div class="tabs" id="tabs">
-    <!-- Tabs will be generated here -->
-  </div>
-  <!-- Manga Entries -->
-  <div id="tab-contents">
-    <!-- Tab contents will be generated here -->
-  </div>
-</div>
 
-<!-- Entry's Kebab Menu -->
-<div id="edit-menu" class="edit-menu">
-  <ul>
-    <li id="edit">Edit</li>
-    <li id="tracking">Tracking</li>
-    <li id="delete">Delete</li>
-  </ul>
-</div>
+    <!-- Entry's Kebab Menu -->
+    <div id="edit-menu" class="edit-menu">
+      <ul>
+        <li id="edit">Edit</li>
+        <li id="tracking">Tracking</li>
+        <li id="delete">Delete</li>
+      </ul>
+    </div>
 
     <!-- Manga Details Screen -->
     <div id="manga-modal" class="modal">
@@ -88,39 +88,36 @@
             <ul id="manga-categories"></ul>
           </div>
         </div>
-        <ul id="manga-categories"></ul>
-      </div>
-    </div>
-    <div class="manga-header portrait">
-      <div class="manga-meta">
-        <h1 id="manga-title"></h1>
-        <img id="manga-thumbnail" src="" />
-        <div class="manga-details">
-          <p id="manga-author"></p>
-          <p id="manga-artist"></p>
-          <div class="status-source">
-            <span id="manga-status"></span>
-            <span id="manga-source"></span>
+        <div class="manga-header portrait">
+          <div class="manga-meta">
+            <h1 id="manga-title"></h1>
+            <img id="manga-thumbnail" src="" />
+            <div class="manga-details">
+              <p id="manga-author"></p>
+              <p id="manga-artist"></p>
+              <div class="status-source">
+                <span id="manga-status"></span>
+                <span id="manga-source"></span>
+              </div>
+              <ul id="manga-categories"></ul>
+            </div>
           </div>
-          <ul id="manga-categories"></ul>
         </div>
+        <div class="manga-body">
+          <div id="manga-description-div">
+            <p id="manga-description"></p>
+            <span class="fade-out"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
+          </div>
+          <ul id="manga-genres"></ul>
+        </div>
+        <span class="material-symbols-outlined" id="chapters-sort-button">swap_vert</span>
+        <div id="manga-chapters"></div>
       </div>
     </div>
-    <div class="manga-body">
-      <div id="manga-description-div">
-        <p id="manga-description"></p>
-        <span class="fade-out"><span class="material-symbols-outlined" id="description-expand-icon">keyboard_arrow_down</span></span>
-      </div>
-      <ul id="manga-genres"></ul>
-    </div>
-    <span class="material-symbols-outlined" id="chapters-sort-button">swap_vert</span>
-    <div id="manga-chapters"></div>
-  </div>
-</div>
 
-<!-- Settings Screen -->
-<div id="settings-modal" class="modal">
-  <div class="modal-content">
+    <!-- Settings Screen -->
+    <div id="settings-modal" class="modal">
+      <div class="modal-content">
         <span class="gh-logo">
           <a href="https://github.com/Animeboynz/Mihon-Backup-Viewer" target="_blank" title="GitHub Project" alt="GitHub Icon">
             <object data="https://github.githubassets.com/favicons/favicon-dark.svg" type="image/svg+xml" height="24" alt="GitHub Icon"></object>
@@ -147,10 +144,10 @@
         </div>
         <div class="settings-inline">
           <!-- <label for="highlight-tracker">Highlight Tracker</label>
-          <label class="switch">
-            <input type="checkbox" id="highlight-tracker" />
-            <span class="slider"></span>
-          </label> -->
+      <label class="switch">
+        <input type="checkbox" id="highlight-tracker" />
+        <span class="slider"></span>
+      </label> -->
         </div>
         <div class="settings-inline">
           <label for="filter-status">Filter by Status</label>
@@ -194,61 +191,60 @@
             <button id="download-json" class="settings-button">JSON</button>
             <button id="download-tachibk" class="settings-button">.tachibk</button>
           </span>
-    </div>
-  </div>
-</div>
-
-<div id="edit-details-modal" class="modal">
-  <div class="modal-content">
-    <span id="close-edit-details-modal" class="close-button">&times;</span>
-    <h2>Edit Details</h2>
-
-    <div class="sy-only">
-      <label for="custom-title">Title:</label>
-      <input type="text" id="custom-title" name="custom-title">
-    </div>
-    <div class="sy-only">
-      <label for="custom-artist">Artist:</label>
-      <input type="text" id="custom-artist" name="custom-artist">
-    </div>
-    <div class="sy-only">
-      <label for="custom-author">Author:</label>
-      <input type="text" id="custom-author" name="custom-author">
-    </div>
-    <div class="sy-only">
-      <label for="custom-desc">Description:</label>
-      <input type="text" id="custom-desc" name="custom-desc">
-    </div>
-    <div class="sy-only">
-      <label for="custom-genre">Author:</label>
-      <input type="text" id="custom-genre" name="custom-genre">
+        </div>
+      </div>
     </div>
 
+    <div id="edit-details-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-edit-details-modal" class="close-button">&times;</span>
+        <h2>Edit Details</h2>
 
-    <div class="form-group">
-      <label for="date-added">Date Added:</label>
-      <input type="datetime-local" id="date-added" name="date-added">
-    </div>
-    <div class="form-group">
-      <label for="edit-category-options">Categories:</label>
-      <select multiple id="edit-category-options">
-        <!-- Generated -->
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="last-modified">Last Modified At:</label>
-      <input type="datetime-local" id="last-modified" name="last-modified">
-    </div>
-    <div class="form-group">
-      <label for="favorite-modified">Favorite Modified At:</label>
-      <input type="datetime-local" id="favorite-modified" name="favorite-modified">
-    </div>
-    <div class="form-group">
-      <button id="apply-edits" class="settings-button">Save</button>
-    </div>
-  </div>
-</div>
+        <div class="sy-only">
+          <label for="custom-title">Title:</label>
+          <input type="text" id="custom-title" name="custom-title" />
+        </div>
+        <div class="sy-only">
+          <label for="custom-artist">Artist:</label>
+          <input type="text" id="custom-artist" name="custom-artist" />
+        </div>
+        <div class="sy-only">
+          <label for="custom-author">Author:</label>
+          <input type="text" id="custom-author" name="custom-author" />
+        </div>
+        <div class="sy-only">
+          <label for="custom-desc">Description:</label>
+          <input type="text" id="custom-desc" name="custom-desc" />
+        </div>
+        <div class="sy-only">
+          <label for="custom-genre">Author:</label>
+          <input type="text" id="custom-genre" name="custom-genre" />
+        </div>
 
-<script type="module" src="script.js"></script>
-</body>
+        <div class="form-group">
+          <label for="date-added">Date Added:</label>
+          <input type="datetime-local" id="date-added" name="date-added" />
+        </div>
+        <div class="form-group">
+          <label for="edit-category-options">Categories:</label>
+          <select multiple id="edit-category-options">
+            <!-- Generated -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="last-modified">Last Modified At:</label>
+          <input type="datetime-local" id="last-modified" name="last-modified" />
+        </div>
+        <div class="form-group">
+          <label for="favorite-modified">Favorite Modified At:</label>
+          <input type="datetime-local" id="favorite-modified" name="favorite-modified" />
+        </div>
+        <div class="form-group">
+          <button id="apply-edits" class="settings-button">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
