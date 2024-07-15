@@ -1,7 +1,7 @@
 import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
-import { deleteManga } from './editBackup.js';
+import { deleteManga, toggleSyOnlyElements } from './editBackup.js';
 
 const url = new URL(window.location);
 var filterStatus = ['-1'];
@@ -20,6 +20,11 @@ export function initializeLibrary() {
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById("edit-category-options");
+
+  if (consts.fork.value === "sy")
+  {
+    toggleSyOnlyElements();
+  }
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =
