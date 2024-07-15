@@ -10,10 +10,12 @@ var filterTracking = 'all-entries';
 var sortOrder = parseInt(
   url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || '64'
 );
+var filterUnread =
+  url.searchParams.get('filter-unread') || localStorage.getItem('FilterUnread') || 'all-entries';
 var activeTabId = null;
-const re = RegExp('^https?://');
+const httpRegex = RegExp('^https?://');
 
-export { filterStatus, filterTracking, filterSource, sortOrder, activeTabId };
+export { filterStatus, filterTracking, filterSource, sortOrder, filterUnread, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
@@ -44,7 +46,13 @@ export function initializeLibrary() {
         manga.genre?.join('\n') || '',
       ].join('\n')
     );
-    return matchesStatus && matchesSource && matchesTracking && matchesSearch;
+    return (
+      matchesStatus &&
+      matchesSource &&
+      matchesTracking &&
+      matchesSearch &&
+      matchesUnread(manga.chapters)
+    );
   });
 
   // Sets the order to 0 if a category has no order property
@@ -226,7 +234,7 @@ export function initializeLibrary() {
         });
 
         coverContainer.appendChild(cover);
-        coverContainer.appendChild(unreadBadge);
+        if (unreadBadge.innerText > 0) coverContainer.appendChild(unreadBadge);
         coverContainer.appendChild(kebabMenu);
         mangaItem.appendChild(coverContainer);
         mangaItem.appendChild(entryTitle);
@@ -480,12 +488,12 @@ function showMangaDetails(manga, categories, source) {
       const chapterBox = document.createElement('div');
       chapterBox.className = 'chapter-box';
 
-      const chapterLink = document.createElement('a');
-      chapterLink.textContent = chapter.name;
-      if (chapter.url.match(re)) {
+      const chapterLink = document.createElement(chapter.url.match(httpRegex) ? 'a' : 'div');
+      if (chapter.url.match(httpRegex)) {
         chapterLink.href = chapter.url;
         chapterLink.target = '_blank';
       }
+      chapterLink.textContent = chapter.name;
       if (chapter.read) {
         chapterLink.classList.add('read');
       }
@@ -552,6 +560,33 @@ export function setSortOrder(data) {
   sortOrder = data.toString();
   url.searchParams.set('sort-order', data);
   window.history.replaceState(data, '', url.toString());
+}
+
+export function matchesUnread(chapters = null) {
+  if (chapters === null) {
+    // Applying setting
+    filterUnread = consts.filterUnread.value;
+    if (filterUnread == 'all-entries') {
+      localStorage.removeItem('FilterUnread');
+      url.searchParams.delete('filter-unread');
+    } else {
+      localStorage.setItem('FilterUnread', filterUnread);
+      url.searchParams.set('filter-unread', filterUnread);
+    }
+    if (url.toString() != window.location.toString())
+      window.history.replaceState(null, '', url.toString());
+  }
+
+  // Filtering from initializeLibrary()
+  switch (filterUnread) {
+    case 'unread':
+      return Boolean(chapters?.filter(c => !c.read).length);
+    case 'read':
+      return !Boolean(chapters?.filter(c => !c.read).length);
+    case 'all-entries':
+    default:
+      return true;
+  }
 }
 
 const editMenu = document.getElementById('edit-menu');

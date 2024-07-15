@@ -28,12 +28,15 @@
 }
 
 .close-button {
+  align-items: center;
   background-color: var(--color-button-bg-hover);
   border-radius: 100%;
   color: white;
   cursor: pointer;
+  display: flex;
   font-size: 30px;
   height: 30px;
+  justify-content: center;
   line-height: 30px;
   position: absolute;
   right: 10px;
@@ -42,12 +45,18 @@
   z-index: 5;
 }
 
+.close-button > .material-symbols-outlined {
+  margin: 0px;
+}
+
 .gh-logo {
   left: 1em;
   position: absolute;
   top: 1em;
   z-index: 2;
 }
+
 object {
-  color-scheme: light; /* override for the GitHub icons */
+  color-scheme: light;
+  /* override for the GitHub icons */
 }

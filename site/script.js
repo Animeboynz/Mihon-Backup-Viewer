@@ -50,9 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Auto-load demo data if `?demo=1` is passed
   // Show the load modal otherwise
-  if (consts.urlParams.get('demo') == '1') {
-    loadDemoData();
-  } else {
-    showModal('load-modal');
-  }
+  DEV: if (consts.urlParams.get('demo') == '1') loadDemoData();
+  showModal('load-modal');
 });

@@ -1,3 +1,4 @@
+import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import {
   initializeLibrary,
@@ -10,6 +11,8 @@ import {
   filterStatus,
   filterSource,
   filterTracking,
+  filterUnread,
+  matchesUnread,
 } from './library.js';
 
 const sortOrderSelect = document.getElementById('sort-order');
@@ -36,6 +39,8 @@ export function openSettingsModal() {
     }
   }
   filterTrackedSelect.value = filterTracking;
+  consts.filterUnread.value = filterUnread;
+
   showModal('settings-modal');
 }
 
@@ -72,6 +77,9 @@ export function applySettings() {
 
   // Save sortOrder to local storage
   localStorage.setItem('MBV_SortOrder', sortOrder);
+
+  // Save Unread filter
+  matchesUnread();
 
   //const highlightTracker = highlightTrackerCheckbox.checked;
 
