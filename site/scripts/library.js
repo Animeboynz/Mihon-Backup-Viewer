@@ -627,6 +627,7 @@ function showEditMenu(event, manga, index) {
     document.getElementById('custom-title').value = manga.title;
     document.getElementById('custom-artist').value = manga.artist;
     document.getElementById('custom-author').value = manga.author;
+    document.getElementById('custom-thumbnail').value = manga.thumbnailUrl;
     document.getElementById('custom-desc').value = manga.description;
     document.getElementById('custom-genre').value = manga.genre.toString();
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
@@ -660,19 +661,13 @@ function showEditMenu(event, manga, index) {
       }
       return null; // or handle the case where input is empty or invalid
     };
-    /*
-    const title = document.getElementById('custom-title').value;
-    const artist = document.getElementById('custom-artist').value;
-    const author = document.getElementById('custom-author').value;
-    const description = document.getElementById('custom-desc').value;
-    const genre = document.getElementById('custom-genre').value.split(',').map(g => g.trim());
-    */
 
     // Get Values from the inputs
     //////////////////
     const customTitle = document.getElementById('custom-title').value;
     const customArtist = document.getElementById('custom-artist').value;
     const customAuthor = document.getElementById('custom-author').value;
+    const customThumbnail = document.getElementById('custom-thumbnail').value;
     const customDescription = document.getElementById('custom-desc').value;
     const customGenre = document
       .getElementById('custom-genre')
@@ -697,23 +692,21 @@ function showEditMenu(event, manga, index) {
     //If customTitle != manga.title then -> If manga.customTitle exists then -> set manga.title and manga.customTitle to customTitle else -> create manga.customTitle then set manga.title and manga.customTitle to customTitle
 
     if (customTitle !== manga.title) {
-      manga.title = customTitle;
       manga.customTitle = customTitle;
     }
     if (customArtist !== manga.artist) {
-      manga.artist = customArtist;
       manga.customArtist = customArtist;
     }
     if (customAuthor !== manga.author) {
-      manga.author = customAuthor;
       manga.customAuthor = customAuthor;
     }
+    if (customThumbnail !== manga.thumbnailUrl) {
+      manga.customThumbnailUrl = customThumbnail;
+    }
     if (customDescription !== manga.description) {
-      manga.description = customDescription;
       manga.customDescription = customDescription;
     }
     if (customGenre !== manga.genre) {
-      manga.genre = customGenre;
       manga.customGenre = customGenre;
     }
   };
