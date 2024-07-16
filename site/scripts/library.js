@@ -624,12 +624,12 @@ function showEditMenu(event, manga, index) {
     };
 
     // Prefill modal fields
-    document.getElementById('custom-title').value = manga.title;
-    document.getElementById('custom-artist').value = manga.artist;
-    document.getElementById('custom-author').value = manga.author;
-    document.getElementById('custom-thumbnail').value = manga.thumbnailUrl;
-    document.getElementById('custom-desc').value = manga.description;
-    document.getElementById('custom-genre').value = manga.genre.toString();
+    document.getElementById('custom-title').value = manga.customTitle || manga.title;
+    document.getElementById('custom-artist').value = manga.customArtist ||manga.artist;
+    document.getElementById('custom-author').value = manga.customAuthor || manga.author;
+    document.getElementById('custom-thumbnail').value = manga.customThumbnailUrl || manga.thumbnailUrl;
+    document.getElementById('custom-desc').value = manga.customDescription || manga.description;
+    document.getElementById('custom-genre').value = manga.customGenre?.toString() || manga.genre.toString();
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(
@@ -689,7 +689,6 @@ function showEditMenu(event, manga, index) {
     manga.lastModifiedAt = dateTimeLocalToUnix(lastModifiedAt);
     manga.favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
     manga.categories = selectedCategories;
-    //If customTitle != manga.title then -> If manga.customTitle exists then -> set manga.title and manga.customTitle to customTitle else -> create manga.customTitle then set manga.title and manga.customTitle to customTitle
 
     if (customTitle !== manga.title) {
       manga.customTitle = customTitle;
@@ -709,6 +708,11 @@ function showEditMenu(event, manga, index) {
     if (customGenre !== manga.genre) {
       manga.customGenre = customGenre;
     }
+    if (manga.categories === null || manga.categories.length === 0) {
+      delete manga.categories;
+    }
+    closeModal('edit-details-modal');
+    initializeLibrary();
   };
 }
 
