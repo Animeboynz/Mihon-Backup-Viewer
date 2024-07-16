@@ -613,12 +613,10 @@ function showEditMenu(event, manga, index) {
   };
 
   document.getElementById('edit').onclick = () => {
-    hideEditMenu();
-    //alert(`Edit pressed for ${manga.title} ${index}`)
-    showModal('edit-details-modal');
-    // Add your delete functionality here
+    hideEditMenu(); //Hides the kebab menu after clicking the edit button
+    showModal('edit-details-modal'); // Shows the edit details modal
 
-    const manga = data.backupManga[index]; // Assuming data is your JSON object
+    const manga = data.backupManga[index]; // Get the manga to edit
 
     const unixToDateTimeLocal = timestamp => {
       const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
@@ -626,28 +624,30 @@ function showEditMenu(event, manga, index) {
     };
 
     // Prefill modal fields
+    document.getElementById('custom-title').value = manga.title;
+    document.getElementById('custom-artist').value = manga.artist;
+    document.getElementById('custom-author').value = manga.author;
+    document.getElementById('custom-desc').value = manga.description;
+    document.getElementById('custom-genre').value = manga.genre.toString();
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
-    //document.getElementById('categories').value = manga.categories;
+    document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
+    document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
 
-    const selectBox = document.getElementById('edit-category-options');
+    // Preselect the categories
+    const categories = document.getElementById('edit-category-options');
     const mangaValues = manga.categories;
-    for (let i = 0; i < selectBox.options.length; i++) {
-      selectBox.options[i].selected = false;
+    for (let i = 0; i < categories.options.length; i++) {
+      categories.options[i].selected = false;
     }
 
-    for (let i = 0; i < selectBox.options.length; i++) {
-      const option = selectBox.options[i];
+    for (let i = 0; i < categories.options.length; i++) {
+      const option = categories.options[i];
 
       // Check if mangaValues is defined and not null
       if (mangaValues && mangaValues.includes(option.value)) {
         option.selected = true;
       }
     }
-
-    document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
-    document.getElementById('favorite-modified').value = unixToDateTimeLocal(
-      manga.favoriteModifiedAt
-    );
   };
 
   document.getElementById('apply-edits').onclick = () => {
