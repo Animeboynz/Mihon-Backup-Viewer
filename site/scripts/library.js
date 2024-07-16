@@ -701,16 +701,20 @@ function showEditMenu(event, manga, index) {
       manga.customTitle = customTitle;
     }
     if (customArtist !== manga.artist) {
-      manga.title = customArtist;
-      manga.customTitle = customArtist;
+      manga.artist = customArtist;
+      manga.customArtist = customArtist;
     }
     if (customAuthor !== manga.author) {
-      manga.title = customAuthor;
-      manga.customTitle = customAuthor;
+      manga.author = customAuthor;
+      manga.customAuthor = customAuthor;
     }
     if (customDescription !== manga.description) {
-      manga.title = customDescription;
-      manga.customTitle = customDescription;
+      manga.description = customDescription;
+      manga.customDescription = customDescription;
+    }
+    if (customGenre !== manga.genre) {
+      manga.genre = customGenre;
+      manga.customGenre = customGenre;
     }
   };
 }
