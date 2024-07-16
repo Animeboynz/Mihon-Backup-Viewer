@@ -39,8 +39,8 @@ export function deleteCategory(index) {
   }
 }
 
-export function toggleSyOnlyElements() {
-  const syOnlyElements = document.querySelectorAll('.sy-only');
+export function toggleForkOnlyElements() {
+  const syOnlyElements = document.querySelectorAll('.fork-only');
   syOnlyElements.forEach(element => {
     element.style.display = 'block';
   });

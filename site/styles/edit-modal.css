@@ -1,18 +1,18 @@
-.sy-only {
+.fork-only {
   display: none;
 }
 
 .edit-input {
   background-color: #222630;
-  padding: 12px 16px; /* equivalent to py-3 px-4 */
-  outline: none;
-  width: 280px;
-  color: white;
+  border: 2px solid #2b3040;
   border-radius: 0.5rem; /* equivalent to rounded-lg */
-  border: 2px solid #2B3040;
+  color: white;
+  outline: none;
+  padding: 12px 16px; /* equivalent to py-3 px-4 */
   transition: border-color 0.1s;
+  width: 280px;
 }
 
 .edit-input:focus {
-  border-color: #596A95;
+  border-color: #596a95;
 }

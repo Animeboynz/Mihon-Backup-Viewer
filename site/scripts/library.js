@@ -1,7 +1,7 @@
 import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
-import { deleteManga, toggleSyOnlyElements } from './editBackup.js';
+import { deleteManga, toggleForkOnlyElements } from './editBackup.js';
 
 const url = new URL(window.location);
 var filterStatus = ['-1'];
@@ -24,7 +24,7 @@ export function initializeLibrary() {
   const editCategoryOptions = document.getElementById('edit-category-options');
 
   if (consts.fork.value !== 'mihon') {
-    toggleSyOnlyElements();
+    toggleForkOnlyElements();
   }
 
   mangaItems = mangaItems.filter(manga => {
@@ -663,12 +663,18 @@ function showEditMenu(event, manga, index) {
     const dateAdded = document.getElementById('date-added').value;
     const lastModifiedAt = document.getElementById('last-modified').value;
     const favoriteModifiedAt = document.getElementById('favorite-modified').value;
+    // Get selected categories
+    const categoriesSelect = document.getElementById('edit-category-options');
+    const selectedCategories = Array.from(categoriesSelect.options)
+      .filter(option => option.selected)
+      .map(option => option.value);
 
     data.backupManga[index].dateAdded = `${dateTimeLocalToUnix(dateAdded)}000`;
     data.backupManga[index].lastModifiedAt = dateTimeLocalToUnix(lastModifiedAt);
     data.backupManga[index].favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
-
-    //alert(`Details edited for ${dateTimeLocalToUnix(datetimeInput)}`)
+    data.backupManga[index].categories = selectedCategories;
+    //console.log(selectedCategories)
+    //console.log(data.backupManga[index].categories)
   };
 }
 
