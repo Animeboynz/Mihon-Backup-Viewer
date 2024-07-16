@@ -631,7 +631,9 @@ function showEditMenu(event, manga, index) {
     document.getElementById('custom-genre').value = manga.genre.toString();
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
-    document.getElementById('favorite-modified').value = unixToDateTimeLocal(manga.favoriteModifiedAt);
+    document.getElementById('favorite-modified').value = unixToDateTimeLocal(
+      manga.favoriteModifiedAt
+    );
 
     // Preselect the categories
     const categories = document.getElementById('edit-category-options');
@@ -654,12 +656,29 @@ function showEditMenu(event, manga, index) {
     const dateTimeLocalToUnix = datetimeInput => {
       if (datetimeInput) {
         const date = new Date(datetimeInput);
-        const unixTimestamp = Math.floor(date.getTime() / 1000);
-        return unixTimestamp.toString();
-      } else {
-        return null; // or handle the case where input is empty or invalid
+        return Math.floor(date.getTime() / 1000).toString();
       }
+      return null; // or handle the case where input is empty or invalid
     };
+    /*
+    const title = document.getElementById('custom-title').value;
+    const artist = document.getElementById('custom-artist').value;
+    const author = document.getElementById('custom-author').value;
+    const description = document.getElementById('custom-desc').value;
+    const genre = document.getElementById('custom-genre').value.split(',').map(g => g.trim());
+    */
+
+    // Get Values from the inputs
+    //////////////////
+    const customTitle = document.getElementById('custom-title').value;
+    const customArtist = document.getElementById('custom-artist').value;
+    const customAuthor = document.getElementById('custom-author').value;
+    const customDescription = document.getElementById('custom-desc').value;
+    const customGenre = document
+      .getElementById('custom-genre')
+      .value.split(',')
+      .map(g => g.trim());
+    //////////////////
     const dateAdded = document.getElementById('date-added').value;
     const lastModifiedAt = document.getElementById('last-modified').value;
     const favoriteModifiedAt = document.getElementById('favorite-modified').value;
@@ -669,12 +688,30 @@ function showEditMenu(event, manga, index) {
       .filter(option => option.selected)
       .map(option => option.value);
 
-    data.backupManga[index].dateAdded = `${dateTimeLocalToUnix(dateAdded)}000`;
-    data.backupManga[index].lastModifiedAt = dateTimeLocalToUnix(lastModifiedAt);
-    data.backupManga[index].favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
-    data.backupManga[index].categories = selectedCategories;
-    //console.log(selectedCategories)
-    //console.log(data.backupManga[index].categories)
+    // Set the values from the inputs to the backup
+    const manga = data.backupManga[index];
+    manga.dateAdded = `${dateTimeLocalToUnix(dateAdded)}000`;
+    manga.lastModifiedAt = dateTimeLocalToUnix(lastModifiedAt);
+    manga.favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
+    manga.categories = selectedCategories;
+    //If customTitle != manga.title then -> If manga.customTitle exists then -> set manga.title and manga.customTitle to customTitle else -> create manga.customTitle then set manga.title and manga.customTitle to customTitle
+
+    if (customTitle !== manga.title) {
+      manga.title = customTitle;
+      manga.customTitle = customTitle;
+    }
+    if (customArtist !== manga.artist) {
+      manga.title = customArtist;
+      manga.customTitle = customArtist;
+    }
+    if (customAuthor !== manga.author) {
+      manga.title = customAuthor;
+      manga.customTitle = customAuthor;
+    }
+    if (customDescription !== manga.description) {
+      manga.title = customDescription;
+      manga.customTitle = customDescription;
+    }
   };
 }
 
