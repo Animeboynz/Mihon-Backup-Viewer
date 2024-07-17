@@ -625,11 +625,13 @@ function showEditMenu(event, manga, index) {
 
     // Prefill modal fields
     document.getElementById('custom-title').value = manga.customTitle || manga.title;
-    document.getElementById('custom-artist').value = manga.customArtist ||manga.artist;
+    document.getElementById('custom-artist').value = manga.customArtist || manga.artist;
     document.getElementById('custom-author').value = manga.customAuthor || manga.author;
-    document.getElementById('custom-thumbnail').value = manga.customThumbnailUrl || manga.thumbnailUrl;
+    document.getElementById('custom-thumbnail').value =
+      manga.customThumbnailUrl || manga.thumbnailUrl;
     document.getElementById('custom-desc').value = manga.customDescription || manga.description;
-    document.getElementById('custom-genre').value = manga.customGenre?.toString() || manga.genre.toString();
+    document.getElementById('custom-genre').value =
+      manga.customGenre?.toString() || manga.genre.toString();
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(
@@ -691,40 +693,24 @@ function showEditMenu(event, manga, index) {
         .value.split(',')
         .map(g => g.trim());
 
-      if (customTitle !== manga.customTitle || manga.title) {
-        manga.customTitle = customTitle;
-        if (manga.customTitle === manga.title) {
-          delete manga.customTitle
+      const updateField = (customField, originalField, fieldName) => {
+        if (customField !== manga[fieldName] || manga[originalField]) {
+          manga[fieldName] = customField;
+          if (manga[fieldName] === manga[originalField]) {
+            delete manga[fieldName];
+          }
         }
-      }
-      if (customArtist !== manga.customArtist || manga.artist) {
-        manga.customArtist = customArtist;
-        if (manga.customArtist === manga.artist) {
-          delete manga.customArtist
-        }
-      }
-      if (customAuthor !== manga.customAuthor || manga.author) {
-        manga.customAuthor = customAuthor;
-        if (manga.customAuthor === manga.author) {
-          delete manga.customAuthor
-        }
-      }
-      if (customThumbnail !== manga.customThumbnailUrl || manga.thumbnailUrl) {
-        manga.customThumbnailUrl = customThumbnail;
-        if (manga.customThumbnailUrl === manga.thumbnailUrl) {
-          delete manga.customThumbnailUrl
-        }
-      }
-      if (customDescription !== manga.customDescription || manga.description) {
-        manga.customDescription = customDescription;
-        if (manga.customDescription === manga.description) {
-          delete manga.customDescription
-        }
-      }
+      };
+
+      updateField(customTitle, 'title', 'customTitle');
+      updateField(customArtist, 'artist', 'customArtist');
+      updateField(customAuthor, 'author', 'customAuthor');
+      updateField(customThumbnail, 'thumbnailUrl', 'customThumbnailUrl');
+      updateField(customDescription, 'description', 'customDescription');
       if (customGenre.toString() !== manga.customGenre?.toString() || manga.genre.toString()) {
         manga.customGenre = customGenre;
         if (manga.customGenre?.toString() === manga.genre.toString()) {
-          delete manga.customGenre
+          delete manga.customGenre;
         }
       }
     }
