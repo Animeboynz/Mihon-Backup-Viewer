@@ -16,3 +16,14 @@
 .edit-input:focus {
   border-color: #596a95;
 }
+
+#edit-category-options {
+  width: 320px; /* Match the width of other .edit-input elements */
+}
+
+.fork-only label,
+.form-group label {
+  display: block; /* Ensure labels take up full width */
+  margin-bottom: 5px; /* Add some spacing between label and input */
+  text-align: left;
+}
