@@ -61,4 +61,6 @@ export default {
   // Search
   searchButton: document.querySelector('#search > .search-icon'),
   searchField: document.querySelector('#search > input'),
+  // Edit Modal
+  closeEditDetailsModalBtn: document.querySelector('#close-edit-details-modal'),
 };

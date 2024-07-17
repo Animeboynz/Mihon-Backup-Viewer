@@ -1,7 +1,7 @@
 import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
-import { deleteManga } from './editBackup.js';
+import { deleteManga, toggleForkOnlyElements } from './editBackup.js';
 
 const url = new URL(window.location);
 var filterStatus = ['-1'];
@@ -21,6 +21,11 @@ export { filterStatus, filterTracking, filterSource, sortOrder, filterUnread, ac
 export function initializeLibrary() {
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
+  const editCategoryOptions = document.getElementById('edit-category-options');
+
+  if (consts.fork.value !== 'mihon') {
+    toggleForkOnlyElements();
+  }
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =
@@ -55,6 +60,7 @@ export function initializeLibrary() {
   // Clear existing content
   consts.tabsContainer.innerHTML = '';
   consts.tabContentsContainer.innerHTML = '';
+  editCategoryOptions.innerHTML = '';
 
   // Add 'History' tab if it doesn't exist
   if (!categories.some(category => category.name === 'History')) {
@@ -75,6 +81,17 @@ export function initializeLibrary() {
       tabButton.className = 'tab-button';
       tabButton.id = `btn${category.name}`;
       tabButton.title = tabButton.textContent = category.name;
+
+      /////////////////////////////
+      //const editCategoryOptions = document.getElementById("edit-category-options");
+      if (![-1, 65535].includes(category.order)) {
+        const option = document.createElement('option');
+        option.value = category.order;
+        option.textContent = category.name;
+        editCategoryOptions.appendChild(option);
+      }
+      ///////////////////////////////////////
+
       if (category.order === 65535) {
         tabButton.textContent = null;
         addMaterialSymbol(tabButton, 'history');
@@ -585,22 +602,139 @@ function showEditMenu(event, manga, index) {
   editMenu.classList.add('active');
 
   // Add event listeners to edit and delete options
-  /*
-  document.getElementById('edit').onclick = () => {
-    console.log(`Edit clicked for manga: ${manga.title}`);
-    // Add your edit functionality here
-    hideEditMenu();
-  };
-  */
   document.getElementById('delete').onclick = () => {
+    hideEditMenu();
     console.log(`Delete clicked for manga: ${manga.title}`);
     if (confirm(`Do you really want to delete ${manga.title}`) == true) {
       deleteManga(index);
     } else {
       console.log('not-delete');
     }
-    // Add your delete functionality here
-    hideEditMenu();
+  };
+
+  document.getElementById('edit').onclick = () => {
+    hideEditMenu(); //Hides the kebab menu after clicking the edit button
+    showModal('edit-details-modal'); // Shows the edit details modal
+
+    const manga = data.backupManga[index]; // Get the manga to edit
+
+    const unixToDateTimeLocal = timestamp => {
+      const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+      return date.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
+    };
+
+    // Prefill modal fields
+    document.getElementById('custom-title').value = manga.customTitle || manga.title;
+    document.getElementById('custom-artist').value = manga.customArtist || manga.artist || '';
+    document.getElementById('custom-author').value = manga.customAuthor || manga.author || '';
+    document.getElementById('custom-thumbnail').value =
+      manga.customThumbnailUrl || manga.thumbnailUrl;
+    document.getElementById('custom-desc').value = manga.customDescription || manga.description;
+    document.getElementById('custom-genre').value =
+      manga.customGenre?.toString() || manga.genre.toString();
+    document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
+    document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
+    document.getElementById('favorite-modified').value = unixToDateTimeLocal(
+      manga.favoriteModifiedAt
+    );
+
+    // Preselect the categories
+    const categories = document.getElementById('edit-category-options');
+    const mangaValues = manga.categories;
+    for (let i = 0; i < categories.options.length; i++) {
+      categories.options[i].selected = false;
+    }
+
+    for (let i = 0; i < categories.options.length; i++) {
+      const option = categories.options[i];
+
+      // Check if mangaValues is defined and not null
+      if (mangaValues && mangaValues.includes(option.value)) {
+        option.selected = true;
+      }
+    }
+  };
+
+  document.getElementById('apply-edits').onclick = () => {
+    const dateTimeLocalToUnix = datetimeInput => {
+      if (datetimeInput) {
+        const date = new Date(datetimeInput);
+        return Math.floor(date.getTime() / 1000).toString();
+      }
+      return null; // or handle the case where input is empty or invalid
+    };
+
+    // Get Values from the inputs
+    const dateAdded = document.getElementById('date-added').value;
+    const lastModifiedAt = document.getElementById('last-modified').value;
+    const favoriteModifiedAt = document.getElementById('favorite-modified').value;
+    // Get selected categories
+    const categoriesSelect = document.getElementById('edit-category-options');
+    const selectedCategories = Array.from(categoriesSelect.options)
+      .filter(option => option.selected)
+      .map(option => option.value);
+
+    // Set the values from the inputs to the backup
+    const manga = data.backupManga[index];
+    manga.dateAdded = `${dateTimeLocalToUnix(dateAdded)}000`;
+    manga.lastModifiedAt = dateTimeLocalToUnix(lastModifiedAt);
+    manga.favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
+    manga.categories = selectedCategories;
+
+    // Set custom values if they exist and only if fork != mihon
+    if (consts.fork.value !== 'mihon') {
+      const customTitle = document.getElementById('custom-title').value;
+      const customArtist = document.getElementById('custom-artist').value;
+      const customAuthor = document.getElementById('custom-author').value;
+      const customThumbnail = document.getElementById('custom-thumbnail').value;
+      const customDescription = document.getElementById('custom-desc').value;
+      const customGenre = document
+        .getElementById('custom-genre')
+        .value.split(',')
+        .map(g => g.trim());
+
+      const updateField = (customField, originalField, fieldName) => {
+        if (customField !== manga[fieldName] || manga[originalField]) {
+          manga[fieldName] = customField;
+          if (manga[fieldName] === manga[originalField]) {
+            delete manga[fieldName];
+          }
+        }
+      };
+
+      updateField(customTitle, 'title', 'customTitle');
+      updateField(customArtist, 'artist', 'customArtist');
+      updateField(customAuthor, 'author', 'customAuthor');
+      updateField(customThumbnail, 'thumbnailUrl', 'customThumbnailUrl');
+      updateField(customDescription, 'description', 'customDescription');
+      if (customGenre.toString() !== manga.customGenre?.toString() || manga.genre.toString()) {
+        manga.customGenre = customGenre;
+        if (manga.customGenre?.toString() === manga.genre.toString()) {
+          delete manga.customGenre;
+        }
+      }
+    }
+
+    if (manga.categories === null || manga.categories.length === 0) {
+      delete manga.categories;
+    }
+    [
+      'customTitle',
+      'customArtist',
+      'customAuthor',
+      'customThumbnailUrl',
+      'customDescription',
+    ].forEach(field => {
+      if (manga[field]?.length === 0) {
+        delete manga[field];
+      }
+    });
+    if (manga.customGenre?.length === 1 && manga.customGenre[0] === '') {
+      delete manga.customGenre;
+    }
+
+    closeModal('edit-details-modal');
+    initializeLibrary();
   };
 }
 

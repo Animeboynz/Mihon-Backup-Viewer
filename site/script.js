@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
     consts.tabContentsContainer.innerHTML = '';
     showModal('load-modal');
   });
+  consts.closeEditDetailsModalBtn.addEventListener(
+    'click',
+    closeModal.bind(null, 'edit-details-modal')
+  );
   // Search Library
   consts.searchButton.addEventListener('click', () => {
     consts.searchField.toggleAttribute('disabled');

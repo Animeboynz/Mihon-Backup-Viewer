@@ -65,7 +65,8 @@
     <!-- Entry's Kebab Menu -->
     <div id="edit-menu" class="edit-menu">
       <ul>
-        <!--<li id="edit">Edit</li>-->
+        <li id="edit">Edit</li>
+        <!--<li id="tracking">Tracking</li>-->
         <li id="delete">Delete</li>
       </ul>
     </div>
@@ -143,10 +144,10 @@
         </div>
         <div class="settings-inline">
           <!-- <label for="highlight-tracker">Highlight Tracker</label>
-          <label class="switch">
-            <input type="checkbox" id="highlight-tracker" />
-            <span class="slider"></span>
-          </label> -->
+      <label class="switch">
+        <input type="checkbox" id="highlight-tracker" />
+        <span class="slider"></span>
+      </label> -->
         </div>
         <div class="settings-inline">
           <label for="filter-status">Filter by Status</label>
@@ -190,6 +191,60 @@
             <button id="download-json" class="settings-button">JSON</button>
             <button id="download-tachibk" class="settings-button">.tachibk</button>
           </span>
+        </div>
+      </div>
+    </div>
+
+    <div id="edit-details-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-edit-details-modal" class="close-button">&times;</span>
+        <h2>Edit Details</h2>
+
+        <div class="fork-only">
+          <label for="custom-title">Title:</label>
+          <input type="text" id="custom-title" name="custom-title" class="edit-input" />
+        </div>
+        <div class="fork-only">
+          <label for="custom-artist">Artist:</label>
+          <input type="text" id="custom-artist" name="custom-artist" class="edit-input" />
+        </div>
+        <div class="fork-only">
+          <label for="custom-author">Author:</label>
+          <input type="text" id="custom-author" name="custom-author" class="edit-input" />
+        </div>
+        <div class="fork-only">
+          <label for="custom-thumbnail">Thumbnail URL:</label>
+          <input type="text" id="custom-thumbnail" name="custom-thumbnail" class="edit-input" />
+        </div>
+        <div class="fork-only">
+          <label for="custom-desc">Description:</label>
+          <textarea id="custom-desc" name="custom-desc" class="edit-input"></textarea>
+        </div>
+        <div class="fork-only">
+          <label for="custom-genre">Genres:</label>
+          <textarea id="custom-genre" name="custom-genre" class="edit-input"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="date-added">Date Added:</label>
+          <input type="datetime-local" id="date-added" name="date-added" class="edit-input" />
+        </div>
+        <div class="form-group">
+          <label for="edit-category-options">Categories:</label>
+          <select multiple id="edit-category-options" class="edit-input">
+            <!-- Generated -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="last-modified">Last Modified At:</label>
+          <input type="datetime-local" id="last-modified" name="last-modified" class="edit-input" />
+        </div>
+        <div class="form-group">
+          <label for="favorite-modified">Favorite Modified At:</label>
+          <input type="datetime-local" id="favorite-modified" name="favorite-modified" class="edit-input" />
+        </div>
+        <div class="form-group">
+          <button id="apply-edits" class="settings-button">Save</button>
         </div>
       </div>
     </div>

@@ -1,0 +1,30 @@
+.fork-only {
+  display: none;
+}
+
+.edit-input {
+  background-color: #222630;
+  border: 2px solid #2b3040;
+  border-radius: 0.5rem; /* equivalent to rounded-lg */
+  color: white;
+  outline: none;
+  padding: 12px 16px; /* equivalent to py-3 px-4 */
+  transition: border-color 0.1s;
+  width: 280px;
+}
+
+.edit-input:focus {
+  border-color: #596a95;
+}
+
+#edit-category-options {
+  width: 320px; /* Match the width of other .edit-input elements */
+}
+
+.fork-only label,
+.form-group label {
+  display: block; /* Ensure labels take up full width */
+  margin-bottom: 5px; /* Add some spacing between label and input */
+  margin-left: 10px;
+  text-align: left;
+}

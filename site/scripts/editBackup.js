@@ -38,3 +38,10 @@ export function deleteCategory(index) {
     console.error('Invalid index. Cannot delete Category.');
   }
 }
+
+export function toggleForkOnlyElements() {
+  const syOnlyElements = document.querySelectorAll('.fork-only');
+  syOnlyElements.forEach(element => {
+    element.style.display = 'block';
+  });
+}
