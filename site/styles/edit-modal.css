@@ -25,5 +25,6 @@
 .form-group label {
   display: block; /* Ensure labels take up full width */
   margin-bottom: 5px; /* Add some spacing between label and input */
+  margin-left: 10px;
   text-align: left;
 }
