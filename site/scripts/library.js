@@ -663,17 +663,6 @@ function showEditMenu(event, manga, index) {
     };
 
     // Get Values from the inputs
-    //////////////////
-    const customTitle = document.getElementById('custom-title').value;
-    const customArtist = document.getElementById('custom-artist').value;
-    const customAuthor = document.getElementById('custom-author').value;
-    const customThumbnail = document.getElementById('custom-thumbnail').value;
-    const customDescription = document.getElementById('custom-desc').value;
-    const customGenre = document
-      .getElementById('custom-genre')
-      .value.split(',')
-      .map(g => g.trim());
-    //////////////////
     const dateAdded = document.getElementById('date-added').value;
     const lastModifiedAt = document.getElementById('last-modified').value;
     const favoriteModifiedAt = document.getElementById('favorite-modified').value;
@@ -690,24 +679,56 @@ function showEditMenu(event, manga, index) {
     manga.favoriteModifiedAt = dateTimeLocalToUnix(favoriteModifiedAt);
     manga.categories = selectedCategories;
 
-    if (customTitle !== manga.title) {
-      manga.customTitle = customTitle;
+    // Set custom values if they exist and only if fork != mihon
+    if (consts.fork.value !== 'mihon') {
+      const customTitle = document.getElementById('custom-title').value;
+      const customArtist = document.getElementById('custom-artist').value;
+      const customAuthor = document.getElementById('custom-author').value;
+      const customThumbnail = document.getElementById('custom-thumbnail').value;
+      const customDescription = document.getElementById('custom-desc').value;
+      const customGenre = document
+        .getElementById('custom-genre')
+        .value.split(',')
+        .map(g => g.trim());
+
+      if (customTitle !== manga.customTitle || manga.title) {
+        manga.customTitle = customTitle;
+        if (manga.customTitle === manga.title) {
+          delete manga.customTitle
+        }
+      }
+      if (customArtist !== manga.customArtist || manga.artist) {
+        manga.customArtist = customArtist;
+        if (manga.customArtist === manga.artist) {
+          delete manga.customArtist
+        }
+      }
+      if (customAuthor !== manga.customAuthor || manga.author) {
+        manga.customAuthor = customAuthor;
+        if (manga.customAuthor === manga.author) {
+          delete manga.customAuthor
+        }
+      }
+      if (customThumbnail !== manga.customThumbnailUrl || manga.thumbnailUrl) {
+        manga.customThumbnailUrl = customThumbnail;
+        if (manga.customThumbnailUrl === manga.thumbnailUrl) {
+          delete manga.customThumbnailUrl
+        }
+      }
+      if (customDescription !== manga.customDescription || manga.description) {
+        manga.customDescription = customDescription;
+        if (manga.customDescription === manga.description) {
+          delete manga.customDescription
+        }
+      }
+      if (customGenre.toString() !== manga.customGenre?.toString() || manga.genre.toString()) {
+        manga.customGenre = customGenre;
+        if (manga.customGenre?.toString() === manga.genre.toString()) {
+          delete manga.customGenre
+        }
+      }
     }
-    if (customArtist !== manga.artist) {
-      manga.customArtist = customArtist;
-    }
-    if (customAuthor !== manga.author) {
-      manga.customAuthor = customAuthor;
-    }
-    if (customThumbnail !== manga.thumbnailUrl) {
-      manga.customThumbnailUrl = customThumbnail;
-    }
-    if (customDescription !== manga.description) {
-      manga.customDescription = customDescription;
-    }
-    if (customGenre !== manga.genre) {
-      manga.customGenre = customGenre;
-    }
+
     if (manga.categories === null || manga.categories.length === 0) {
       delete manga.categories;
     }
