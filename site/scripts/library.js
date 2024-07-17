@@ -625,8 +625,8 @@ function showEditMenu(event, manga, index) {
 
     // Prefill modal fields
     document.getElementById('custom-title').value = manga.customTitle || manga.title;
-    document.getElementById('custom-artist').value = manga.customArtist || manga.artist;
-    document.getElementById('custom-author').value = manga.customAuthor || manga.author;
+    document.getElementById('custom-artist').value = manga.customArtist || manga.artist || "";
+    document.getElementById('custom-author').value = manga.customAuthor || manga.author || "";
     document.getElementById('custom-thumbnail').value =
       manga.customThumbnailUrl || manga.thumbnailUrl;
     document.getElementById('custom-desc').value = manga.customDescription || manga.description;
