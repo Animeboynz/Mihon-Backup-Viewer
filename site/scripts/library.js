@@ -718,6 +718,16 @@ function showEditMenu(event, manga, index) {
     if (manga.categories === null || manga.categories.length === 0) {
       delete manga.categories;
     }
+    ['customTitle', 'customArtist', 'customAuthor', 'customThumbnailUrl', 'customDescription'].forEach(field => {
+      if (manga[field]?.length === 0) {
+        delete manga[field];
+      }
+    });
+    if (manga.customGenre?.length === 1 && manga.customGenre[0] === '') {
+      delete manga.customGenre;
+    }
+
+
     closeModal('edit-details-modal');
     initializeLibrary();
   };
