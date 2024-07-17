@@ -9,7 +9,7 @@ export function encodeToProtobuf(fork = 'mihon') {
     try {
       var parsedData = window.data;
 
-      parsedData.backupCategories = parsedData.backupCategories.filter(
+      parsedData.backupCategories = parsedData.backupCategories?.filter(
         category => category.order !== -1 && category.order !== 65535
       );
 
@@ -44,7 +44,7 @@ export function encodeToProtobuf(fork = 'mihon') {
 
 export function dlJSON() {
   var parsedData = window.data;
-  parsedData.backupCategories = parsedData.backupCategories.filter(
+  parsedData.backupCategories = parsedData.backupCategories?.filter(
     category => category.order !== -1 && category.order !== 65535
   );
 
