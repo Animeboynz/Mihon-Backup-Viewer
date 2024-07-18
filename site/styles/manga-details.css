@@ -1,5 +1,5 @@
 /* ---Manga Details Modal--- */
-.modal-content img {
+#manga-thumbnail {
   height: 225px;
   width: 150px;
 }

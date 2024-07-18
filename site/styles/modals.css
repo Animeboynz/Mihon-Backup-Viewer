@@ -55,8 +55,3 @@
   top: 1em;
   z-index: 2;
 }
-
-object {
-  color-scheme: light;
-  /* override for the GitHub icons */
-}
