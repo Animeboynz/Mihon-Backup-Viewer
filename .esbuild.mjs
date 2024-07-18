@@ -14,6 +14,7 @@ await esbuild.build({
     '.html': 'copy',
     '.ico': 'copy',
     '.png': 'copy',
+    '.webp': 'copy',
     '.webmanifest': 'copy',
     '.proto': 'copy',
     '.json': 'empty',
