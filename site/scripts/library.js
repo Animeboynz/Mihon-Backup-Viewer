@@ -620,7 +620,8 @@ function showEditMenu(event, manga, index) {
 
     const unixToDateTimeLocal = timestamp => {
       const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
-      return date.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
+      var isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+      return isoDateTime.slice(0, 16); // Format as YYYY-MM-DDTHH:mm
     };
 
     // Prefill modal fields
