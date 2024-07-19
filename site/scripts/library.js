@@ -631,7 +631,7 @@ function showEditMenu(event, manga, index) {
       manga.customThumbnailUrl || manga.thumbnailUrl;
     document.getElementById('custom-desc').value = manga.customDescription || manga.description;
     document.getElementById('custom-genre').value =
-      manga.customGenre?.toString() || manga.genre.toString();
+      manga.customGenre?.toString() || manga.genre?.toString();
     document.getElementById('date-added').value = unixToDateTimeLocal(manga.dateAdded.slice(0, 10));
     document.getElementById('last-modified').value = unixToDateTimeLocal(manga.lastModifiedAt);
     document.getElementById('favorite-modified').value = unixToDateTimeLocal(
