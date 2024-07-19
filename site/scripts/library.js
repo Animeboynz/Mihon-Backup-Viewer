@@ -620,7 +620,7 @@ function showEditMenu(event, manga, index) {
 
     const unixToDateTimeLocal = timestamp => {
       const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
-      var isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+      var isoDateTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
       return isoDateTime.slice(0, 16); // Format as YYYY-MM-DDTHH:mm
     };
 
