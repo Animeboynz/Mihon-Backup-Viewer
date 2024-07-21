@@ -414,30 +414,36 @@ function showMangaDetails(manga, categories, source) {
     { src: 'img/trackers/ic_tracker_bangumi.webp', greyed: true }
   ];
 
-// Assume manga.tracking is available and has the required structure
-  const syncIds = manga.tracking?.map(track => track?.syncId).filter(syncId => syncId != null);
+// Extract sync IDs if manga.tracking exists
+  const syncIds = manga.tracking?.map((track, index) => ({ syncId: track?.syncId, trackingUrl: track?.trackingUrl, index })).filter(item => item.syncId != null);
 
-  syncIds?.forEach(id => {
-    if (id >= 1 && id <= 6) {
-      trackingImages[id - 1].greyed = false;
+// Update trackingImages based on syncIds
+  syncIds?.forEach(item => {
+    if (item.syncId >= 1 && item.syncId <= 6) {
+      trackingImages[item.syncId - 1].greyed = false;
+      trackingImages[item.syncId - 1].trackingUrl = item.trackingUrl;
+      trackingImages[item.syncId - 1].index = item.index;
     }
   });
 
   const mangaTracking = document.getElementById('manga-tracking');
   mangaTracking.innerHTML = '';
 
-  trackingImages.forEach(item => {
+  trackingImages.forEach((item, index) => {
     const li = document.createElement('li');
     li.style.backgroundImage = `url(${item.src})`;
     if (item.greyed) {
       li.classList.add('manga-tracking-greyed');
+    } else {
+      li.addEventListener('click', () => {
+        if (item.trackingUrl) {
+          window.open(item.trackingUrl, '_blank');
+        }
+      });
     }
-    li.addEventListener('click', () => {
-      item.greyed = !item.greyed;
-      li.classList.toggle('manga-tracking-greyed');
-    });
     mangaTracking.appendChild(li);
   });
+
 
 
   ///////////////////
