@@ -122,7 +122,8 @@
 }
 
 #manga-genres,
-#manga-categories {
+#manga-categories,
+#manga-tracking{
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -162,6 +163,25 @@
 
 #manga-categories .material-symbols-outlined {
   margin-right: 10px;
+}
+
+#manga-tracking li {
+  background: var(--color-genres-bg);
+  border: 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline;
+  width: 30px;
+  height: 30px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  list-style-type: none;
+  padding: 6px;
+}
+
+.manga-tracking-greyed {
+  filter: grayscale(100%);
 }
 
 .chapter-box {

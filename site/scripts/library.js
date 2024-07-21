@@ -404,6 +404,44 @@ function showMangaDetails(manga, categories, source) {
     }
   })();
 
+  ///////////////////
+  const trackingImages = [
+    { src: 'img/trackers/ic_tracker_mal.webp', greyed: true },
+    { src: 'img/trackers/ic_tracker_anilist.webp', greyed: true },
+    { src: 'img/trackers/ic_tracker_kitsu.webp', greyed: true },
+    { src: 'img/trackers/ic_tracker_.webp', greyed: true },
+    { src: 'img/trackers/ic_tracker_shikimori.webp', greyed: true },
+    { src: 'img/trackers/ic_tracker_bangumi.webp', greyed: true }
+  ];
+
+// Assume manga.tracking is available and has the required structure
+  const syncIds = manga.tracking?.map(track => track?.syncId).filter(syncId => syncId != null);
+
+  syncIds?.forEach(id => {
+    if (id >= 1 && id <= 6) {
+      trackingImages[id - 1].greyed = false;
+    }
+  });
+
+  const mangaTracking = document.getElementById('manga-tracking');
+  mangaTracking.innerHTML = '';
+
+  trackingImages.forEach(item => {
+    const li = document.createElement('li');
+    li.style.backgroundImage = `url(${item.src})`;
+    if (item.greyed) {
+      li.classList.add('manga-tracking-greyed');
+    }
+    li.addEventListener('click', () => {
+      item.greyed = !item.greyed;
+      li.classList.toggle('manga-tracking-greyed');
+    });
+    mangaTracking.appendChild(li);
+  });
+
+
+  ///////////////////
+
   const genres = document.getElementById('manga-genres');
   genres.innerHTML = '';
   (manga.customGenre || manga.genre || ['None']).forEach(tag => {
