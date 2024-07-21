@@ -409,7 +409,7 @@ function showMangaDetails(manga, categories, source) {
     { src: 'img/trackers/ic_tracker_mal.webp', greyed: true },
     { src: 'img/trackers/ic_tracker_anilist.webp', greyed: true },
     { src: 'img/trackers/ic_tracker_kitsu.webp', greyed: true },
-    { src: 'img/trackers/ic_tracker_.webp', greyed: true },
+    { src: 'img/trackers/ic_manga_updates.webp', greyed: true },
     { src: 'img/trackers/ic_tracker_shikimori.webp', greyed: true },
     { src: 'img/trackers/ic_tracker_bangumi.webp', greyed: true }
   ];
