@@ -123,7 +123,7 @@
 
 #manga-genres,
 #manga-categories,
-#manga-tracking{
+#manga-tracking {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -167,17 +167,17 @@
 
 #manga-tracking li {
   background: var(--color-genres-bg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   border: 1px solid;
   border-radius: 5px;
   cursor: pointer;
   display: inline;
-  width: 30px;
   height: 30px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
   list-style-type: none;
   padding: 6px;
+  width: 30px;
 }
 
 .manga-tracking-greyed {

@@ -411,13 +411,15 @@ function showMangaDetails(manga, categories, source) {
     { src: 'img/trackers/ic_tracker_kitsu.webp', greyed: true },
     { src: 'img/trackers/ic_manga_updates.webp', greyed: true },
     { src: 'img/trackers/ic_tracker_shikimori.webp', greyed: true },
-    { src: 'img/trackers/ic_tracker_bangumi.webp', greyed: true }
+    { src: 'img/trackers/ic_tracker_bangumi.webp', greyed: true },
   ];
 
-// Extract sync IDs if manga.tracking exists
-  const syncIds = manga.tracking?.map((track, index) => ({ syncId: track?.syncId, trackingUrl: track?.trackingUrl, index })).filter(item => item.syncId != null);
+  // Extract sync IDs if manga.tracking exists
+  const syncIds = manga.tracking
+    ?.map((track, index) => ({ syncId: track?.syncId, trackingUrl: track?.trackingUrl, index }))
+    .filter(item => item.syncId != null);
 
-// Update trackingImages based on syncIds
+  // Update trackingImages based on syncIds
   syncIds?.forEach(item => {
     if (item.syncId >= 1 && item.syncId <= 6) {
       trackingImages[item.syncId - 1].greyed = false;
@@ -443,8 +445,6 @@ function showMangaDetails(manga, categories, source) {
     }
     mangaTracking.appendChild(li);
   });
-
-
 
   ///////////////////
 
