@@ -32,6 +32,15 @@
   z-index: 2;
 }
 
+.manga-details > p {
+  align-items: center;
+  display: flex;
+  font-size: 15px;
+  margin: 3px 0;
+  padding-right: 4px;
+  width: fit-content;
+}
+
 .manga-body {
   display: inline;
   margin-top: 20px;
@@ -193,14 +202,6 @@
   flex-wrap: wrap;
   grid-area: info;
   justify-content: space-evenly;
-}
-.portrait .manga-details > p {
-  align-items: center;
-  display: flex;
-  font-size: 15px;
-  margin: 3px 0;
-  padding-right: 4px;
-  width: fit-content;
 }
 .portrait .manga-meta #manga-title {
   grid-area: title;
