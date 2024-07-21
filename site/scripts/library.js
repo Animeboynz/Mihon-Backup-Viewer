@@ -267,10 +267,11 @@ export function initializeLibrary() {
 
 export function search(searchQuery = '', text = '') {
   let results = [];
-  searchQuery = searchQuery.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-  const queryParams = searchQuery.matchAll(
-    /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
-  );
+  const queryParams = searchQuery
+    .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+    .matchAll(
+      /(?:(?<!\w)-"(?<excludephrase>.+?)"|"(?<phrase>.+?)"|(?<!\w)-(?<exclude>\w+)|(?<word>\S+))/gi
+    );
   for (const match of queryParams) {
     const group = match.groups;
     const re =
