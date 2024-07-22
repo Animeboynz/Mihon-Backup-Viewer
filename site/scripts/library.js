@@ -407,19 +407,19 @@ function showMangaDetails(manga, categories, source) {
   ///////////////////
 
   const trackingImages = [
-    { src: 'img/trackers/ic_tracker_mal.webp', visible: false, syncId: consts.trackerMap.MyAnimeList },
-    { src: 'img/trackers/ic_tracker_anilist.webp', visible: false, syncId: consts.trackerMap.Anilist },
-    { src: 'img/trackers/ic_tracker_kitsu.webp', visible: false, syncId: consts.trackerMap.Kitsu },
-    { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false, syncId: consts.trackerMap.Shikimori },
-    { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false, syncId: consts.trackerMap.Bangumi },
-    { src: 'img/trackers/ic_tracker_komga.webp', visible: false, syncId: consts.trackerMap.Komga },
-    { src: 'img/trackers/ic_tracker_manga_updates.webp', visible: false, syncId: consts.trackerMap.MangaUpdates },
-    { src: 'img/trackers/ic_tracker_kavita.webp', visible: false, syncId: consts.trackerMap.Kavita },
-    { src: 'img/trackers/ic_tracker_suwayomi.webp', visible: false, syncId: consts.trackerMap.Suwayomi },
-    { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: consts.trackerMap.MdList }
+    { src: 'img/trackers/ic_tracker_mal.webp', visible: false, syncId: 1 },
+    { src: 'img/trackers/ic_tracker_anilist.webp', visible: false, syncId: 2 },
+    { src: 'img/trackers/ic_tracker_kitsu.webp', visible: false, syncId: 3 },
+    { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false, syncId: 4 },
+    { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false, syncId: 5 },
+    { src: 'img/trackers/ic_tracker_komga.webp', visible: false, syncId: 6 },
+    { src: 'img/trackers/ic_tracker_manga_updates.webp', visible: false, syncId: 7 },
+    { src: 'img/trackers/ic_tracker_kavita.webp', visible: false, syncId: 8 },
+    { src: 'img/trackers/ic_tracker_suwayomi.webp', visible: false, syncId: 9 },
+    { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: 60 }
   ];
 
-  trackingImages.forEach(item => {
+  consts.trackingImages.forEach(item => {
     item.visible = false;
     item.trackingUrl = null;
     item.index = null;
@@ -432,7 +432,7 @@ function showMangaDetails(manga, categories, source) {
 
   // Update trackingImages based on syncIds
   syncIds?.forEach(item => {
-    const tracker = trackingImages.find(image => image.syncId === item.syncId);
+    const tracker = consts.trackingImages.find(image => image.syncId === item.syncId);
     if (tracker) {
       tracker.visible = true;
       tracker.trackingUrl = item.trackingUrl;
@@ -443,7 +443,7 @@ function showMangaDetails(manga, categories, source) {
   const mangaTracking = document.getElementById('manga-tracking');
   mangaTracking.innerHTML = '';
 
-  trackingImages.forEach(item => {
+  consts.trackingImages.forEach(item => {
     if (item.visible) {
       const li = document.createElement('li');
       const a = document.createElement('a');
