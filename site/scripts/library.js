@@ -406,31 +406,16 @@ function showMangaDetails(manga, categories, source) {
 
   ///////////////////
 
-  const trackingImages = [
-    { src: 'img/trackers/ic_tracker_mal.webp', visible: false, syncId: 1 },
-    { src: 'img/trackers/ic_tracker_anilist.webp', visible: false, syncId: 2 },
-    { src: 'img/trackers/ic_tracker_kitsu.webp', visible: false, syncId: 3 },
-    { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false, syncId: 4 },
-    { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false, syncId: 5 },
-    { src: 'img/trackers/ic_tracker_komga.webp', visible: false, syncId: 6 },
-    { src: 'img/trackers/ic_tracker_manga_updates.webp', visible: false, syncId: 7 },
-    { src: 'img/trackers/ic_tracker_kavita.webp', visible: false, syncId: 8 },
-    { src: 'img/trackers/ic_tracker_suwayomi.webp', visible: false, syncId: 9 },
-    { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: 60 },
-  ];
-
   consts.trackingImages.forEach(item => {
     item.visible = false;
     item.trackingUrl = null;
     item.index = null;
   });
 
-  // Extract sync IDs if manga.tracking exists
   const syncIds = manga.tracking
     ?.map((track, index) => ({ syncId: track?.syncId, trackingUrl: track?.trackingUrl, index }))
     .filter(item => item.syncId != null);
 
-  // Update trackingImages based on syncIds
   syncIds?.forEach(item => {
     const tracker = consts.trackingImages.find(image => image.syncId === item.syncId);
     if (tracker) {
