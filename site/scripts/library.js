@@ -426,10 +426,9 @@ function showMangaDetails(manga, categories, source) {
     }
   });
 
-  consts.modalTracking.innerHTML = '';
-
   //Appends link to applicable trackers
   consts.modalTracking.forEach(modal => {
+    modal.innerHTML = '';
     consts.trackingImages.forEach(item => {
       if (item.visible) {
         const li = document.createElement('li');
