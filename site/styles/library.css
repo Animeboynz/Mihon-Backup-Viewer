@@ -104,9 +104,9 @@
 
 .manga-item img,
 #manga-thumbnail {
-  background-image: url('../img/nocover.jpg');
+  background-image: var(--missing-cover);
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
   border-radius: 5px;
   box-sizing: content-box;
   height: 225px;
