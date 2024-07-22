@@ -405,14 +405,12 @@ function showMangaDetails(manga, categories, source) {
   })();
 
   ///////////////////
-  const trackingImages = [
-    { src: 'img/trackers/ic_tracker_mal.webp', greyed: true },
-    { src: 'img/trackers/ic_tracker_anilist.webp', greyed: true },
-    { src: 'img/trackers/ic_tracker_kitsu.webp', greyed: true },
-    { src: 'img/trackers/ic_manga_updates.webp', greyed: true },
-    { src: 'img/trackers/ic_tracker_shikimori.webp', greyed: true },
-    { src: 'img/trackers/ic_tracker_bangumi.webp', greyed: true },
-  ];
+
+  consts.trackingImages.forEach(item => {
+    item.visible = false;
+    item.trackingUrl = null;
+    item.index = null;
+  });
 
   // Extract sync IDs if manga.tracking exists
   const syncIds = manga.tracking
@@ -422,28 +420,25 @@ function showMangaDetails(manga, categories, source) {
   // Update trackingImages based on syncIds
   syncIds?.forEach(item => {
     if (item.syncId >= 1 && item.syncId <= 6) {
-      trackingImages[item.syncId - 1].greyed = false;
-      trackingImages[item.syncId - 1].trackingUrl = item.trackingUrl;
-      trackingImages[item.syncId - 1].index = item.index;
+      consts.trackingImages[item.syncId - 1].visible = true;
+      consts.trackingImages[item.syncId - 1].trackingUrl = item.trackingUrl;
+      consts.trackingImages[item.syncId - 1].index = item.index;
     }
   });
 
   const mangaTracking = document.getElementById('manga-tracking');
   mangaTracking.innerHTML = '';
 
-  trackingImages.forEach((item, index) => {
-    const li = document.createElement('li');
-    li.style.backgroundImage = `url(${item.src})`;
-    if (item.greyed) {
-      li.classList.add('manga-tracking-greyed');
-    } else {
-      li.addEventListener('click', () => {
-        if (item.trackingUrl) {
-          window.open(item.trackingUrl, '_blank');
-        }
-      });
+  consts.trackingImages.forEach(item => {
+    if (item.visible) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = item.trackingUrl;
+      a.target = '_blank'; // Open in a new tab
+      li.style.backgroundImage = `url(${item.src})`;
+      a.appendChild(li);
+      mangaTracking.appendChild(a);
     }
-    mangaTracking.appendChild(li);
   });
 
   ///////////////////

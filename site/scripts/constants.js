@@ -33,6 +33,14 @@ export default {
   mangaModal: document.querySelector('#manga-modal'),
   settingsModal: document.querySelector('#settings-modal'),
   // Manga Details Modal
+  trackingImages: [
+    { src: 'img/trackers/ic_tracker_mal.webp', visible: false },
+    { src: 'img/trackers/ic_tracker_anilist.webp', visible: false },
+    { src: 'img/trackers/ic_tracker_kitsu.webp', visible: false },
+    { src: 'img/trackers/ic_manga_updates.webp', visible: false },
+    { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false },
+    { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false },
+  ],
   modalTitle: document.querySelectorAll('#manga-title'),
   modalSource: document.querySelectorAll('#manga-source'),
   modalThumb: document.querySelectorAll('#manga-thumbnail'),
@@ -40,6 +48,7 @@ export default {
   modalArtist: document.querySelectorAll('#manga-artist'),
   modalStatus: document.querySelectorAll('#manga-status'),
   modalCategories: document.querySelectorAll('#manga-categories'),
+  //modalTracking: document.querySelectorAll('#manga-tracking'),
   modalDescription: document.querySelector('#manga-description'),
   modalDescriptionDiv: document.querySelector('#manga-description-div'),
   sortButton: document.querySelector('#chapters-sort-button'),

@@ -173,15 +173,11 @@
   border: 1px solid;
   border-radius: 5px;
   cursor: pointer;
-  display: inline;
+  display: inline-block;
   height: 30px;
   list-style-type: none;
-  padding: 6px;
+  padding: 0;
   width: 30px;
-}
-
-.manga-tracking-greyed {
-  filter: grayscale(100%);
 }
 
 .chapter-box {
