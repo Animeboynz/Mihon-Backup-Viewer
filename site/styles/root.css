@@ -1,6 +1,6 @@
 :root {
   --manga-header-bg: 'url()';
-  --manga-desc-collapsed-height: 3.6em;
+  --manga-desc-collapsed-height: 5em;
   --color-button-bg: #444;
   --color-button-bg-active: #333;
   --color-button-bg-hover: #555;
