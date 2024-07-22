@@ -40,7 +40,12 @@ export default {
     { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false, syncId: 4, redirect: true },
     { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false, syncId: 5, redirect: true },
     { src: 'img/trackers/ic_tracker_komga.webp', visible: false, syncId: 6, redirect: true },
-    { src: 'img/trackers/ic_tracker_manga_updates.webp', visible: false, syncId: 7, redirect: true },
+    {
+      src: 'img/trackers/ic_tracker_manga_updates.webp',
+      visible: false,
+      syncId: 7,
+      redirect: true,
+    },
     { src: 'img/trackers/ic_tracker_kavita.webp', visible: false, syncId: 8, redirect: true },
     { src: 'img/trackers/ic_tracker_suwayomi.webp', visible: false, syncId: 9, redirect: true },
     { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: 60, redirect: true },
