@@ -416,7 +416,7 @@ function showMangaDetails(manga, categories, source) {
     { src: 'img/trackers/ic_tracker_manga_updates.webp', visible: false, syncId: 7 },
     { src: 'img/trackers/ic_tracker_kavita.webp', visible: false, syncId: 8 },
     { src: 'img/trackers/ic_tracker_suwayomi.webp', visible: false, syncId: 9 },
-    { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: 60 }
+    { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: 60 },
   ];
 
   consts.trackingImages.forEach(item => {
