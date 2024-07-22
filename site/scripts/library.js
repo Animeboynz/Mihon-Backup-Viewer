@@ -431,12 +431,16 @@ function showMangaDetails(manga, categories, source) {
   consts.trackingImages.forEach(item => {
     if (item.visible) {
       const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = item.trackingUrl;
-      a.target = '_blank'; // Open in a new tab
       li.style.backgroundImage = `url(${item.src})`;
-      a.appendChild(li);
-      mangaTracking.appendChild(a);
+      if (item.redirect) {
+        const a = document.createElement('a');
+        a.href = item.trackingUrl;
+        a.target = '_blank'; // Open in a new tab
+        a.appendChild(li);
+        mangaTracking.appendChild(a);
+      } else {
+        mangaTracking.appendChild(li);
+      }
     }
   });
 
