@@ -82,7 +82,6 @@ export function initializeLibrary() {
       tabButton.id = `btn${category.name}`;
       tabButton.title = tabButton.textContent = category.name;
 
-      /////////////////////////////
       //const editCategoryOptions = document.getElementById("edit-category-options");
       if (![-1, 65535].includes(category.order)) {
         const option = document.createElement('option');
@@ -90,7 +89,6 @@ export function initializeLibrary() {
         option.textContent = category.name;
         editCategoryOptions.appendChild(option);
       }
-      ///////////////////////////////////////
 
       if (category.order === 65535) {
         tabButton.textContent = null;
@@ -323,6 +321,7 @@ export function showTab(tabId) {
   activeTabId = tabId;
 }
 
+//Add Options to Settings modal
 function addOptionsFromData() {
   // Get the filter-source select element
 
@@ -354,6 +353,7 @@ function addOptionsFromData() {
     });
 }
 
+//Disable Missing Status Options for the Settings modal
 function disableMissingStatusOptions() {
   // Get the filter-status select element
   let filterStatus = document.getElementById('filter-status');
@@ -372,6 +372,7 @@ function disableMissingStatusOptions() {
   }
 }
 
+//Adds info to Manga Details Modal
 function showMangaDetails(manga, categories, source) {
   consts.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
   consts.modalSource.forEach(element => {
@@ -404,8 +405,7 @@ function showMangaDetails(manga, categories, source) {
     }
   })();
 
-  ///////////////////
-
+  //Resets all tracking data
   consts.trackingImages.forEach(item => {
     item.visible = false;
     item.trackingUrl = null;
@@ -416,6 +416,7 @@ function showMangaDetails(manga, categories, source) {
     ?.map((track, index) => ({ syncId: track?.syncId, trackingUrl: track?.trackingUrl, index }))
     .filter(item => item.syncId != null);
 
+  //Sets Valid tracker data to show on modal
   syncIds?.forEach(item => {
     const tracker = consts.trackingImages.find(image => image.syncId === item.syncId);
     if (tracker) {
@@ -427,6 +428,7 @@ function showMangaDetails(manga, categories, source) {
 
   consts.modalTracking.innerHTML = '';
 
+  //Appends link to applicable trackers
   consts.modalTracking.forEach(modal => {
     consts.trackingImages.forEach(item => {
       if (item.visible) {
@@ -444,8 +446,6 @@ function showMangaDetails(manga, categories, source) {
       }
     });
   });
-
-  ///////////////////
 
   const genres = document.getElementById('manga-genres');
   genres.innerHTML = '';
