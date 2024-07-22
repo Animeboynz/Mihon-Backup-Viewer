@@ -33,14 +33,18 @@ export default {
   mangaModal: document.querySelector('#manga-modal'),
   settingsModal: document.querySelector('#settings-modal'),
   // Manga Details Modal
-  trackingImages: [
-    { src: 'img/trackers/ic_tracker_mal.webp', visible: false },
-    { src: 'img/trackers/ic_tracker_anilist.webp', visible: false },
-    { src: 'img/trackers/ic_tracker_kitsu.webp', visible: false },
-    { src: 'img/trackers/ic_manga_updates.webp', visible: false },
-    { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false },
-    { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false },
-  ],
+  trackerMap: {
+    MyAnimeList: 1,
+    Anilist: 2,
+    Kitsu: 3,
+    Shikimori: 4,
+    Bangumi: 5,
+    Komga: 6,
+    MangaUpdates: 7,
+    Kavita: 8,
+    Suwayomi: 9,
+    MdList: 60
+  },
   modalTitle: document.querySelectorAll('#manga-title'),
   modalSource: document.querySelectorAll('#manga-source'),
   modalThumb: document.querySelectorAll('#manga-thumbnail'),

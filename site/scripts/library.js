@@ -406,7 +406,20 @@ function showMangaDetails(manga, categories, source) {
 
   ///////////////////
 
-  consts.trackingImages.forEach(item => {
+  const trackingImages = [
+    { src: 'img/trackers/ic_tracker_mal.webp', visible: false, syncId: consts.trackerMap.MyAnimeList },
+    { src: 'img/trackers/ic_tracker_anilist.webp', visible: false, syncId: consts.trackerMap.Anilist },
+    { src: 'img/trackers/ic_tracker_kitsu.webp', visible: false, syncId: consts.trackerMap.Kitsu },
+    { src: 'img/trackers/ic_tracker_shikimori.webp', visible: false, syncId: consts.trackerMap.Shikimori },
+    { src: 'img/trackers/ic_tracker_bangumi.webp', visible: false, syncId: consts.trackerMap.Bangumi },
+    { src: 'img/trackers/ic_tracker_komga.webp', visible: false, syncId: consts.trackerMap.Komga },
+    { src: 'img/trackers/ic_tracker_manga_updates.webp', visible: false, syncId: consts.trackerMap.MangaUpdates },
+    { src: 'img/trackers/ic_tracker_kavita.webp', visible: false, syncId: consts.trackerMap.Kavita },
+    { src: 'img/trackers/ic_tracker_suwayomi.webp', visible: false, syncId: consts.trackerMap.Suwayomi },
+    { src: 'img/trackers/ic_tracker_mdlist.webp', visible: false, syncId: consts.trackerMap.MdList }
+  ];
+
+  trackingImages.forEach(item => {
     item.visible = false;
     item.trackingUrl = null;
     item.index = null;
@@ -419,17 +432,18 @@ function showMangaDetails(manga, categories, source) {
 
   // Update trackingImages based on syncIds
   syncIds?.forEach(item => {
-    if (item.syncId >= 1 && item.syncId <= 6) {
-      consts.trackingImages[item.syncId - 1].visible = true;
-      consts.trackingImages[item.syncId - 1].trackingUrl = item.trackingUrl;
-      consts.trackingImages[item.syncId - 1].index = item.index;
+    const tracker = trackingImages.find(image => image.syncId === item.syncId);
+    if (tracker) {
+      tracker.visible = true;
+      tracker.trackingUrl = item.trackingUrl;
+      tracker.index = item.index;
     }
   });
 
   const mangaTracking = document.getElementById('manga-tracking');
   mangaTracking.innerHTML = '';
 
-  consts.trackingImages.forEach(item => {
+  trackingImages.forEach(item => {
     if (item.visible) {
       const li = document.createElement('li');
       const a = document.createElement('a');
