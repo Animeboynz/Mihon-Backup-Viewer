@@ -57,7 +57,7 @@ export default {
   modalArtist: document.querySelectorAll('#manga-artist'),
   modalStatus: document.querySelectorAll('#manga-status'),
   modalCategories: document.querySelectorAll('#manga-categories'),
-  //modalTracking: document.querySelectorAll('#manga-tracking'),
+  modalTracking: document.querySelectorAll('#manga-tracking'),
   modalDescription: document.querySelector('#manga-description'),
   modalDescriptionDiv: document.querySelector('#manga-description-div'),
   sortButton: document.querySelector('#chapters-sort-button'),

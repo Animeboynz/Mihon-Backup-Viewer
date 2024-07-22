@@ -425,23 +425,24 @@ function showMangaDetails(manga, categories, source) {
     }
   });
 
-  const mangaTracking = document.getElementById('manga-tracking');
-  mangaTracking.innerHTML = '';
+  consts.modalTracking.innerHTML = '';
 
-  consts.trackingImages.forEach(item => {
-    if (item.visible) {
-      const li = document.createElement('li');
-      li.style.backgroundImage = `url(${item.src})`;
-      if (item.redirect) {
-        const a = document.createElement('a');
-        a.href = item.trackingUrl;
-        a.target = '_blank'; // Open in a new tab
-        a.appendChild(li);
-        mangaTracking.appendChild(a);
-      } else {
-        mangaTracking.appendChild(li);
+  consts.modalTracking.forEach(modal => {
+    consts.trackingImages.forEach(item => {
+      if (item.visible) {
+        const li = document.createElement('li');
+        li.style.backgroundImage = `url(${item.src})`;
+        if (item.redirect) {
+          const a = document.createElement('a');
+          a.href = item.trackingUrl;
+          a.target = '_blank'; // Open in a new tab
+          a.appendChild(li);
+          modal.appendChild(a);
+        } else {
+          modal.appendChild(li);
+        }
       }
-    }
+    });
   });
 
   ///////////////////
