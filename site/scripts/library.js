@@ -133,7 +133,7 @@ export function initializeLibrary() {
       switch (consts.sortFlags[sortOrder]) {
         default:
         case 'Alphabetical':
-          return i1.title.localeCompare(i2.title);
+          return (i1.title || "").localeCompare(i2.title || "");
         case 'LastRead':
           return (
             Math.max.apply(0, i1.history?.map(h => parseInt(h.lastRead || '0')) || [0]) -
