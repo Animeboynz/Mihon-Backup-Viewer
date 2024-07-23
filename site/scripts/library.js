@@ -82,7 +82,6 @@ export function initializeLibrary() {
       tabButton.id = `btn${category.name}`;
       tabButton.title = tabButton.textContent = category.name;
 
-      /////////////////////////////
       //const editCategoryOptions = document.getElementById("edit-category-options");
       if (![-1, 65535].includes(category.order)) {
         const option = document.createElement('option');
@@ -90,7 +89,6 @@ export function initializeLibrary() {
         option.textContent = category.name;
         editCategoryOptions.appendChild(option);
       }
-      ///////////////////////////////////////
 
       if (category.order === 65535) {
         tabButton.textContent = null;
@@ -323,6 +321,7 @@ export function showTab(tabId) {
   activeTabId = tabId;
 }
 
+//Add Options to Settings modal
 function addOptionsFromData() {
   // Get the filter-source select element
 
@@ -354,6 +353,7 @@ function addOptionsFromData() {
     });
 }
 
+//Disable Missing Status Options for the Settings modal
 function disableMissingStatusOptions() {
   // Get the filter-status select element
   let filterStatus = document.getElementById('filter-status');
@@ -372,6 +372,7 @@ function disableMissingStatusOptions() {
   }
 }
 
+//Adds info to Manga Details Modal
 function showMangaDetails(manga, categories, source) {
   consts.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
   consts.modalSource.forEach(element => {
@@ -403,6 +404,25 @@ function showMangaDetails(manga, categories, source) {
         return ['block', 'Unknown'];
     }
   })();
+  /////////////////////////////////////
+
+  consts.modalTracking.forEach(modal => {
+    modal.innerHTML = '';
+    manga.tracking?.forEach(item => {
+      const li = document.createElement('li');
+      li.style.backgroundImage = `url(${consts.trackingImages[item.syncId]})`;
+      if (item.trackingUrl.match(httpRegex)) {
+        const a = document.createElement('a');
+        a.href = item.trackingUrl;
+        a.target = '_blank'; // Open in a new tab
+        a.appendChild(li);
+        modal.appendChild(a);
+      } else {
+        modal.appendChild(li);
+      }
+    });
+  });
+  //////////////////////////////////
 
   const genres = document.getElementById('manga-genres');
   genres.innerHTML = '';
