@@ -404,24 +404,46 @@ function showMangaDetails(manga, categories, source) {
         return ['block', 'Unknown'];
     }
   })();
+  /////////////////////////////////////
 
-  //Appends links to applicable trackers
+  //Resets all tracking data
+  consts.trackingImages.forEach(item => {
+    item.visible = false;
+    item.trackingUrl = null;
+    item.index = null;
+  });
+  const syncIds = manga.tracking
+    ?.map((track, index) => ({ syncId: track?.syncId, trackingUrl: track?.trackingUrl, index }))
+    .filter(item => item.syncId != null);
+  //Sets Valid tracker data to show on modal
+  syncIds?.forEach(item => {
+    const tracker = consts.trackingImages.find(image => image.syncId === item.syncId);
+    if (tracker) {
+      tracker.visible = true;
+      tracker.trackingUrl = item.trackingUrl;
+      tracker.index = item.index;
+    }
+  });
+  //Appends link to applicable trackers
   consts.modalTracking.forEach(modal => {
     modal.innerHTML = '';
-    manga.tracking.forEach(item => {
-      const li = document.createElement('li');
-      li.style.backgroundImage = `url(${consts.trackingImages[item.syncId]})`;
-      if (item.trackingUrl.match(httpRegex)) {
-        const a = document.createElement('a');
-        a.href = item.trackingUrl;
-        a.target = '_blank'; // Open in a new tab
-        a.appendChild(li);
-        modal.appendChild(a);
-      } else {
-        modal.appendChild(li);
+    consts.trackingImages.forEach(item => {
+      if (item.visible) {
+        const li = document.createElement('li');
+        li.style.backgroundImage = `url(${item.src})`;
+        if (item.redirect) {
+          const a = document.createElement('a');
+          a.href = item.trackingUrl;
+          a.target = '_blank'; // Open in a new tab
+          a.appendChild(li);
+          modal.appendChild(a);
+        } else {
+          modal.appendChild(li);
+        }
       }
     });
   });
+  //////////////////////////////////
 
   const genres = document.getElementById('manga-genres');
   genres.innerHTML = '';
