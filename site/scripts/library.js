@@ -146,7 +146,7 @@ export function initializeLibrary() {
             i1.chapters?.filter(c => !c.read).length - i2.chapters?.filter(c => !c.read).length
           );
         case 'TotalChapters':
-          return i1.chapters.length - i2.chapters.length;
+          return (i1.chapters?.length || '0') - (i2.chapters?.length || '0');
         case 'LatestChapter':
           return (
             Math.max.apply(
