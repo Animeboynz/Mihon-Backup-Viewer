@@ -55,6 +55,7 @@ export default {
   modalTracking: document.querySelectorAll('#manga-tracking'),
   modalDescription: document.querySelector('#manga-description'),
   modalDescriptionDiv: document.querySelector('#manga-description-div'),
+  expandDescriptionArrow: document.querySelector('.fade-out'),
   sortButton: document.querySelector('#chapters-sort-button'),
   chapterList: document.querySelector('#manga-chapters'),
   // Main Screen
@@ -70,7 +71,6 @@ export default {
   // Re-encode
   dlJSONBtn: document.querySelector('#download-json'),
   dlTachibkBtn: document.querySelector('#download-tachibk'),
-  expandDescriptionArrow: document.querySelector('.fade-out'),
   // Search
   searchButton: document.querySelector('#search > .search-icon'),
   searchField: document.querySelector('#search > input'),

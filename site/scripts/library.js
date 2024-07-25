@@ -535,6 +535,9 @@ function showMangaDetails(manga, categories, source) {
   } else consts.sortButton.hidden = true;
 
   showModal('manga-modal');
+  consts.expandDescriptionArrow.hidden =
+    consts.modalDescription.offsetHeight <=
+    parseInt(window.getComputedStyle(consts.modalDescription).fontSize) * 5;
   const mangaModalContent = document.querySelector('#manga-modal .modal-content');
   mangaModalContent.scrollTop = 0;
 }
