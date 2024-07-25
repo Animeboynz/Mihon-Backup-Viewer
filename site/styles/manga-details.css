@@ -65,6 +65,7 @@
 
 #manga-title {
   margin-bottom: 8px;
+  text-align: start;
 }
 
 .status-source {
