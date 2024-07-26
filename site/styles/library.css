@@ -10,7 +10,8 @@
   flex-wrap: wrap; /* Expand vertically instead of horizontally and off-screen */
   gap: 20px;
   justify-content: space-evenly; /* Distribute tabs across the width */
-  margin-top: 20px;
+  margin: 20px auto;
+  max-width: calc(100% - 35px); /* 35px = Icon Width */
   white-space: nowrap; /* Prevent line break for tabs */
 }
 @media (pointer: coarse) {
