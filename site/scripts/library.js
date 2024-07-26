@@ -517,18 +517,24 @@ function showMangaDetails(manga, categories, source) {
       if (chapter.read) {
         chapterLink.classList.add('read');
       }
+      if (chapter.scanlator) {
+        const chapterScanlator = document.createElement('div');
+        chapterScanlator.classList.add('scanlator');
+        chapterScanlator.textContent = chapter.scanlator;
+        chapterLink.appendChild(chapterScanlator);
+      }
+      chapterBox.appendChild(chapterLink);
 
-      const lastReadDate = document.createElement('span');
-      lastReadDate.className = 'chapter-date';
       if (Array.isArray(manga.history)) {
         const historyItem = manga.history.find(history => history.url === chapter.url);
         if (historyItem) {
+          const lastReadDate = document.createElement('span');
+          lastReadDate.className = 'chapter-date';
           lastReadDate.textContent = parseDate(historyItem.lastRead);
+          chapterBox.appendChild(lastReadDate);
         }
       }
 
-      chapterBox.appendChild(chapterLink);
-      chapterBox.appendChild(lastReadDate);
       chaptersContainer.appendChild(chapterBox);
     });
     consts.sortButton.hidden = false;

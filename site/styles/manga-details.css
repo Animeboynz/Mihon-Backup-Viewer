@@ -210,6 +210,16 @@
 .chapter-box a.read {
   color: #808080;
 }
+
+.chapter-box > div {
+  text-align: start;
+}
+
+div.scanlator {
+  color: var(--color-scanlator);
+  font-size: 75%;
+}
+
 .portrait .manga-meta {
   display: grid;
   grid-template-areas: 'title' 'cover' 'info ';
