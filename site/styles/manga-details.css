@@ -218,6 +218,7 @@
 div.scanlator {
   color: var(--color-scanlator);
   font-size: 75%;
+  text-align: start;
 }
 
 .portrait .manga-meta {
