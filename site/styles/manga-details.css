@@ -29,6 +29,7 @@
 .manga-meta {
   position: relative;
   text-align: justify;
+  width: 100%;
   z-index: 2;
 }
 
@@ -133,6 +134,12 @@
   margin-bottom: 0.5em;
   padding-left: 0px;
   text-align: left;
+}
+
+#manga-tracking {
+  float: right;
+  margin-right: 3em;
+  margin-top: 0em;
 }
 
 #manga-genres li {
