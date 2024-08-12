@@ -18,6 +18,7 @@ message Backup {
   repeated BackupSource backupSources = 101;
   repeated BackupPreference backupPreferences = 104;
   repeated BackupSourcePreferences backupSourcePreferences = 105;
+  repeated BackupExtensionRepos backupExtensionRepo = 106;
 }
 
 // BackupCategory.kt
@@ -41,6 +42,15 @@ message BackupChapter {
   optional int64 sourceOrder = 10;
   optional int64 lastModifiedAt = 11;
   optional int64 version = 12;
+}
+
+// BackupExtensionRepos.kt
+message BackupExtensionRepos {
+  required string baseUrl = 1;
+  required string name = 2;
+  optional string shortName = 3;
+  required string website = 4;
+  required string signingKeyFingerprint = 5;
 }
 
 // BackupHistory.kt
