@@ -1,6 +1,5 @@
 export default {
   // ----- GLOBALS -----
-  urlParams: new URLSearchParams(window.location.search),
   sortFlags: {
     // Descending
     0: 'Alphabetical',
