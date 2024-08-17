@@ -45,7 +45,7 @@ export function openSettingsModal() {
   }
   for (const [key, val] of Object.entries(savedSettings['sort'])) {
     switch (key) {
-      case 'lirary':
+      case 'library':
         sortOrder = val;
         sortOrderSelect.value = sortOrder < 64 ? sortOrder : sortOrder - 64;
         sortAscending.checked = sortOrder >= 64;
