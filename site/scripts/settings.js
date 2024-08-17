@@ -122,8 +122,8 @@ export function loadSettings() {
         }
       }`
   );
-  const url = new URL(window.location);
-  url.searchParams.forEach((value, key) => (settings[key] = JSON.parse(value)));
+  // const url = new URL(window.location);
+  // url.searchParams.forEach((value, key) => (settings[key] = JSON.parse(value)));
   DEV: console.log('Loaded settings:', settings);
   return settings;
 }
@@ -131,7 +131,7 @@ export function loadSettings() {
 export function saveSetting(settingObj = {}) {
   DEV: console.log('Loading Settings from saveSettings');
   var settings = loadSettings();
-  const url = new URL(window.location);
+  // const url = new URL(window.location);
   for (const [key, value] of Object.entries(settingObj)) {
     settings[key] = value;
     // url.searchParams.set(key, JSON.stringify(value));
