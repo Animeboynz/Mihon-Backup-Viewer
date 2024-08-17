@@ -8,7 +8,7 @@ await esbuild.build({
   dropLabels: ['DEV'],
   bundle: true,
   minify: true,
-  sourcemap: true,
+  sourcemap: false,
   loader: {
     '.jpg': 'copy',
     '.html': 'copy',

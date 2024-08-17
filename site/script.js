@@ -3,7 +3,12 @@ import { dlJSON, encodeToProtobuf } from './scripts/export.js';
 import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
 import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
-import { openSettingsModal, closeSettingsModal, applySettings } from './scripts/settings.js';
+import {
+  openSettingsModal,
+  closeSettingsModal,
+  applySettings,
+  saveSetting,
+} from './scripts/settings.js';
 
 var searchCooldown;
 
@@ -16,7 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
   consts.dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(consts.fork.value)); // Downloads backup as Protobuf on click
   consts.closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
   consts.expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
-  consts.sortButton.addEventListener('click', () => consts.chapterList.classList.toggle('desc')); // Sort chapters
+  consts.sortButton.addEventListener('click', () => {
+    consts.chapterList.classList.toggle('desc');
+    saveSetting({
+      sort: {
+        chapters: consts.chapterList.classList.contains('desc') ? 'desc' : 'asc',
+      },
+    });
+  }); // Sort chapters
   consts.loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
     window.data = null;

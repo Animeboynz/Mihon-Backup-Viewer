@@ -1,19 +1,6 @@
 import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
-import {
-  initializeLibrary,
-  setSortOrder,
-  setFilterTracking,
-  setActiveTabId,
-  setFilterStatus,
-  setFilterSource,
-  sortOrder,
-  filterStatus,
-  filterSource,
-  filterTracking,
-  filterUnread,
-  matchesUnread,
-} from './library.js';
+import { initializeLibrary, setActiveTabId } from './library.js';
 
 const sortOrderSelect = document.getElementById('sort-order');
 const sortAscending = document.getElementById('sort-ascending');
@@ -26,20 +13,56 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 
 export function openSettingsModal() {
   this.firstChild.style.transform = 'rotate(90deg)';
-  sortOrderSelect.value = parseInt(sortOrder) < 64 ? sortOrder : parseInt(sortOrder) - 64;
-  sortAscending.checked = parseInt(sortOrder) >= 64;
-  for (const option of filterStatusSelect.options) {
-    if (filterStatus.includes(option.value)) {
-      option.selected = true;
+
+  DEV: console.log('Loading Settings from openSettingsModal');
+  const savedSettings = loadSettings();
+  DEV: console.log(savedSettings);
+  for (const [filter, val] of Object.entries(savedSettings['filters'])) {
+    switch (filter) {
+      case 'status':
+        for (const option of filterStatusSelect.options) {
+          if (val.includes(option.value)) {
+            option.selected = true;
+          }
+        }
+        break;
+      case 'unread':
+        consts.filterUnread.value = val;
+        break;
+      case 'source':
+        for (const option of filterSourceSelect.options) {
+          if (option.value.split(',').every(uid => val.includes(uid))) {
+            option.selected = true;
+          }
+        }
+        break;
+      case 'tracker':
+        filterTrackedSelect.value = val;
+        break;
+      default:
+        break;
     }
   }
-  for (const option of filterSourceSelect.options) {
-    if (option.value.split(',').every(uid => filterSource.includes(uid))) {
-      option.selected = true;
+  for (const [key, val] of Object.entries(savedSettings['sort'])) {
+    switch (key) {
+      case 'lirary':
+        sortOrder = val;
+        sortOrderSelect.value = sortOrder < 64 ? sortOrder : sortOrder - 64;
+        sortAscending.checked = sortOrder >= 64;
+        break;
+      case 'chapters':
+        if (val == 'asc') {
+          consts.chapterList.classList.remove('desc');
+        }
+        if (val == 'desc') {
+          if (!consts.chapterList.classList.contains('desc'))
+            consts.chapterList.classList.add('desc');
+        }
+        break;
+      default:
+        break;
     }
   }
-  filterTrackedSelect.value = filterTracking;
-  consts.filterUnread.value = filterUnread;
 
   showModal('settings-modal');
 }
@@ -50,11 +73,12 @@ export function closeSettingsModal() {
 }
 
 export function applySettings() {
+  DEV: console.log('Loading Settings from applySettings');
+  var settings = loadSettings();
   // Store the current active tab ID before reinitializing
   //window.activeTabId = document.querySelector('.tab-content.active').id;
   setActiveTabId(document.querySelector('.tab-content.active').id);
-  //window.sortOrder = sortOrderSelect.value;
-  setSortOrder(parseInt(sortOrderSelect.value) + (sortAscending.checked ? 64 : 0));
+  settings['sort']['library'] = parseInt(sortOrderSelect.value) + (sortAscending.checked ? 64 : 0);
 
   var tempFilterStatus = [];
   for (const option of filterStatusSelect.options) {
@@ -62,7 +86,9 @@ export function applySettings() {
       tempFilterStatus.push(option.value);
     }
   }
-  setFilterStatus(tempFilterStatus);
+  settings['filters']['status'] = tempFilterStatus;
+  // Save Unread filter
+  settings['filters']['unread'] = consts.filterUnread.value;
 
   var tempFilterSource = [];
   for (const option of filterSourceSelect.options) {
@@ -70,21 +96,48 @@ export function applySettings() {
       option.value.split(',').forEach(uid => tempFilterSource.push(uid));
     }
   }
-  setFilterSource(tempFilterSource);
+  settings['filters']['source'] = tempFilterSource;
 
-  //window.filterTracking = filterTrackedSelect.value;
-  setFilterTracking(filterTrackedSelect.value);
+  settings['filters']['tracker'] = filterTrackedSelect.value;
 
-  // Save sortOrder to local storage
-  localStorage.setItem('MBV_SortOrder', sortOrder);
+  console.log('Settings applied:', settings);
 
-  // Save Unread filter
-  matchesUnread();
-
-  //const highlightTracker = highlightTrackerCheckbox.checked;
-
-  console.log('Settings applied:', { sortOrder, filterStatus, filterSource, filterTracking });
-
+  saveSetting(settings);
   closeSettingsModal();
   initializeLibrary();
+}
+
+export function loadSettings() {
+  var settings = JSON.parse(
+    localStorage.getItem('settings') ||
+      `{
+        "filters": {
+          "status": ["-1"],
+          "unread": "all-entries",
+          "source": ["all"],
+          "tracker": "all-entries"
+        },
+        "sort": {
+          "library": 4
+        }
+      }`
+  );
+  const url = new URL(window.location);
+  url.searchParams.forEach((value, key) => (settings[key] = JSON.parse(value)));
+  DEV: console.log('Loaded settings:', settings);
+  return settings;
+}
+
+export function saveSetting(settingObj = {}) {
+  DEV: console.log('Loading Settings from saveSettings');
+  var settings = loadSettings();
+  const url = new URL(window.location);
+  for (const [key, value] of Object.entries(settingObj)) {
+    settings[key] = value;
+    // url.searchParams.set(key, JSON.stringify(value));
+  }
+  localStorage.setItem('settings', JSON.stringify(settings));
+  // if (url.toString() != window.location.toString())
+  //   window.history.replaceState(null, '', url.toString());
+  return settings;
 }

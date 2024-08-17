@@ -2,39 +2,34 @@ import consts from './constants.js';
 import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 import { deleteManga, toggleForkOnlyElements } from './editBackup.js';
+import { loadSettings } from './settings.js';
 
 const url = new URL(window.location);
-var filterStatus = ['-1'];
-var filterSource = ['all'];
-var filterTracking = 'all-entries';
-var sortOrder = parseInt(
-  url.searchParams.get('sort-order') || localStorage.getItem('MBV_SortOrder') || '64'
-);
-var filterUnread =
-  url.searchParams.get('filter-unread') || localStorage.getItem('FilterUnread') || 'all-entries';
-var activeTabId = null;
+export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
-
-export { filterStatus, filterTracking, filterSource, sortOrder, filterUnread, activeTabId };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById('edit-category-options');
+  DEV: console.log('Loading Settings from initializeLibrary');
+  const savedSettings = loadSettings();
 
   if (consts.fork.value !== 'mihon') {
     toggleForkOnlyElements();
   }
 
   mangaItems = mangaItems.filter(manga => {
+    const filters = savedSettings['filters'];
     let matchesStatus =
-      filterStatus.includes('-1') || filterStatus.includes(manga.status?.toString());
-    let matchesSource = filterSource.includes('all') || filterSource.includes(manga.source);
+      filters['status']?.includes('-1') || filters['status']?.includes(manga.status?.toString());
+    let matchesSource =
+      filters['source']?.includes('all') || filters['source']?.includes(manga.source);
     let matchesTracking =
-      filterTracking === 'all-entries' ||
-      (filterTracking === 'tracked' && manga.tracking) ||
-      (filterTracking === 'untracked' && !manga.tracking);
+      filters['tracker'] === 'all-entries' ||
+      (filters['tracker'] === 'tracked' && manga.tracking) ||
+      (filters['tracker'] === 'untracked' && !manga.tracking);
     let matchesSearch = search(
       consts.searchField.value,
       [
@@ -50,7 +45,7 @@ export function initializeLibrary() {
       matchesSource &&
       matchesTracking &&
       matchesSearch &&
-      matchesUnread(manga.chapters)
+      matchesUnread(manga.chapters, savedSettings['filters']['unread'])
     );
   });
 
@@ -128,9 +123,9 @@ export function initializeLibrary() {
   // Populate manga items into the correct tab content
   mangaItems
     .sort((a, b) => {
-      const i1 = sortOrder < 64 ? b : a;
-      const i2 = sortOrder < 64 ? a : b;
-      switch (consts.sortFlags[sortOrder]) {
+      const i1 = savedSettings['sort']['library'] < 64 ? b : a;
+      const i2 = savedSettings['sort']['library'] < 64 ? a : b;
+      switch (consts.sortFlags[savedSettings['sort']['library']]) {
         default:
         case 'Alphabetical':
           return i1.title.localeCompare(i2.title);
@@ -451,8 +446,8 @@ function showMangaDetails(manga, categories, source) {
   });
 
   consts.modalDescription.innerText = manga.customDescription || manga.description;
-  consts.modalDescription.parentNode.classList.remove('expanded');
-  consts.modalDescription.parentNode.style.maxHeight = 'var(--manga-desc-collapsed-height)';
+  consts.modalDescriptionDiv.classList.remove('expanded');
+  consts.modalDescriptionDiv.style.maxHeight = 'var(--manga-desc-collapsed-height)';
   document.getElementById('description-expand-icon').style.transform = 'none';
   consts.modalStatus.forEach(element => {
     element.innerHTML = '';
@@ -577,38 +572,10 @@ function mangaCover(manga) {
 export function setActiveTabId(data) {
   activeTabId = data;
 }
-export function setFilterStatus(data) {
-  filterStatus = data;
-}
-export function setFilterSource(data) {
-  filterSource = data;
-}
-export function setFilterTracking(data) {
-  filterTracking = data;
-}
-export function setSortOrder(data) {
-  sortOrder = data.toString();
-  url.searchParams.set('sort-order', data);
-  window.history.replaceState(data, '', url.toString());
-}
 
-export function matchesUnread(chapters = null) {
-  if (chapters === null) {
-    // Applying setting
-    filterUnread = consts.filterUnread.value;
-    if (filterUnread == 'all-entries') {
-      localStorage.removeItem('FilterUnread');
-      url.searchParams.delete('filter-unread');
-    } else {
-      localStorage.setItem('FilterUnread', filterUnread);
-      url.searchParams.set('filter-unread', filterUnread);
-    }
-    if (url.toString() != window.location.toString())
-      window.history.replaceState(null, '', url.toString());
-  }
-
+export function matchesUnread(chapters = null, unreadFilter = 'all-entries') {
   // Filtering from initializeLibrary()
-  switch (filterUnread) {
+  switch (unreadFilter) {
     case 'unread':
       return Boolean(chapters?.filter(c => !c.read).length);
     case 'read':
