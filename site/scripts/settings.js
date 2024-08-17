@@ -118,6 +118,7 @@ export function loadSettings() {
           "tracker": "all-entries"
         },
         "sort": {
+          "chapters": "asc",
           "library": 4
         }
       }`
