@@ -9,12 +9,11 @@
 
 This is a tool to explore your Mihon/Tachiyomi backup, optionally edit entries and save it as `.json` or `.tachibk`
 
-
 ## Self-Hosting
 
 1. Clone this repo
 2. To launch you'll need a webserver due to CORS policy. If you have Python installed, `launch.bat` will launch its built-in webserver and open the page.
-4. Load your own `.tachibk`, `.proto.gz` or their JSON-decoded versions. The demo data provided is in the latter format.
+3. Load your own `.tachibk`, `.proto.gz` or their JSON-decoded versions. The demo data provided is in the latter format.
 
 ## Contributing
 
@@ -30,8 +29,10 @@ Thank you to all the people who have contributed!
 </div>
 
 ## Credits
+
 Uses [Tachibk Converter](https://github.com/BrutuZ/tachibk-converter) to fetch schemas from:
-  - [Mihon](https://github.com/mihonapp/mihon)
-  - [TachiyomiSY](https://github.com/jobobby04/TachiyomiSY)
-  - [TachiyomiJ2K](https://github.com/Jays2Kings/tachiyomiJ2K)
-  - [Yōkai](https://github.com/null2264/yokai)
+
+- [Mihon](https://github.com/mihonapp/mihon)
+- [TachiyomiSY](https://github.com/jobobby04/TachiyomiSY)
+- [TachiyomiJ2K](https://github.com/Jays2Kings/tachiyomiJ2K)
+- [Yōkai](https://github.com/null2264/yokai)
