@@ -5,6 +5,7 @@ import * as esbuild from 'esbuild';
 await esbuild.build({
   entryPoints: ['site/*', 'site/schemas/*', 'site/img/**'],
   outdir: 'min',
+  drop: ['console'],
   dropLabels: ['DEV'],
   bundle: true,
   minify: true,
