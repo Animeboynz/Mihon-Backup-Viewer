@@ -14,7 +14,7 @@ export function initializeLibrary() {
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById('edit-category-options');
   DEV: console.log('Loading Settings from initializeLibrary');
-  const savedSettings = loadSettings(true);
+  const savedSettings = loadSettings();
 
   if (consts.fork.value !== 'mihon') {
     toggleForkOnlyElements();

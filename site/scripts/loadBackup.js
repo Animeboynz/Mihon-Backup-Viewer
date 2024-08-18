@@ -1,5 +1,6 @@
 import { closeModal, showModal } from './modals.js';
 import { initializeLibrary } from './library.js';
+import { loadSettings } from './settings.js';
 
 export function handleFileLoad(event, fork = 'mihon') {
   const file = event.target.files[0];
@@ -8,6 +9,7 @@ export function handleFileLoad(event, fork = 'mihon') {
   reader.onload = e => {
     const fileName = file.name; // Gets filename to check nested extensions e.g. proto.gz
     const extension = fileName.split('.').pop().toLowerCase(); // Used to check extensions (Future me replace with fileName.endsWith(''))
+    loadSettings(true);
 
     try {
       if (extension === 'json') {
@@ -62,8 +64,9 @@ export function loadDemoData() {
   fetch('../data.json')
     .then(response => response.json())
     .then(data => (window.data = data))
-    .then(data => initializeLibrary())
+    .then(() => loadSettings(true))
     .then(() => closeModal('load-modal'))
+    .then(data => initializeLibrary())
     .catch(error => {
       console.error('Error loading demo data:', error);
       showModal('load-modal');
