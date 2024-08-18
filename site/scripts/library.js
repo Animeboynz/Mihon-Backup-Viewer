@@ -255,8 +255,6 @@ export function initializeLibrary() {
     ? activeTabId
     : document.querySelector('.tab-content').id;
   showTab(tabToShow);
-  addOptionsFromData();
-  disableMissingStatusOptions();
 }
 
 export function search(searchQuery = '', text = '') {
@@ -315,57 +313,6 @@ export function showTab(tabId) {
 
   // Save the active tab ID
   activeTabId = tabId;
-}
-
-//Add Options to Settings modal
-function addOptionsFromData() {
-  // Get the filter-source select element
-
-  // Clear existing options (optional, if you want to remove the placeholder option)
-  consts.filterSource.innerHTML = '';
-
-  // Add the default "All Sources" option
-  let defaultOption = document.createElement('option');
-  defaultOption.value = 'all';
-  defaultOption.text = 'All Sources';
-  consts.filterSource.add(defaultOption);
-
-  // Iterate over the data and add options to the select element
-  [...new Set(window.data.backupSources.map(source => source.name))]
-    .sort()
-    .map(name => {
-      var obj = new Object();
-      obj.name = name;
-      obj.sourceId = window.data.backupSources
-        .filter(source => source.name === name)
-        .map(source => source.sourceId);
-      return obj;
-    })
-    .forEach(function (source) {
-      let newOption = document.createElement('option');
-      newOption.value = source.sourceId;
-      newOption.text = source.name;
-      consts.filterSource.add(newOption);
-    });
-}
-
-//Disable Missing Status Options for the Settings modal
-function disableMissingStatusOptions() {
-  // Get the filter-status select element
-  let filterStatus = document.getElementById('filter-status');
-
-  // Get the unique statuses from the data
-  let validStatuses = new Set(window.data.backupManga.map(manga => manga.status));
-
-  // Iterate over the options and disable those that are not in the validStatuses set
-  for (let i = 0; i < filterStatus.options.length; i++) {
-    let option = filterStatus.options[i];
-    if (option.value != '-1' && !validStatuses.has(parseInt(option.value))) {
-      option.disabled = true;
-    } else {
-      option.disabled = false;
-    }
-  }
 }
 
 //Adds info to Manga Details Modal
