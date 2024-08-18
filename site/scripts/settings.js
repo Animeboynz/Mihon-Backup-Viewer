@@ -12,63 +12,12 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 //filterTrackedSelect.addEventListener('change', applySettings);
 
 export function openSettingsModal() {
-  this.firstChild.style.transform = 'rotate(90deg)';
-
-  DEV: console.log('Loading Settings from openSettingsModal');
-  const savedSettings = loadSettings();
-  DEV: console.log(savedSettings);
-  for (const [filter, val] of Object.entries(savedSettings['filters'])) {
-    switch (filter) {
-      case 'status':
-        for (const option of filterStatusSelect.options) {
-          if (val.includes(option.value)) {
-            option.selected = true;
-          }
-        }
-        break;
-      case 'unread':
-        consts.filterUnread.value = val;
-        break;
-      case 'source':
-        for (const option of filterSourceSelect.options) {
-          if (option.value.split(',').every(uid => val.includes(uid))) {
-            option.selected = true;
-          }
-        }
-        break;
-      case 'tracker':
-        filterTrackedSelect.value = val;
-        break;
-      default:
-        break;
-    }
-  }
-  for (const [key, val] of Object.entries(savedSettings['sort'])) {
-    switch (key) {
-      case 'library':
-        sortOrder = val;
-        sortOrderSelect.value = sortOrder < 64 ? sortOrder : sortOrder - 64;
-        sortAscending.checked = sortOrder >= 64;
-        break;
-      case 'chapters':
-        if (val == 'asc') {
-          consts.chapterList.classList.remove('desc');
-        }
-        if (val == 'desc') {
-          if (!consts.chapterList.classList.contains('desc'))
-            consts.chapterList.classList.add('desc');
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
+  consts.settingsIcon.firstChild.style.transform = 'rotate(90deg)';
   showModal('settings-modal');
 }
 
 export function closeSettingsModal() {
-  document.getElementById('settings-icon').firstChild.style.transform = 'rotate(0deg)';
+  consts.settingsIcon.firstChild.style.transform = 'rotate(0deg)';
   closeModal('settings-modal');
 }
 
@@ -107,7 +56,7 @@ export function applySettings() {
   initializeLibrary();
 }
 
-export function loadSettings() {
+export function loadSettings(updateModal = false) {
   var settings = JSON.parse(
     localStorage.getItem('settings') ||
       `{
@@ -126,6 +75,53 @@ export function loadSettings() {
   // const url = new URL(window.location);
   // url.searchParams.forEach((value, key) => (settings[key] = JSON.parse(value)));
   DEV: console.log('Loaded settings:', settings);
+  if (updateModal) {
+    for (const [filter, val] of Object.entries(settings['filters'])) {
+      switch (filter) {
+        case 'status':
+          for (const option of filterStatusSelect.options) {
+            if (val.includes(option.value)) {
+              option.selected = true;
+            }
+          }
+          break;
+        case 'unread':
+          consts.filterUnread.value = val;
+          break;
+        case 'source':
+          for (const option of filterSourceSelect.options) {
+            if (option.value.split(',').every(uid => val.includes(uid))) {
+              option.selected = true;
+            }
+          }
+          break;
+        case 'tracker':
+          filterTrackedSelect.value = val;
+          break;
+        default:
+          break;
+      }
+    }
+    for (const [key, val] of Object.entries(settings['sort'])) {
+      switch (key) {
+        case 'library':
+          sortOrderSelect.value = val < 64 ? val : val - 64;
+          sortAscending.checked = val >= 64;
+          break;
+        case 'chapters':
+          if (val == 'asc') {
+            consts.chapterList.classList.remove('desc');
+          }
+          if (val == 'desc') {
+            if (!consts.chapterList.classList.contains('desc'))
+              consts.chapterList.classList.add('desc');
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
   return settings;
 }
 
