@@ -123,9 +123,10 @@ export function initializeLibrary() {
   // Populate manga items into the correct tab content
   mangaItems
     .sort((a, b) => {
-      const i1 = savedSettings['sort']['library'] < 64 ? b : a;
-      const i2 = savedSettings['sort']['library'] < 64 ? a : b;
-      switch (consts.sortFlags[savedSettings['sort']['library']]) {
+      const sortOrder = savedSettings['sort']['library'];
+      const i1 = sortOrder < 64 ? b : a;
+      const i2 = sortOrder < 64 ? a : b;
+      switch (consts.sortFlags[sortOrder]) {
         default:
         case 'Alphabetical':
           return i1.title.localeCompare(i2.title);
