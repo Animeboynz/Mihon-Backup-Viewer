@@ -1,27 +1,38 @@
 @echo off
 setlocal
 
-:: Check if Python is installed
-python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Python is not installed. Please install Python first.
-    pause
-    exit /b 1
-)
-
 :: Set the port number
-set "PORT=2403"
+set PORT=2403
 
-:: Get the directory of the batch file
-set "DIR=%~dp0"
+:: Check if Node is installed
+:checknode
+node --version >nul 2>&1 || goto :checkpython
+:: set Node command
+set EXEC=npx http-server -p %PORT% -c-1
+:: Skip to running the server
+goto :runserver
 
-:: Change to the directory of the batch file
-cd /d "%DIR%"
 
+:: Check if Python is installed
+:checkpython
+python --version >nul 2>&1 || goto :noserver
+:: Set Python command
+set EXEC=python -m http.server %PORT%
+:: Skip to running the server
+goto :runserver
+
+
+:: Abort if Node nor Python are installed
+:noserver
+echo No supported HTTP servers installed. Please install Node.js or Python.
+pause
+exit /b 1
+
+
+:runserver
 :: Start the web server
-start "Tachibk Viewer" "cmd.exe" /k "python -m http.server %PORT%"
-
-:: Open the default web browser with index.html
-start "" "http://localhost:%PORT%/site?demo=1"
+start "Tachibk Viewer" /D "%~dp0" "%COMSPEC%" /k "%EXEC%"
+:: Open the default web browser with the demo data
+start http://localhost:%PORT%/site?demo=1
 
 endlocal

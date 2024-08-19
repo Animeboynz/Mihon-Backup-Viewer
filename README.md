@@ -12,8 +12,9 @@ This is a tool to explore your Mihon/Tachiyomi backup, optionally edit entries a
 ## Self-Hosting
 
 1. Clone this repo
-2. To launch you'll need a webserver due to CORS policy. If you have Python installed, `launch.bat` will launch its built-in webserver and open the page.
-3. Load your own `.tachibk`, `.proto.gz` or their JSON-decoded versions. The demo data provided is in the latter format.
+2. To launch you'll need a webserver due to CORS policy.
+   - If you have Node.js or Python installed, `launch.bat` will launch one of their webservers and open the page.
+3. Load your own `.tachibk`, `.proto.gz` or its JSON-decoded version. The demo data provided is in the latter format.
 
 ## Contributing
 
