@@ -56,21 +56,7 @@ export function applySettings() {
 }
 
 export function loadSettings(updateModal = false) {
-  var settings = JSON.parse(
-    localStorage.getItem('settings') ||
-      `{
-        "filters": {
-          "status": ["-1"],
-          "unread": "all-entries",
-          "source": ["all"],
-          "tracker": "all-entries"
-        },
-        "sort": {
-          "chapters": "asc",
-          "library": 4
-        }
-      }`
-  );
+  var settings = JSON.parse(localStorage.getItem('settings')) || consts.defaultSettings;
   // const url = new URL(window.location);
   // url.searchParams.forEach((value, key) => (settings[key] = JSON.parse(value)));
   DEV: console.log('Loaded settings:', settings);
