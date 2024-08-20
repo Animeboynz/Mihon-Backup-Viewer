@@ -50,57 +50,56 @@ export function loadSettings(updateModal = false) {
   // const url = new URL(window.location);
   // url.searchParams.forEach((value, key) => (settings[key] = JSON.parse(value)));
   DEV: console.log('Loaded settings:', settings);
-  if (updateModal) {
-    console.log('Updating modal settings');
-    addOptionsFromData();
-    disableMissingStatusOptions();
-    for (const [filter, val] of Object.entries(settings['filters'])) {
-      switch (filter) {
-        case 'status':
-          for (const option of filterStatusSelect.options) {
-            if (val.includes(option.value)) {
-              option.selected = true;
-            }
+  if (!updateModal) return settings;
+
+  console.log('Updating modal settings');
+  addOptionsFromData();
+  disableMissingStatusOptions();
+  for (const [filter, val] of Object.entries(settings['filters'])) {
+    switch (filter) {
+      case 'status':
+        for (const option of filterStatusSelect.options) {
+          if (val.includes(option.value)) {
+            option.selected = true;
           }
-          break;
-        case 'unread':
-          consts.filterUnread.value = val;
-          break;
-        case 'source':
-          for (const option of consts.filterSource.options) {
-            if (option.value.split(',').every(uid => val.includes(uid))) {
-              option.selected = true;
-            }
+        }
+        break;
+      case 'unread':
+        consts.filterUnread.value = val;
+        break;
+      case 'source':
+        for (const option of consts.filterSource.options) {
+          if (option.value.split(',').every(uid => val.includes(uid))) {
+            option.selected = true;
           }
-          break;
-        case 'tracker':
-          filterTrackedSelect.value = val;
-          break;
-        default:
-          break;
-      }
-    }
-    for (const [key, val] of Object.entries(settings['sort'])) {
-      switch (key) {
-        case 'library':
-          sortOrderSelect.value = val < 64 ? val : val - 64;
-          sortAscending.checked = val >= 64;
-          break;
-        case 'chapters':
-          if (val == 'asc') {
-            consts.chapterList.classList.remove('desc');
-          }
-          if (val == 'desc') {
-            if (!consts.chapterList.classList.contains('desc'))
-              consts.chapterList.classList.add('desc');
-          }
-          break;
-        default:
-          break;
-      }
+        }
+        break;
+      case 'tracker':
+        filterTrackedSelect.value = val;
+        break;
+      default:
+        break;
     }
   }
-  return settings;
+  for (const [key, val] of Object.entries(settings['sort'])) {
+    switch (key) {
+      case 'library':
+        sortOrderSelect.value = val < 64 ? val : val - 64;
+        sortAscending.checked = val >= 64;
+        break;
+      case 'chapters':
+        if (val == 'asc') {
+          consts.chapterList.classList.remove('desc');
+        }
+        if (val == 'desc') {
+          if (!consts.chapterList.classList.contains('desc'))
+            consts.chapterList.classList.add('desc');
+        }
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 export function saveSetting(settingObj = {}) {
