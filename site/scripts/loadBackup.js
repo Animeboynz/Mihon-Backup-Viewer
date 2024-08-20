@@ -13,6 +13,7 @@ export function handleFileLoad(event, fork = 'mihon') {
     try {
       if (extension === 'json') {
         window.data = JSON.parse(e.target.result);
+        DEV: console.log('Loading Settings from loadBackup JSON');
         loadSettings(true);
         initializeLibrary(); // Initialises Library with loaded JSON
         closeModal('load-modal'); // Closes the Load Modal
@@ -38,6 +39,7 @@ export function handleFileLoad(event, fork = 'mihon') {
                 enums: String,
                 bytes: String,
               });
+              DEV: console.log('Loading Settings from loadBackup TACHIBK');
               loadSettings(true);
               initializeLibrary(); // Initialises Library with the Converter protobuf
               closeModal('load-modal'); // Closes the Load Modal
