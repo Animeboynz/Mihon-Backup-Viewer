@@ -1,8 +1,7 @@
 import { closeModal, showModal } from './modals.js';
 import { initializeLibrary } from './library.js';
 
-export function handleFileLoad(event, fork = 'mihon') {
-  const file = event.target.files[0];
+export function handleFileLoad(file, fork = 'mihon') {
   const reader = new FileReader();
 
   reader.onload = e => {
