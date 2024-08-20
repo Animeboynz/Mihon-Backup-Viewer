@@ -3,6 +3,7 @@
   padding-top: 0.5em;
 }
 #upload-area {
+  background-color: #444;
   border: 2px dashed #fff;
   border-radius: 10px;
   cursor: pointer;
