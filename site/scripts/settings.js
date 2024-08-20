@@ -41,7 +41,7 @@ export function applySettings() {
   console.log('Settings applied:', settings);
 
   saveSetting(settings);
-  closeSettingsModal();
+  closeModal('settings-modal');
   initializeLibrary();
 }
 

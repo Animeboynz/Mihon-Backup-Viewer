@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       event.target === consts.settingsModal &&
       consts.settingsModal.classList.contains('active')
     ) {
-      closeSettingsModal();
+      closeModal('settings-modal');
     }
   });
 
