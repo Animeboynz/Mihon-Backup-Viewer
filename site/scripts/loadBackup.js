@@ -9,11 +9,11 @@ export function handleFileLoad(event, fork = 'mihon') {
   reader.onload = e => {
     const fileName = file.name; // Gets filename to check nested extensions e.g. proto.gz
     const extension = fileName.split('.').pop().toLowerCase(); // Used to check extensions (Future me replace with fileName.endsWith(''))
-    loadSettings(true);
 
     try {
       if (extension === 'json') {
         window.data = JSON.parse(e.target.result);
+        loadSettings(true);
         initializeLibrary(); // Initialises Library with loaded JSON
         closeModal('load-modal'); // Closes the Load Modal
       } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
@@ -38,6 +38,7 @@ export function handleFileLoad(event, fork = 'mihon') {
                 enums: String,
                 bytes: String,
               });
+              loadSettings(true);
               initializeLibrary(); // Initialises Library with the Converter protobuf
               closeModal('load-modal'); // Closes the Load Modal
             } catch (error) {
