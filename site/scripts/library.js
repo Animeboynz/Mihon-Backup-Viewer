@@ -15,13 +15,13 @@ export function initializeLibrary() {
   const editCategoryOptions = document.getElementById('edit-category-options');
   DEV: console.log('Loading Settings from initializeLibrary');
   const savedSettings = loadSettings();
+  const filters = savedSettings['filters'];
 
   if (consts.fork.value !== 'mihon') {
     toggleForkOnlyElements();
   }
 
   mangaItems = mangaItems.filter(manga => {
-    const filters = savedSettings['filters'];
     let matchesStatus =
       filters['status']?.includes('-1') || filters['status']?.includes(manga.status?.toString());
     let matchesSource =
@@ -30,22 +30,18 @@ export function initializeLibrary() {
       filters['tracker'] === 'all-entries' ||
       (filters['tracker'] === 'tracked' && manga.tracking) ||
       (filters['tracker'] === 'untracked' && !manga.tracking);
-    let matchesSearch = search(
-      consts.searchField.value,
-      [
-        manga.title,
-        manga.artist || '',
-        manga.author || '',
-        manga.description || '',
-        manga.genre?.join('\n') || '',
-      ].join('\n')
-    );
+    let matchesSearch = search(consts.searchField.value, manga);
+    if (filters != consts.defaultSettings.filters) {
+      consts.settingsIcon.classList.add('filtered');
+    } else {
+      consts.settingsIcon.classList.remove('filtered');
+    }
     return (
       matchesStatus &&
       matchesSource &&
       matchesTracking &&
       matchesSearch &&
-      matchesUnread(manga.chapters, savedSettings['filters']['unread'])
+      matchesUnread(manga.chapters, filters.unread)
     );
   });
 
@@ -257,8 +253,15 @@ export function initializeLibrary() {
   showTab(tabToShow);
 }
 
-export function search(searchQuery = '', text = '') {
+export function search(searchQuery = '', manga = { title: '' }) {
   let results = [];
+  const searchTarget = [
+    manga.title || '',
+    manga.artist || '',
+    manga.author || '',
+    manga.description || '',
+    manga.genre?.join('\n') || '',
+  ].join('\n');
   const queryParams = searchQuery
     .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
     .matchAll(
@@ -270,16 +273,16 @@ export function search(searchQuery = '', text = '') {
       group.phrase || group.excludephrase
         ? new RegExp(`\\b${group.phrase || group.excludephrase}\\b`, 'gi')
         : new RegExp(group.word || group.exclude, 'gi');
-    if (group.excludephrase || group.exclude) results.push(text.match(re) === null);
-    if (group.phrase || group.word) results.push(text.match(re) !== null);
+    if (group.excludephrase || group.exclude) results.push(searchTarget.match(re) === null);
+    if (group.phrase || group.word) results.push(searchTarget.match(re) !== null);
   }
 
   if (searchQuery) {
     url.searchParams.set('search', searchQuery);
-    consts.searchButton.setAttribute('style', 'color: var(--color-filter-active);');
+    consts.searchButton.classList.add('filtered');
   } else {
     url.searchParams.delete('search');
-    consts.searchButton.removeAttribute('style');
+    consts.searchButton.classList.remove('filtered');
   }
 
   if (url.toString() != window.location.toString())

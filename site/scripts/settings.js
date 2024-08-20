@@ -10,16 +10,6 @@ const filterTrackedSelect = document.getElementById('filter-tracked');
 
 //filterTrackedSelect.addEventListener('change', applySettings);
 
-export function openSettingsModal() {
-  consts.settingsIcon.firstChild.style.transform = 'rotate(90deg)';
-  showModal('settings-modal');
-}
-
-export function closeSettingsModal() {
-  consts.settingsIcon.firstChild.style.transform = 'rotate(0deg)';
-  closeModal('settings-modal');
-}
-
 export function applySettings() {
   DEV: console.log('Loading Settings from applySettings');
   var settings = loadSettings();

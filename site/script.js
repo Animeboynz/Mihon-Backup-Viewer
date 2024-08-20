@@ -3,19 +3,14 @@ import { dlJSON, encodeToProtobuf } from './scripts/export.js';
 import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
 import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
-import {
-  openSettingsModal,
-  closeSettingsModal,
-  applySettings,
-  saveSetting,
-} from './scripts/settings.js';
+import { applySettings, saveSetting } from './scripts/settings.js';
 
 var searchCooldown;
 
 document.addEventListener('DOMContentLoaded', () => {
   consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork.value)); //Handles File Loading
-  consts.settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
-  consts.closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
+  consts.settingsIcon.addEventListener('click', showModal.bind(null, 'settings-modal')); // Opens settings modal on click
+  consts.closeSettingsModalBtn.addEventListener('click', closeModal.bind(null, 'settings-modal')); //Closes settings modal on click
   consts.applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
   consts.dlJSONBtn.addEventListener('click', dlJSON); // Downloads backup as JSON on click
   consts.dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(consts.fork.value)); // Downloads backup as Protobuf on click
