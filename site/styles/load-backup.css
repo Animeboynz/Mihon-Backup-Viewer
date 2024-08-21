@@ -2,6 +2,20 @@
 #load-modal h2 {
   padding-top: 0.5em;
 }
-#file-input {
-  margin: 10px 0;
+#upload-area {
+  background-color: var(--color-button-bg);
+  border: 0.15em dashed #fff;
+  border-radius: 0.6em;
+  cursor: pointer;
+  left: calc(50% - 9.375em);
+  margin-top: 0.6em;
+  position: relative;
+  text-align: center;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+  width: 18.75em;
+}
+#upload-area.dragover {
+  background-color: var(--color-button-bg-hover);
 }

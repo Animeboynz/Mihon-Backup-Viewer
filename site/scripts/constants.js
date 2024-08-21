@@ -27,6 +27,7 @@ export default {
   },
   // File Load
   fileInput: document.querySelector('#file-input'),
+  fileUploadArea: document.querySelector('#upload-area'),
   fork: document.querySelector('#fork-select'),
   loadBackup: document.querySelector('#load-backup'),
   // Modals

@@ -6,9 +6,23 @@ import { initializeLibrary, toggleExpandDescription } from './scripts/library.js
 import { openSettingsModal, closeSettingsModal, applySettings } from './scripts/settings.js';
 
 var searchCooldown;
+const fileUploadArea = consts.fileUploadArea;
 
 document.addEventListener('DOMContentLoaded', () => {
-  consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork.value)); //Handles File Loading
+  consts.fileInput.addEventListener('change', e =>
+    handleFileLoad(e.target.files[0], consts.fork.value)
+  ); //Handles File Loading
+  fileUploadArea.addEventListener('click', () => consts.fileInput.click());
+  fileUploadArea.addEventListener('dragover', e => {
+    e.preventDefault();
+    fileUploadArea.classList.add('dragover');
+  });
+  fileUploadArea.addEventListener('dragleave', () => fileUploadArea.classList.remove('dragover'));
+  fileUploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    fileUploadArea.classList.remove('dragover');
+    handleFileLoad(e.dataTransfer.files[0], consts.fork.value);
+  });
   consts.settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
   consts.closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
   consts.applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
