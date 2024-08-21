@@ -3,22 +3,19 @@
   padding-top: 0.5em;
 }
 #upload-area {
-  background-color: #444;
-  border: 2px dashed #fff;
-  border-radius: 10px;
+  background-color: var(--color-button-bg);
+  border: 0.15em dashed #fff;
+  border-radius: 0.6em;
   cursor: pointer;
-  left: calc(50% - 150px);
-  margin-top: 10px;
+  left: calc(50% - 9.375em);
+  margin-top: 0.6em;
   position: relative;
   text-align: center;
   transition:
     background-color 0.3s,
     border-color 0.3s;
-  width: 300px;
+  width: 18.75em;
 }
 #upload-area.dragover {
-  background-color: #555;
-}
-#upload-area input[type='file'] {
-  display: none;
+  background-color: var(--color-button-bg-hover);
 }
