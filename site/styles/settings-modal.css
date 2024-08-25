@@ -15,6 +15,11 @@
   transition: transform 0.4s;
 }
 
+.settings-icon.filtered,
+.search-icon.filtered {
+  color: var(--color-filter-active);
+}
+
 .switch {
   display: inline-block;
   height: 20px;

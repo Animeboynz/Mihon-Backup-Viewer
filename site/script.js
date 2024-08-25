@@ -3,20 +3,27 @@ import { dlJSON, encodeToProtobuf } from './scripts/export.js';
 import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
 import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
-import { openSettingsModal, closeSettingsModal, applySettings } from './scripts/settings.js';
+import { applySettings, saveSetting } from './scripts/settings.js';
 
 var searchCooldown;
 
 document.addEventListener('DOMContentLoaded', () => {
   consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork.value)); //Handles File Loading
-  consts.settingsIcon.addEventListener('click', openSettingsModal); // Opens settings modal on click
-  consts.closeSettingsModalBtn.addEventListener('click', closeSettingsModal); //Closes settings modal on click
+  consts.settingsIcon.addEventListener('click', showModal.bind(null, 'settings-modal')); // Opens settings modal on click
+  consts.closeSettingsModalBtn.addEventListener('click', closeModal.bind(null, 'settings-modal')); //Closes settings modal on click
   consts.applySettingsBtn.addEventListener('click', applySettings); // Applies settings modal on click
   consts.dlJSONBtn.addEventListener('click', dlJSON); // Downloads backup as JSON on click
   consts.dlTachibkBtn.addEventListener('click', e => encodeToProtobuf(consts.fork.value)); // Downloads backup as Protobuf on click
   consts.closeSettingsBtn.addEventListener('click', closeModal.bind(null, 'manga-modal')); // Closes the Manga Model is the X button is pressed
   consts.expandDescriptionArrow.addEventListener('click', toggleExpandDescription); // Expands manga description on click
-  consts.sortButton.addEventListener('click', () => consts.chapterList.classList.toggle('desc')); // Sort chapters
+  consts.sortButton.addEventListener('click', () => {
+    consts.chapterList.classList.toggle('desc');
+    saveSetting({
+      sort: {
+        chapters: consts.chapterList.classList.contains('desc') ? 'desc' : 'asc',
+      },
+    });
+  }); // Sort chapters
   consts.loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
     window.data = null;
@@ -47,12 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
       event.target === consts.settingsModal &&
       consts.settingsModal.classList.contains('active')
     ) {
-      closeSettingsModal();
+      closeModal('settings-modal');
     }
   });
 
   // Auto-load demo data if `?demo=1` is passed
   // Show the load modal otherwise
-  DEV: if (consts.urlParams.get('demo') == '1') loadDemoData();
+  DEV: if (new URLSearchParams(window.location.search).get('demo') == '1') loadDemoData();
   showModal('load-modal');
 });

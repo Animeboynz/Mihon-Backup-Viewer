@@ -1,6 +1,5 @@
 export default {
   // ----- GLOBALS -----
-  urlParams: new URLSearchParams(window.location.search),
   sortFlags: {
     // Descending
     0: 'Alphabetical',
@@ -62,6 +61,10 @@ export default {
   tabsContainer: document.querySelector('#tabs'),
   tabContentsContainer: document.querySelector('#tab-contents'),
   // Settings
+  defaultSettings: {
+    filters: { status: ['-1'], unread: 'all-entries', source: ['all'], tracker: 'all-entries' },
+    sort: { chapters: 'asc', library: 64 },
+  },
   settingsIcon: document.querySelector('#settings-icon'),
   closeSettingsModalBtn: document.querySelector('#close-settings-modal'),
   applySettingsBtn: document.querySelector('#apply-settings'),
