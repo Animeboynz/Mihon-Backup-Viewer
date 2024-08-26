@@ -25,7 +25,7 @@ message BackupCategory {
   required string name = 1;
   optional int32 order = 2;
   optional int32 flags = 100;
-  optional Char mangaSort = 800;
+  optional string mangaSort = 800;
 }
 
 // BackupChapter.kt
