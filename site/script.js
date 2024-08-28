@@ -3,7 +3,7 @@ import { dlJSON, encodeToProtobuf } from './scripts/export.js';
 import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
 import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
-import { applySettings, saveSetting } from './scripts/settings.js';
+import { applySettings, loadSettings, saveSetting } from './scripts/settings.js';
 
 var searchCooldown;
 
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchCooldown = setTimeout(initializeLibrary, 1300);
   });
 
-  // Closes Modal
+  // Closes Modals when clicking outside
   document.addEventListener('mousedown', event => {
     if (event.target === consts.mangaModal && consts.mangaModal.classList.contains('active')) {
       closeModal('manga-modal');
@@ -62,4 +62,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show the load modal otherwise
   DEV: if (new URLSearchParams(window.location.search).get('demo') == '1') loadDemoData();
   showModal('load-modal');
+  consts.fork.value = loadSettings()['lastFork'];
 });

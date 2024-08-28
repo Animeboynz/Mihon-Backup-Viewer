@@ -1,6 +1,6 @@
 import { closeModal, showModal } from './modals.js';
 import { initializeLibrary } from './library.js';
-import { loadSettings } from './settings.js';
+import { saveSetting } from './settings.js';
 
 export function handleFileLoad(event, fork = 'mihon') {
   const file = event.target.files[0];
@@ -13,8 +13,7 @@ export function handleFileLoad(event, fork = 'mihon') {
     try {
       if (extension === 'json') {
         window.data = JSON.parse(e.target.result);
-        DEV: console.log('Loading Settings from loadBackup JSON');
-        loadSettings(true);
+        saveSetting({ lastFork: fork }, true);
         initializeLibrary(); // Initialises Library with loaded JSON
         closeModal('load-modal'); // Closes the Load Modal
       } else if (extension === 'tachibk' || fileName.endsWith('.proto.gz')) {
@@ -39,8 +38,7 @@ export function handleFileLoad(event, fork = 'mihon') {
                 enums: String,
                 bytes: String,
               });
-              DEV: console.log('Loading Settings from loadBackup TACHIBK');
-              loadSettings(true);
+              saveSetting({ lastFork: fork }, true);
               initializeLibrary(); // Initialises Library with the Converter protobuf
               closeModal('load-modal'); // Closes the Load Modal
             } catch (error) {

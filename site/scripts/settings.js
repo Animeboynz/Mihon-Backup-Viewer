@@ -100,11 +100,12 @@ export function loadSettings(updateModal = false) {
         break;
     }
   }
+  return settings;
 }
 
-export function saveSetting(settingObj = {}) {
+export function saveSetting(settingObj = {}, updateModal = false) {
   DEV: console.log('Loading Settings from saveSettings');
-  var settings = loadSettings();
+  var settings = loadSettings(updateModal);
   // const url = new URL(window.location);
   for (const [key, value] of Object.entries(settingObj)) {
     settings[key] = value;

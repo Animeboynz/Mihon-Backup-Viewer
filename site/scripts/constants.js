@@ -64,6 +64,7 @@ export default {
   defaultSettings: {
     filters: { status: ['-1'], unread: 'all-entries', source: ['all'], tracker: 'all-entries' },
     sort: { chapters: 'asc', library: 64 },
+    lastFork: 'mihon',
   },
   settingsIcon: document.querySelector('#settings-icon'),
   closeSettingsModalBtn: document.querySelector('#close-settings-modal'),
