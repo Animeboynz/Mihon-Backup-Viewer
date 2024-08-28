@@ -31,11 +31,6 @@ export function initializeLibrary() {
       (filters['tracker'] === 'tracked' && manga.tracking) ||
       (filters['tracker'] === 'untracked' && !manga.tracking);
     let matchesSearch = search(consts.searchField.value, manga);
-    if (filters != consts.defaultSettings.filters) {
-      consts.settingsIcon.classList.add('filtered');
-    } else {
-      consts.settingsIcon.classList.remove('filtered');
-    }
     return (
       matchesStatus &&
       matchesSource &&
@@ -44,6 +39,16 @@ export function initializeLibrary() {
       matchesUnread(manga.chapters, filters.unread)
     );
   });
+  if (
+    Object.keys(filters).every(
+      // Need to stringify because Arrays don't match
+      k => filters[k].toString() == consts.defaultSettings.filters[k].toString()
+    )
+  ) {
+    consts.settingsIcon.classList.remove('filtered');
+  } else {
+    consts.settingsIcon.classList.add('filtered');
+  }
 
   // Sets the order to 0 if a category has no order property
   if (categories[0] && !categories[0].hasOwnProperty('order')) categories[0].order = '0';
