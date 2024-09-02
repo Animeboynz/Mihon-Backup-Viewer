@@ -14,7 +14,6 @@ message PreferenceValue {
 message Backup {
   repeated BackupManga backupManga = 1;
   repeated BackupCategory backupCategories = 2;
-  repeated BrokenBackupSource backupBrokenSources = 100;
   repeated BackupSource backupSources = 101;
   repeated BackupPreference backupPreferences = 104;
   repeated BackupSourcePreferences backupSourcePreferences = 105;
@@ -68,12 +67,6 @@ message BackupHistory {
   optional int64 readDuration = 3;
 }
 
-message BrokenBackupHistory {
-  required string url = 1;
-  required int64 lastRead = 2;
-  optional int64 readDuration = 3;
-}
-
 // BackupManga.kt
 message BackupManga {
   required int64 source = 1;
@@ -92,7 +85,6 @@ message BackupManga {
   repeated BackupTracking tracking = 18;
   optional bool favorite = 100;
   optional int32 chapterFlags = 101;
-  repeated BrokenBackupHistory brokenHistory = 102;
   optional int32 viewer_flags = 103;
   repeated BackupHistory history = 104;
   optional UpdateStrategy updateStrategy = 105;
@@ -168,11 +160,6 @@ message BackupSavedSearch {
 
 // BackupSource.kt
 message BackupSource {
-  optional string name = 1;
-  required int64 sourceId = 2;
-}
-
-message BrokenBackupSource {
   optional string name = 1;
   required int64 sourceId = 2;
 }
