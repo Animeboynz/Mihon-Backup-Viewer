@@ -26,6 +26,12 @@
   z-index: 0;
 }
 
+#manga-modal span.link-icon {
+  font-size: 0.5em;
+  margin: 0 0 0 0.25rem;
+  vertical-align: super;
+}
+
 .manga-meta {
   position: relative;
   text-align: justify;
@@ -64,13 +70,11 @@
   text-align: right;
 }
 
-#manga-title-link {
+#manga-title-link,
+#manga-source > a,
+#manga-chapters a {
   color: white;
   text-decoration: none;
-}
-
-#manga-title-link:hover {
-  text-decoration: underline;
 }
 
 #manga-title {

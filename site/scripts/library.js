@@ -201,7 +201,6 @@ export function initializeLibrary() {
         const cover = document.createElement('img');
         cover.loading = 'lazy';
         cover.src = mangaCover(manga);
-        if (!cover.src.match(httpRegex)) cover.removeAttribute('src');
         cover.alt = '';
         const entryTitle = document.createElement('p');
         entryTitle.innerText = titleTrimmed;
@@ -238,7 +237,9 @@ export function initializeLibrary() {
           showMangaDetails(
             manga,
             window.data.backupCategories,
-            window.data.backupSources.find(source => source.sourceId === manga.source).name
+            repoData?.find(entry => entry.id == manga.source)
+              ? repoData?.find(entry => entry.id == manga.source)
+              : window.data.backupSources.find(source => source.sourceId === manga.source)
           );
         });
         mangaItem.addEventListener('mouseenter', event => {
@@ -329,16 +330,29 @@ export function showTab(tabId) {
 //Adds info to Manga Details Modal
 function showMangaDetails(manga, categories, source) {
   const repoMatch = repoData?.find(entry => entry.id == manga.source);
+  const newWindowIcon = addMaterialSymbol(null, 'open_in_new');
+  newWindowIcon.classList.add('link-icon');
   consts.modalTitle.forEach(element => {
     element.textContent = manga.customTitle || manga.title;
     element.parentNode.removeAttribute('href');
-    if (manga.url.match(httpRegex)) element.parentNode.href = manga.url;
-    else if (repoMatch) element.parentNode.href = repoMatch.baseUrl + manga.url;
+    if (manga.url.match(httpRegex)) {
+      element.parentNode.href = manga.url;
+      element.appendChild(newWindowIcon.cloneNode(true));
+    } else if (repoMatch) {
+      element.parentNode.href = repoMatch.baseUrl + manga.url;
+      element.appendChild(newWindowIcon.cloneNode(true));
+    }
   });
   consts.modalSource.forEach(element => {
     element.innerHTML = '';
     addMaterialSymbol(element, 'language');
-    element.append(source);
+    if (source.baseUrl) {
+      const link = document.createElement('a');
+      link.setAttribute('href', source.baseUrl);
+      link.append(`${source.name} (${source.lang.toUpperCase()})`);
+      link.appendChild(newWindowIcon.cloneNode(true));
+      element.append(link);
+    } else element.append(source.name);
   });
   consts.modalThumb.forEach(element => (element.src = mangaCover(manga)));
   document.documentElement.style.setProperty(
@@ -468,13 +482,16 @@ function showMangaDetails(manga, categories, source) {
       const chapterBox = document.createElement('div');
       chapterBox.className = 'chapter-box';
 
-      const chapterName = document.createElement(
-        chapter.url.match(httpRegex) || repoMatch ? 'a' : 'div'
-      );
-      chapterName.target = '_blank';
-      if (chapter.url.match(httpRegex)) chapterName.href = chapter.url;
-      else if (repoMatch) chapterName.href = repoMatch.baseUrl + chapter.url;
-      chapterName.textContent = chapter.name;
+      const chapterName = document.createElement('div');
+      if (chapter.url.match(httpRegex) || repoMatch) {
+        const chapterLink = document.createElement('a');
+        chapterLink.target = '_blank';
+        if (repoMatch) chapterLink.href = repoMatch.baseUrl + chapter.url;
+        else chapterLink.href = chapter.url;
+        chapterLink.textContent = chapter.name;
+        chapterLink.appendChild(newWindowIcon.cloneNode(true));
+        chapterName.appendChild(chapterLink);
+      } else chapterName.textContent = chapter.name;
       if (chapter.read) {
         chapterName.classList.add('read');
       }
