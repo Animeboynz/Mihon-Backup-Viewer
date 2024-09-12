@@ -7,9 +7,11 @@ import { loadSettings } from './settings.js';
 const url = new URL(window.location);
 export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
+var repoData = false;
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
+  if (!repoData) repoData = getRepoIndex();
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById('edit-category-options');
@@ -199,6 +201,7 @@ export function initializeLibrary() {
         const cover = document.createElement('img');
         cover.loading = 'lazy';
         cover.src = mangaCover(manga);
+        if (!cover.src.match(httpRegex)) cover.removeAttribute('src');
         cover.alt = '';
         const entryTitle = document.createElement('p');
         entryTitle.innerText = titleTrimmed;
@@ -325,7 +328,13 @@ export function showTab(tabId) {
 
 //Adds info to Manga Details Modal
 function showMangaDetails(manga, categories, source) {
-  consts.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
+  const repoMatch = repoData?.find(entry => entry.id == manga.source);
+  consts.modalTitle.forEach(element => {
+    element.textContent = manga.customTitle || manga.title;
+    element.parentNode.removeAttribute('href');
+    if (manga.url.match(httpRegex)) element.parentNode.href = manga.url;
+    else if (repoMatch) element.parentNode.href = repoMatch.baseUrl + manga.url;
+  });
   consts.modalSource.forEach(element => {
     element.innerHTML = '';
     addMaterialSymbol(element, 'language');
@@ -459,22 +468,23 @@ function showMangaDetails(manga, categories, source) {
       const chapterBox = document.createElement('div');
       chapterBox.className = 'chapter-box';
 
-      const chapterLink = document.createElement(chapter.url.match(httpRegex) ? 'a' : 'div');
-      if (chapter.url.match(httpRegex)) {
-        chapterLink.href = chapter.url;
-        chapterLink.target = '_blank';
-      }
-      chapterLink.textContent = chapter.name;
+      const chapterName = document.createElement(
+        chapter.url.match(httpRegex) || repoMatch ? 'a' : 'div'
+      );
+      chapterName.target = '_blank';
+      if (chapter.url.match(httpRegex)) chapterName.href = chapter.url;
+      else if (repoMatch) chapterName.href = repoMatch.baseUrl + chapter.url;
+      chapterName.textContent = chapter.name;
       if (chapter.read) {
-        chapterLink.classList.add('read');
+        chapterName.classList.add('read');
       }
       if (chapter.scanlator) {
         const chapterScanlator = document.createElement('div');
         chapterScanlator.classList.add('scanlator');
         chapterScanlator.textContent = chapter.scanlator;
-        chapterLink.appendChild(chapterScanlator);
+        chapterName.appendChild(chapterScanlator);
       }
-      chapterBox.appendChild(chapterLink);
+      chapterBox.appendChild(chapterName);
 
       if (Array.isArray(manga.history)) {
         const historyItem = manga.history.find(history => history.url === chapter.url);
@@ -704,3 +714,52 @@ document.addEventListener('click', event => {
     hideEditMenu();
   }
 });
+
+// Fetch repo from saved settings
+function getRepoFromSettings() {
+  const repoSetting = window.data.backupPreferences?.find(s => s.key == 'extension_repos');
+  if (!repoSetting) return false;
+  const newList = [];
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  try {
+    const byteArray = encoder.encode(atob(repoSetting.value.truevalue));
+    byteArray.forEach(byte => {
+      if (byte == byteArray[0]) newList.push([]);
+      else newList[newList.length - 1].push(byte);
+    });
+    newList.forEach((item, index) => {
+      newList[index] = decoder.decode(new Uint8Array(item.slice(1)));
+    });
+  } catch {
+    console.log('Malformed repo field');
+    return false;
+  }
+  return newList;
+}
+
+function getRepoIndex() {
+  const repoUrls = getRepoFromSettings();
+  if (!repoUrls) return [];
+  const sources =
+    consts.fork == 'sy'
+      ? [
+          { id: '6901', baseUrl: 'https://e-hentai.org', language: 'all' },
+          { id: '6902', baseUrl: 'https://exhentai.org', language: 'all' },
+        ]
+      : [];
+  repoUrls.forEach(repoUrl => {
+    // fetch(`../index.min.json`)
+    fetch(`${repoUrl}/index.min.json`)
+      .then(response => response.json())
+      .then(response =>
+        response.forEach(pkg => {
+          pkg.sources.forEach(source =>
+            sources.push({ id: source.id, baseUrl: source.baseUrl, language: source.lang })
+          );
+        })
+      )
+      .catch(e => alert(`Error fetching the repo list. ${e}`));
+  });
+  return sources;
+}

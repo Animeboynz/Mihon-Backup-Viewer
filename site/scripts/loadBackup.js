@@ -1,6 +1,6 @@
 import { closeModal, showModal } from './modals.js';
 import { initializeLibrary } from './library.js';
-import { saveSetting } from './settings.js';
+import { loadSettings, saveSetting } from './settings.js';
 
 export function handleFileLoad(event, fork = 'mihon') {
   const file = event.target.files[0];

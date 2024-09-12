@@ -64,6 +64,15 @@
   text-align: right;
 }
 
+#manga-title-link {
+  color: white;
+  text-decoration: none;
+}
+
+#manga-title-link:hover {
+  text-decoration: underline;
+}
+
 #manga-title {
   margin-bottom: 8px;
   text-align: start;
