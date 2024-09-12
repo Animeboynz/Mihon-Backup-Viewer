@@ -741,6 +741,7 @@ function getRepoFromSettings() {
 function getRepoIndex() {
   const repoUrls = getRepoFromSettings();
   if (!repoUrls) return [];
+  const usedSources = window.data.backupSources?.map(source => source.sourceId);
   const sources =
     consts.fork == 'sy'
       ? [
@@ -754,9 +755,10 @@ function getRepoIndex() {
       .then(response => response.json())
       .then(response =>
         response.forEach(pkg => {
-          pkg.sources.forEach(source =>
-            sources.push({ id: source.id, baseUrl: source.baseUrl, language: source.lang })
-          );
+          pkg.sources.forEach(source => {
+            if (usedSources && usedSources.length && !usedSources.includes(source.id)) return;
+            sources.push(source);
+          });
         })
       )
       .catch(e => alert(`Error fetching the repo list. ${e}`));
