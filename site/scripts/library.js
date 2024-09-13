@@ -7,7 +7,7 @@ import { loadSettings } from './settings.js';
 const url = new URL(window.location);
 export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
-var repoData = false;
+var repoData = null;
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
