@@ -7,9 +7,11 @@ import { loadSettings } from './settings.js';
 const url = new URL(window.location);
 export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
+var repoData = null;
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
+  if (!repoData) repoData = getRepoIndex();
   const categories = window.data.backupCategories || [];
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById('edit-category-options');
@@ -235,7 +237,9 @@ export function initializeLibrary() {
           showMangaDetails(
             manga,
             window.data.backupCategories,
-            window.data.backupSources.find(source => source.sourceId === manga.source).name
+            repoData?.find(entry => entry.id == manga.source)
+              ? repoData?.find(entry => entry.id == manga.source)
+              : window.data.backupSources.find(source => source.sourceId === manga.source)
           );
         });
         mangaItem.addEventListener('mouseenter', event => {
@@ -325,11 +329,30 @@ export function showTab(tabId) {
 
 //Adds info to Manga Details Modal
 function showMangaDetails(manga, categories, source) {
-  consts.modalTitle.forEach(element => (element.textContent = manga.customTitle || manga.title));
+  const repoMatch = repoData?.find(entry => entry.id == manga.source);
+  const newWindowIcon = addMaterialSymbol(null, 'open_in_new');
+  newWindowIcon.classList.add('link-icon');
+  consts.modalTitle.forEach(element => {
+    element.textContent = manga.customTitle || manga.title;
+    element.parentNode.removeAttribute('href');
+    if (manga.url.match(httpRegex)) {
+      element.parentNode.href = manga.url;
+      element.appendChild(newWindowIcon.cloneNode(true));
+    } else if (repoMatch) {
+      element.parentNode.href = repoMatch.baseUrl + manga.url;
+      element.appendChild(newWindowIcon.cloneNode(true));
+    }
+  });
   consts.modalSource.forEach(element => {
     element.innerHTML = '';
     addMaterialSymbol(element, 'language');
-    element.append(source);
+    if (source.baseUrl) {
+      const link = document.createElement('a');
+      link.setAttribute('href', source.baseUrl);
+      link.append(`${source.name} (${source.lang.toUpperCase()})`);
+      link.appendChild(newWindowIcon.cloneNode(true));
+      element.append(link);
+    } else element.append(source.name);
   });
   consts.modalThumb.forEach(element => (element.src = mangaCover(manga)));
   document.documentElement.style.setProperty(
@@ -459,22 +482,26 @@ function showMangaDetails(manga, categories, source) {
       const chapterBox = document.createElement('div');
       chapterBox.className = 'chapter-box';
 
-      const chapterLink = document.createElement(chapter.url.match(httpRegex) ? 'a' : 'div');
-      if (chapter.url.match(httpRegex)) {
-        chapterLink.href = chapter.url;
+      const chapterName = document.createElement('div');
+      if (chapter.url.match(httpRegex) || repoMatch) {
+        const chapterLink = document.createElement('a');
         chapterLink.target = '_blank';
-      }
-      chapterLink.textContent = chapter.name;
+        if (repoMatch) chapterLink.href = repoMatch.baseUrl + chapter.url;
+        else chapterLink.href = chapter.url;
+        chapterLink.textContent = chapter.name;
+        chapterLink.appendChild(newWindowIcon.cloneNode(true));
+        chapterName.appendChild(chapterLink);
+      } else chapterName.textContent = chapter.name;
       if (chapter.read) {
-        chapterLink.classList.add('read');
+        chapterName.classList.add('read');
       }
       if (chapter.scanlator) {
         const chapterScanlator = document.createElement('div');
         chapterScanlator.classList.add('scanlator');
         chapterScanlator.textContent = chapter.scanlator;
-        chapterLink.appendChild(chapterScanlator);
+        chapterName.appendChild(chapterScanlator);
       }
-      chapterBox.appendChild(chapterLink);
+      chapterBox.appendChild(chapterName);
 
       if (Array.isArray(manga.history)) {
         const historyItem = manga.history.find(history => history.url === chapter.url);
@@ -704,3 +731,54 @@ document.addEventListener('click', event => {
     hideEditMenu();
   }
 });
+
+// Fetch repo from saved settings
+function getRepoFromSettings() {
+  const repoSetting = window.data.backupPreferences?.find(s => s.key == 'extension_repos');
+  if (!repoSetting) return false;
+  const newList = [];
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  try {
+    const byteArray = encoder.encode(atob(repoSetting.value.truevalue));
+    byteArray.forEach(byte => {
+      if (byte == byteArray[0]) newList.push([]);
+      else newList[newList.length - 1].push(byte);
+    });
+    newList.forEach((item, index) => {
+      newList[index] = decoder.decode(new Uint8Array(item.slice(1)));
+    });
+  } catch {
+    console.log('Malformed repo field');
+    return false;
+  }
+  return newList;
+}
+
+function getRepoIndex() {
+  const repoUrls = getRepoFromSettings();
+  if (!repoUrls) return [];
+  const usedSources = window.data.backupSources?.map(source => source.sourceId);
+  const sources =
+    consts.fork == 'sy'
+      ? [
+          { id: '6901', baseUrl: 'https://e-hentai.org', language: 'all' },
+          { id: '6902', baseUrl: 'https://exhentai.org', language: 'all' },
+        ]
+      : [];
+  repoUrls.forEach(repoUrl => {
+    // fetch(`../index.min.json`)
+    fetch(`${repoUrl}/index.min.json`)
+      .then(response => response.json())
+      .then(response =>
+        response.forEach(pkg => {
+          pkg.sources.forEach(source => {
+            if (usedSources && usedSources.length && !usedSources.includes(source.id)) return;
+            sources.push(source);
+          });
+        })
+      )
+      .catch(e => alert(`Error fetching the repo list. ${e}`));
+  });
+  return sources;
+}
