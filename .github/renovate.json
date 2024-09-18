@@ -4,6 +4,8 @@
   "dependencyDashboardAutoclose": true,
   "labels": ["Dependency"],
   "minimumReleaseAge": "1 week",
+  "schedule": ["every weekend"],
+  "automergeSchedule": ["on Monday at 12am"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
