@@ -762,8 +762,8 @@ function getRepoIndex() {
   const sources =
     consts.fork.value == 'sy'
       ? [
-          { id: '6901', baseUrl: 'https://e-hentai.org', language: 'all' },
-          { id: '6902', baseUrl: 'https://exhentai.org', language: 'all' },
+          { name: 'E-Hentai', lang: 'all', id: '6901', baseUrl: 'https://e-hentai.org' },
+          { name: 'ExHentai', lang: 'all', id: '6902', baseUrl: 'https://exhentai.org' },
         ]
       : [];
   repoUrls.forEach(repoUrl => {
