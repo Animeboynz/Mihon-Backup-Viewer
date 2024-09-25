@@ -1,6 +1,8 @@
 /* ---Modals--- */
 .modal {
   align-items: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.5);
   display: none;
   height: 100%;
