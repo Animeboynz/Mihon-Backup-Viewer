@@ -7,6 +7,10 @@ import { applySettings, loadSettings, saveSetting } from './scripts/settings.js'
 
 var searchCooldown;
 
+export function setTitle(title = null) {
+  document.title = title ? `${title} - Tachibk Viewer` : 'Tachibk Viewer';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   consts.fileInput.addEventListener('change', e => handleFileLoad(e, consts.fork.value)); //Handles File Loading
   consts.settingsIcon.addEventListener('click', showModal.bind(null, 'settings-modal')); // Opens settings modal on click

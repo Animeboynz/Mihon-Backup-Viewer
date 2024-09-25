@@ -3,6 +3,7 @@ import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 import { deleteManga, toggleForkOnlyElements } from './editBackup.js';
 import { loadSettings } from './settings.js';
+import { setTitle } from '../script.js';
 
 const url = new URL(window.location);
 export var activeTabId = null;
@@ -323,6 +324,8 @@ export function showTab(tabId) {
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
+  setTitle(selectedTab.id);
+
   // Save the active tab ID
   activeTabId = tabId;
 }
@@ -345,14 +348,21 @@ function showMangaDetails(manga, categories, source) {
   });
   consts.modalSource.forEach(element => {
     element.innerHTML = '';
-    addMaterialSymbol(element, 'language');
     if (source.baseUrl) {
+      const favicon = document.createElement('img');
+      favicon.src = `https://external-content.duckduckgo.com/ip3/${source.baseUrl.split('/')[2]}.ico`;
+      favicon.height = 24;
+      favicon.classList.add('material-symbols-outlined');
+      element.append(favicon);
       const link = document.createElement('a');
       link.setAttribute('href', source.baseUrl);
       link.append(`${source.name} (${source.lang.toUpperCase()})`);
       link.appendChild(newWindowIcon.cloneNode(true));
       element.append(link);
-    } else element.append(source.name);
+    } else {
+      addMaterialSymbol(element, 'language');
+      element.append(source.name);
+    }
   });
   consts.modalThumb.forEach(element => (element.src = mangaCover(manga)));
   document.documentElement.style.setProperty(
