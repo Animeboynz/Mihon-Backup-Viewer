@@ -3,6 +3,7 @@ import { closeModal, showModal } from './modals.js';
 import { addMaterialSymbol } from './materialSymbol.js';
 import { deleteManga, toggleForkOnlyElements } from './editBackup.js';
 import { loadSettings } from './settings.js';
+import { setTitle } from '../script.js';
 
 const url = new URL(window.location);
 export var activeTabId = null;
@@ -322,6 +323,8 @@ export function showTab(tabId) {
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  setTitle(selectedTab.id);
 
   // Save the active tab ID
   activeTabId = tabId;
