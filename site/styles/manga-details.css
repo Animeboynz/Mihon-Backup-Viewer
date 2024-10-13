@@ -226,8 +226,9 @@
   color: darkseagreen;
 }
 
-.chapter-box a.read {
+#manga-chapters > div.chapter-box > div.read > a {
   color: #808080;
+  font-style: italic;
 }
 
 .chapter-box > div {
