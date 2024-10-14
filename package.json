@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "esbuild": "^0.23.0"
+    "esbuild": "^0.24.0"
   },
   "devDependencies": {
     "husky": "^9.0.11",
