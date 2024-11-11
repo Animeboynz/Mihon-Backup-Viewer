@@ -335,6 +335,7 @@ function showMangaDetails(manga, categories, source) {
   const repoMatch = repoData?.find(entry => entry.id == manga.source);
   const newWindowIcon = addMaterialSymbol(null, 'open_in_new');
   newWindowIcon.classList.add('link-icon');
+  consts.mangaModal.dataset.index = window.data.backupManga.indexOf(manga);
   consts.modalTitle.forEach(element => {
     element.textContent = manga.customTitle || manga.title;
     element.parentNode.removeAttribute('href');
@@ -527,6 +528,9 @@ function showMangaDetails(manga, categories, source) {
     });
     consts.sortButton.hidden = false;
   } else consts.sortButton.hidden = true;
+
+  consts.chapterFilterButton.hidden = !Array.isArray(manga.excludedScanlators);
+  toggleChapterFilter();
 
   showModal('manga-modal');
   consts.expandDescriptionArrow.hidden =
@@ -791,4 +795,14 @@ function getRepoIndex() {
       .catch(e => alert(`Error fetching the repo list. ${e}`));
   });
   return sources;
+}
+
+export function toggleChapterFilter() {
+  const manga = window.data.backupManga[consts.mangaModal.dataset.index];
+  const scanlators = manga.excludedScanlators || [];
+  document.querySelectorAll('.scanlator').forEach(element => {
+    element.closest('.chapter-box').hidden = consts.chapterFilterButton.classList.contains('active')
+      ? scanlators.includes(element.textContent)
+      : false;
+  });
 }

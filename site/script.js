@@ -2,7 +2,11 @@ import consts from './scripts/constants.js';
 import { dlJSON, encodeToProtobuf } from './scripts/export.js';
 import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
-import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
+import {
+  initializeLibrary,
+  toggleChapterFilter,
+  toggleExpandDescription,
+} from './scripts/library.js';
 import { applySettings, loadSettings, saveSetting } from './scripts/settings.js';
 
 var searchCooldown;
@@ -28,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
   }); // Sort chapters
+  consts.chapterFilterButton.addEventListener('click', event => {
+    event.target.classList.toggle('active');
+    toggleChapterFilter();
+  });
   consts.loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
     window.data = null;

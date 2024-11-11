@@ -56,6 +56,7 @@ export default {
   modalDescriptionDiv: document.querySelector('#manga-description-div'),
   expandDescriptionArrow: document.querySelector('.fade-out'),
   sortButton: document.querySelector('#chapters-sort-button'),
+  chapterFilterButton: document.querySelector('#chapters-filter-button'),
   chapterList: document.querySelector('#manga-chapters'),
   // Main Screen
   tabsContainer: document.querySelector('#tabs'),

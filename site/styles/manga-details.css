@@ -63,11 +63,21 @@
   flex-flow: column-reverse;
 }
 
+#chapter-buttons {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#chapters-filter-button,
 #chapters-sort-button {
   cursor: pointer;
   display: block;
-  margin: 0;
+  margin: 0 0 0 0.5em;
   text-align: right;
+}
+
+#chapters-filter-button.active {
+  color: var(--color-filter-active);
 }
 
 #manga-title-link,
