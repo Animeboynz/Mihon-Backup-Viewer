@@ -32,9 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
   }); // Sort chapters
-  consts.chapterFilterButton.addEventListener('click', event => {
-    event.target.classList.toggle('active');
+  consts.chapterFilterButton.addEventListener('click', () => showModal('chapter-filters-modal'));
+  consts.chapterFilterOkButton.addEventListener('click', () => {
     toggleChapterFilter();
+    closeModal('chapter-filters-modal');
+  });
+  consts.chapterFilterResetButton.addEventListener('click', () => {
+    toggleChapterFilter(true);
+    closeModal('chapter-filters-modal');
   });
   consts.loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
@@ -60,13 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Closes Modals when clicking outside
   document.addEventListener('mousedown', event => {
-    if (event.target === consts.mangaModal && consts.mangaModal.classList.contains('active')) {
-      closeModal('manga-modal');
-    } else if (
-      event.target === consts.settingsModal &&
-      consts.settingsModal.classList.contains('active')
+    if (
+      [consts.mangaModal, consts.chapterFilterModal, consts.settingsModal].includes(event.target) &&
+      event.target.classList.contains('active')
     ) {
-      closeModal('settings-modal');
+      closeModal(event.target.id);
     }
   });
 

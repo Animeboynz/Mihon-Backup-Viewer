@@ -57,6 +57,12 @@ export default {
   expandDescriptionArrow: document.querySelector('.fade-out'),
   sortButton: document.querySelector('#chapters-sort-button'),
   chapterFilterButton: document.querySelector('#chapters-filter-button'),
+  chapterFilterModal: document.querySelector('#chapter-filters-modal'),
+  chapterFilterUnread: document.querySelector('#unread-chapter-filter'),
+  chapterFilterRead: document.querySelector('#read-chapter-filter'),
+  chapterFilterScanlator: document.querySelector('#scanlator-filter'),
+  chapterFilterOkButton: document.querySelector('#apply-chapter-filter'),
+  chapterFilterResetButton: document.querySelector('#reset-chapter-filter'),
   chapterList: document.querySelector('#manga-chapters'),
   // Main Screen
   tabsContainer: document.querySelector('#tabs'),
