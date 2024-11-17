@@ -83,15 +83,16 @@
 #chapter-filters-modal > .modal-content {
   display: inline-grid;
   grid-template-areas:
+    'title title'
     '. .'
     'scanlator scanlator'
     '. .';
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1.5em 1fr 2em;
   row-gap: 0.5em;
 }
-#chapter-filters-modal > .modal-content > label {
-  margin-top: 0;
+#chapter-filters-modal > .modal-content > h2 {
+  grid-area: title;
+  margin: 0;
 }
 #chapter-filters-modal > .modal-content > label:has(#scanlator-filter) {
   grid-area: scanlator;
