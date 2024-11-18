@@ -834,27 +834,23 @@ export function toggleChapterFilter(reset = false) {
     consts.chapterFilterButton.classList.add('active');
   else consts.chapterFilterButton.classList.remove('active');
 
-  // Ugly and verbose AF, but readable. Let the minimizer optimize it
+  // Ugly AF. Let the minimizer optimize it
   document.querySelectorAll('.chapter-box').forEach(element => {
+    element.hidden = false;
     if (consts.chapterFilterButton.classList.contains('active')) {
+      if (
+        (scanlators.length == 0 ||
+          scanlators.includes(element.querySelector('.scanlator')?.textContent)) &&
+        ((!consts.chapterFilterUnread.checked &&
+          consts.chapterFilterRead.checked &&
+          element.firstChild.classList.contains('read')) ||
+          (consts.chapterFilterUnread.checked &&
+            !consts.chapterFilterRead.checked &&
+            !element.firstChild.classList.contains('read')) ||
+          consts.chapterFilterUnread.checked == consts.chapterFilterRead.checked)
+      )
+        return;
       element.hidden = true;
-      if (
-        scanlators.length > 0 &&
-        scanlators.includes(element.querySelector('.scanlator')?.textContent)
-      )
-        element.hidden = false;
-      if (
-        !consts.chapterFilterUnread.checked &&
-        consts.chapterFilterRead.checked &&
-        !element.firstChild.classList.includes('read')
-      )
-        element.hidden = false;
-      if (
-        consts.chapterFilterUnread.checked &&
-        !consts.chapterFilterRead.checked &&
-        element.firstChild.classList.includes('read')
-      )
-        element.hidden = false;
-    } else element.hidden = false;
+    }
   });
 }
