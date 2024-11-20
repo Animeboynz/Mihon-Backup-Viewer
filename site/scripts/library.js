@@ -335,6 +335,7 @@ function showMangaDetails(manga, categories, source) {
   const repoMatch = repoData?.find(entry => entry.id == manga.source);
   const newWindowIcon = addMaterialSymbol(null, 'open_in_new');
   newWindowIcon.classList.add('link-icon');
+  consts.mangaModal.dataset.index = window.data.backupManga.indexOf(manga);
   consts.modalTitle.forEach(element => {
     element.textContent = manga.customTitle || manga.title;
     element.parentNode.removeAttribute('href');
@@ -414,7 +415,7 @@ function showMangaDetails(manga, categories, source) {
     const li = document.createElement('li');
     li.innerText = tag;
     li.addEventListener('click', () => {
-      consts.searchField.value = `"${tag.replace(/^(?:tags?|demographic|content rating): ?/i, '')}"`;
+      consts.searchField.value = `"${tag.replace(/^[\w\s]+: ?/i, '')}"`;
       closeModal('manga-modal');
       initializeLibrary();
     });
@@ -488,6 +489,22 @@ function showMangaDetails(manga, categories, source) {
       return b.sourceOrder - a.sourceOrder;
     });
 
+    // Populate Scanlators filter list
+    const scanlators = [...new Set(manga.chapters.map(c => c.scanlator).filter(s => s))];
+    if (scanlators.length) {
+      consts.chapterFilterScanlator.parentNode.hidden = false;
+      consts.chapterFilterScanlator.innerHTML = '';
+      scanlators.forEach(group => {
+        const option = document.createElement('option');
+        option.innerText = group;
+        option.selected = !manga.excludedScanlators?.includes(group);
+        consts.chapterFilterScanlator.appendChild(option);
+      });
+    } else {
+      consts.chapterFilterScanlator.innerHTML = '<option disabled="true">Any</option>';
+      consts.chapterFilterScanlator.parentNode.hidden = true;
+    }
+
     manga.chapters.forEach(chapter => {
       const chapterBox = document.createElement('div');
       chapterBox.className = 'chapter-box';
@@ -527,6 +544,8 @@ function showMangaDetails(manga, categories, source) {
     });
     consts.sortButton.hidden = false;
   } else consts.sortButton.hidden = true;
+
+  toggleChapterFilter();
 
   showModal('manga-modal');
   consts.expandDescriptionArrow.hidden =
@@ -791,4 +810,47 @@ function getRepoIndex() {
       .catch(e => alert(`Error fetching the repo list. ${e}`));
   });
   return sources;
+}
+
+export function toggleChapterFilter(reset = false) {
+  const manga = window.data.backupManga[consts.mangaModal.dataset.index];
+  if (reset) {
+    consts.chapterFilterUnread.checked = true;
+    consts.chapterFilterRead.checked = true;
+    Array.from(consts.chapterFilterScanlator.options).forEach(
+      option => (option.selected = !option.disabled)
+    );
+  }
+  const scanlators = Array.from(consts.chapterFilterScanlator.selectedOptions).map(
+    option => option.innerText
+  );
+
+  if (
+    (!consts.chapterFilterScanlator.parentNode.hidden &&
+      scanlators.length < consts.chapterFilterScanlator.options.length) ||
+    !consts.chapterFilterUnread.checked ||
+    !consts.chapterFilterRead.checked
+  )
+    consts.chapterFilterButton.classList.add('active');
+  else consts.chapterFilterButton.classList.remove('active');
+
+  // Ugly AF. Let the minimizer optimize it
+  document.querySelectorAll('.chapter-box').forEach(element => {
+    element.hidden = false;
+    if (consts.chapterFilterButton.classList.contains('active')) {
+      if (
+        (scanlators.length == 0 ||
+          scanlators.includes(element.querySelector('.scanlator')?.textContent)) &&
+        ((!consts.chapterFilterUnread.checked &&
+          consts.chapterFilterRead.checked &&
+          element.firstChild.classList.contains('read')) ||
+          (consts.chapterFilterUnread.checked &&
+            !consts.chapterFilterRead.checked &&
+            !element.firstChild.classList.contains('read')) ||
+          consts.chapterFilterUnread.checked == consts.chapterFilterRead.checked)
+      )
+        return;
+      element.hidden = true;
+    }
+  });
 }

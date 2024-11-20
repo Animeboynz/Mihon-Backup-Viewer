@@ -181,7 +181,26 @@
           </div>
           <ul id="manga-genres"></ul>
         </div>
-        <span class="material-symbols-outlined" id="chapters-sort-button">swap_vert</span>
+        <div id="chapter-filters-modal" class="modal">
+          <div class="modal-content">
+            <h2>Chapter Filters</h2>
+            <label><input type="checkbox" id="unread-chapter-filter" checked />Unread</label>
+            <label><input type="checkbox" id="read-chapter-filter" checked />Read</label>
+            <label>
+              Scanlators:<br />
+              <select id="scanlator-filter" multiple>
+                <option disabled="true">Any</option>
+                <!-- Dynamically populated -->
+              </select>
+            </label>
+            <button id="apply-chapter-filter">OK</button>
+            <button id="reset-chapter-filter">Reset</button>
+          </div>
+        </div>
+        <div id="chapter-buttons">
+          <span class="material-symbols-outlined" id="chapters-sort-button">swap_vert</span>
+          <span class="material-symbols-outlined" id="chapters-filter-button">filter_list</span>
+        </div>
         <div id="manga-chapters"></div>
       </div>
     </div>

@@ -2,7 +2,11 @@ import consts from './scripts/constants.js';
 import { dlJSON, encodeToProtobuf } from './scripts/export.js';
 import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
-import { initializeLibrary, toggleExpandDescription } from './scripts/library.js';
+import {
+  initializeLibrary,
+  toggleChapterFilter,
+  toggleExpandDescription,
+} from './scripts/library.js';
 import { applySettings, loadSettings, saveSetting } from './scripts/settings.js';
 
 var searchCooldown;
@@ -28,6 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
   }); // Sort chapters
+  consts.chapterFilterButton.addEventListener('click', () => showModal('chapter-filters-modal'));
+  consts.chapterFilterOkButton.addEventListener('click', () => {
+    toggleChapterFilter();
+    closeModal('chapter-filters-modal');
+  });
+  consts.chapterFilterResetButton.addEventListener('click', () => {
+    toggleChapterFilter(true);
+    closeModal('chapter-filters-modal');
+  });
   consts.loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
     window.data = null;
@@ -52,13 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Closes Modals when clicking outside
   document.addEventListener('mousedown', event => {
-    if (event.target === consts.mangaModal && consts.mangaModal.classList.contains('active')) {
-      closeModal('manga-modal');
-    } else if (
-      event.target === consts.settingsModal &&
-      consts.settingsModal.classList.contains('active')
+    if (
+      [consts.mangaModal, consts.chapterFilterModal, consts.settingsModal].includes(event.target) &&
+      event.target.classList.contains('active')
     ) {
-      closeModal('settings-modal');
+      closeModal(event.target.id);
     }
   });
 
