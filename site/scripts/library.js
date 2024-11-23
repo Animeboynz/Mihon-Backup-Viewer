@@ -39,7 +39,7 @@ export function initializeLibrary() {
       matchesSource &&
       matchesTracking &&
       matchesSearch &&
-      matchesUnread(manga.chapters, filters.unread)
+      matchesUnread(manga, filters.unread)
     );
   });
   if (
@@ -198,7 +198,9 @@ export function initializeLibrary() {
         mangaItem.title = title;
         const unreadBadge = document.createElement('span');
         unreadBadge.classList.add('unread-badge');
-        unreadBadge.innerText = manga.chapters?.filter(c => !c.read).length;
+        unreadBadge.innerText = manga.chapters?.filter(
+          c => !c.read && !manga.excludedScanlators?.includes(c.scanlator)
+        ).length;
         const cover = document.createElement('img');
         cover.loading = 'lazy';
         cover.src = mangaCover(manga);
@@ -585,13 +587,16 @@ export function setActiveTabId(data) {
   activeTabId = data;
 }
 
-export function matchesUnread(chapters = null, unreadFilter = 'all-entries') {
+export function matchesUnread(manga = null, unreadFilter = 'all-entries') {
   // Filtering from initializeLibrary()
+  const unreadCount = manga?.chapters?.filter(
+    c => !c.read && !manga?.excludedScanlators?.includes(c.scanlator)
+  ).length;
   switch (unreadFilter) {
     case 'unread':
-      return Boolean(chapters?.filter(c => !c.read).length);
+      return Boolean(unreadCount);
     case 'read':
-      return !Boolean(chapters?.filter(c => !c.read).length);
+      return !Boolean(unreadCount);
     case 'all-entries':
     default:
       return true;
