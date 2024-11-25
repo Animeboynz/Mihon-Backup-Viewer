@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "esbuild": "^0.23.0"
+    "esbuild": "^0.24.0"
   },
   "devDependencies": {
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
-    "postcss": "8.4.45",
+    "postcss": "8.4.49",
     "prettier": "3.3.3",
     "prettier-plugin-css-order": "2.1.2"
   },
