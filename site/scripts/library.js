@@ -579,7 +579,7 @@ export function toggleExpandDescription() {
 
 function mangaCover(manga) {
   return (manga.customThumbnailUrl || manga.thumbnailUrl || '').replace(
-    /(?:s.)?exhentai.org\/t/,
+    /(?:s.)?exhentai.org(?:\/t)?/,
     'ehgt.org'
   );
 }
