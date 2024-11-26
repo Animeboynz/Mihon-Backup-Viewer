@@ -345,7 +345,8 @@ function showMangaDetails(manga, categories, source) {
       element.parentNode.href = manga.url;
       element.appendChild(newWindowIcon.cloneNode(true));
     } else if (repoMatch) {
-      element.parentNode.href = repoMatch.baseUrl + manga.url;
+      element.parentNode.href =
+        repoMatch.baseUrl + (manga.url[0] == '/' ? manga.url : `/${manga.url}`);
       element.appendChild(newWindowIcon.cloneNode(true));
     }
   });
@@ -515,7 +516,9 @@ function showMangaDetails(manga, categories, source) {
       if (chapter.url.match(httpRegex) || repoMatch) {
         const chapterLink = document.createElement('a');
         chapterLink.target = '_blank';
-        if (repoMatch) chapterLink.href = repoMatch.baseUrl + chapter.url;
+        if (repoMatch)
+          chapterLink.href =
+            repoMatch.baseUrl + (chapter.url[0] == '/' ? chapter.url : `/${chapter.url}`);
         else chapterLink.href = chapter.url;
         chapterLink.textContent = chapter.name;
         chapterLink.appendChild(newWindowIcon.cloneNode(true));
