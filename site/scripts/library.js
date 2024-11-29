@@ -217,18 +217,14 @@ export function initializeLibrary() {
         // Capture original index before sorting
         const originalIndex = window.data.backupManga.indexOf(manga);
 
-        kebabMenu.setAttribute('data-index', originalIndex); // Use original index
-        kebabMenu.setAttribute('data-title', title);
         kebabMenu.hidden = true;
         addMaterialSymbol(kebabMenu, 'more_vert');
 
         kebabMenu.addEventListener('click', event => {
           event.stopPropagation(); // Prevent triggering the manga item click
-          const index = event.currentTarget.getAttribute('data-index');
-          const title = event.currentTarget.getAttribute('data-title');
           //alert(`Title: ${title}\nOriginal Index: ${index}`);
-          console.log(`Title: ${title}\\nOriginal Index: ${index}`);
-          showEditMenu(event, manga, index);
+          console.log(`Title: ${manga.title}\\nOriginal Index: ${index}`);
+          showEditMenu(event, manga, originalIndex);
         });
 
         coverContainer.appendChild(cover);
@@ -245,15 +241,19 @@ export function initializeLibrary() {
               : window.data.backupSources.find(source => source.sourceId === manga.source)
           );
         });
-        mangaItem.addEventListener('mouseenter', event => {
+        mangaItem.addEventListener('mouseenter', () => {
           entryTitle.innerText = titleFull;
           entryTitle.classList.add('full-title');
           kebabMenu.hidden = false;
         });
-        mangaItem.addEventListener('mouseleave', event => {
+        mangaItem.addEventListener('mouseleave', () => {
           entryTitle.innerText = titleTrimmed;
           entryTitle.classList.remove('full-title');
           kebabMenu.hidden = true;
+        });
+        mangaItem.addEventListener('contextmenu', e => {
+          e.preventDefault();
+          showEditMenu(e, manga, originalIndex);
         });
         tabContent.appendChild(mangaItem);
       });
@@ -610,12 +610,10 @@ const editMenu = document.getElementById('edit-menu');
 
 function showEditMenu(event, manga, index) {
   event.stopPropagation(); // Prevent triggering other click events
-  const kebabMenu = event.currentTarget;
 
   // Position the edit menu next to the kebab menu
-  const rect = kebabMenu.getBoundingClientRect();
-  editMenu.style.top = `${rect.top + window.scrollY}px`;
-  editMenu.style.left = `${rect.left + window.scrollX}px`;
+  editMenu.style.top = `${event.pageY}px`;
+  editMenu.style.left = `${event.pageX}px`;
 
   // Show the edit menu
   editMenu.classList.add('active');
