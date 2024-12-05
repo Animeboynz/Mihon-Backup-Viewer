@@ -39,7 +39,8 @@ export function initializeLibrary() {
       matchesSource &&
       matchesTracking &&
       matchesSearch &&
-      matchesUnread(manga, filters.unread)
+      matchesChapters(manga, filters.unread) &&
+      matchesChapters(manga, filters.bookmark)
     );
   });
   if (
@@ -590,16 +591,20 @@ export function setActiveTabId(data) {
   activeTabId = data;
 }
 
-export function matchesUnread(manga = null, unreadFilter = 'all-entries') {
+export function matchesChapters(manga = null, filter = 'all-entries') {
   // Filtering from initializeLibrary()
-  const unreadCount = manga?.chapters?.filter(
-    c => !c.read && !manga?.excludedScanlators?.includes(c.scanlator)
-  ).length;
-  switch (unreadFilter) {
+  const chapterCount = manga?.chapters?.filter(c =>
+    filter.search('read') != -1
+      ? !c.read && !manga?.excludedScanlators?.includes(c.scanlator)
+      : c.bookmark
+  )?.length;
+  switch (filter) {
     case 'unread':
-      return Boolean(unreadCount);
+    case 'bookmarked':
+      return Boolean(chapterCount);
     case 'read':
-      return !Boolean(unreadCount);
+    case 'unbookmarked':
+      return !Boolean(chapterCount);
     case 'all-entries':
     default:
       return true;
