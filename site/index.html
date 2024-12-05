@@ -274,10 +274,18 @@
             <option value="read">Fully Read</option>
           </select>
         </div>
+        <div class="settings-inline">
+          <label for="filter-bookmark">Filter by Bookmarks</label>
+          <select id="filter-bookmark">
+            <option value="all-entries">All Entries</option>
+            <option value="bookmarked">Bookmarked</option>
+            <option value="unbookmarked">No Bookmarks</option>
+          </select>
+        </div>
         <div class="settings-buttons-container">
           <button id="apply-settings" class="settings-button">Apply</button>
-          <label>Download Backup</label
-          ><span class="download-buttons">
+          <label>Download Backup</label>
+          <span class="download-buttons">
             <button id="download-json" class="settings-button">JSON</button>
             <button id="download-tachibk" class="settings-button">.tachibk</button>
           </span>

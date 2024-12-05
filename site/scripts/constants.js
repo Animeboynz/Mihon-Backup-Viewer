@@ -69,7 +69,13 @@ export default {
   tabContentsContainer: document.querySelector('#tab-contents'),
   // Settings
   defaultSettings: {
-    filters: { status: ['-1'], unread: 'all-entries', source: ['all'], tracker: 'all-entries' },
+    filters: {
+      status: ['-1'],
+      unread: 'all-entries',
+      bookmark: 'all-entries',
+      source: ['all'],
+      tracker: 'all-entries',
+    },
     sort: { chapters: 'asc', library: 64 },
     lastFork: 'mihon',
   },
@@ -79,6 +85,7 @@ export default {
   closeSettingsBtn: document.querySelector('#close-manga-modal'),
   filterSource: document.querySelector('#filter-source'),
   filterUnread: document.querySelector('#filter-unread'),
+  filterBookmark: document.querySelector('#filter-bookmark'),
   // Re-encode
   dlJSONBtn: document.querySelector('#download-json'),
   dlTachibkBtn: document.querySelector('#download-tachibk'),
