@@ -27,6 +27,7 @@ export function applySettings() {
   settings['filters']['status'] = tempFilterStatus;
   // Save Unread filter
   settings['filters']['unread'] = consts.filterUnread.value;
+  settings['filters']['bookmark'] = consts.filterBookmark.value;
 
   var tempFilterSource = [];
   for (const option of consts.filterSource.options) {
@@ -66,6 +67,9 @@ export function loadSettings(updateModal = false) {
         break;
       case 'unread':
         consts.filterUnread.value = val;
+        break;
+      case 'bookmark':
+        consts.filterBookmark.value = val;
         break;
       case 'source':
         for (const option of consts.filterSource.options) {
