@@ -1,5 +1,5 @@
 /* Lower takes priority in case of conflicting rules */
-
+@import 'styles/multi-select.css';
 @import 'styles/load-backup.css';
 @import 'styles/settings-modal.css';
 @import 'styles/manga-details.css';

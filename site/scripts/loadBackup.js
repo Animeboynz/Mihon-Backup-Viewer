@@ -37,6 +37,7 @@ export function handleFileLoad(event, fork = 'mihon') {
                 longs: String,
                 enums: String,
                 bytes: String,
+                defaults: true,
               });
               saveSetting({ lastFork: fork }, true);
               initializeLibrary(); // Initialises Library with the Converter protobuf

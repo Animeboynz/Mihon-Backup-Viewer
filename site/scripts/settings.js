@@ -4,7 +4,6 @@ import { initializeLibrary, setActiveTabId } from './library.js';
 
 const sortOrderSelect = document.getElementById('sort-order');
 const sortAscending = document.getElementById('sort-ascending');
-const filterStatusSelect = document.getElementById('filter-status');
 //const highlightTrackerCheckbox = document.getElementById('highlight-tracker');
 const filterTrackedSelect = document.getElementById('filter-tracked');
 
@@ -18,24 +17,12 @@ export function applySettings() {
   setActiveTabId(document.querySelector('.tab-content.active').id);
   settings['sort']['library'] = parseInt(sortOrderSelect.value) + (sortAscending.checked ? 64 : 0);
 
-  var tempFilterStatus = [];
-  for (const option of filterStatusSelect.options) {
-    if (option.selected) {
-      tempFilterStatus.push(option.value);
-    }
-  }
-  settings['filters']['status'] = tempFilterStatus;
+  settings['filters']['status'] = consts.filterStatus.selectedValues;
   // Save Unread filter
   settings['filters']['unread'] = consts.filterUnread.value;
   settings['filters']['bookmark'] = consts.filterBookmark.value;
 
-  var tempFilterSource = [];
-  for (const option of consts.filterSource.options) {
-    if (option.selected) {
-      option.value.split(',').forEach(uid => tempFilterSource.push(uid));
-    }
-  }
-  settings['filters']['source'] = tempFilterSource;
+  settings['filters']['source'] = consts.filterSource.selectedValues.flatMap(s => s.split(','));
 
   settings['filters']['tracker'] = filterTrackedSelect.value;
 
@@ -55,15 +42,12 @@ export function loadSettings(updateModal = false) {
 
   console.log('Updating modal settings');
   addOptionsFromData();
-  disableMissingStatusOptions();
+  // disableMissingStatusOptions();
   for (const [filter, val] of Object.entries(settings['filters'])) {
     switch (filter) {
       case 'status':
-        for (const option of filterStatusSelect.options) {
-          if (val.includes(option.value)) {
-            option.selected = true;
-          }
-        }
+        consts.filterStatus.data.forEach(option => (option.selected = val.includes(option.value)));
+        consts.filterStatus.data = consts.filterStatus.data; // Seems redundant, but triggers the getter
         break;
       case 'unread':
         consts.filterUnread.value = val;
@@ -72,11 +56,10 @@ export function loadSettings(updateModal = false) {
         consts.filterBookmark.value = val;
         break;
       case 'source':
-        for (const option of consts.filterSource.options) {
-          if (option.value.split(',').every(uid => val.includes(uid))) {
-            option.selected = true;
-          }
-        }
+        consts.filterSource.data.forEach(
+          option => (option.selected = option.value.split(',').some(uid => val.includes(uid)))
+        );
+        consts.filterSource.data = consts.filterSource.data; // Seems redundant, but triggers the getter
         break;
       case 'tracker':
         filterTrackedSelect.value = val;
@@ -123,47 +106,32 @@ export function saveSetting(settingObj = {}, updateModal = false) {
 
 //Add Options to Settings modal
 function addOptionsFromData() {
-  // Get the filter-source select element
-
-  // Clear existing options (optional, if you want to remove the placeholder option)
-  consts.filterSource.innerHTML = '';
-
-  // Add the default "All Sources" option
-  let defaultOption = document.createElement('option');
-  defaultOption.value = 'all';
-  defaultOption.text = 'All Sources';
-  consts.filterSource.add(defaultOption);
-
   // Iterate over the data and add options to the select element
-  [...new Set(window.data.backupSources.map(source => source.name))]
+  consts.filterSource.data = [...new Set(window.data.backupSources.map(source => source.name))]
     .sort()
     .map(name => {
-      var obj = new Object();
-      obj.name = name;
-      obj.sourceId = window.data.backupSources
-        .filter(source => source.name === name)
-        .map(source => source.sourceId);
-      return obj;
-    })
-    .forEach(function (source) {
-      let newOption = document.createElement('option');
-      newOption.value = source.sourceId;
-      newOption.text = source.name;
-      consts.filterSource.add(newOption);
+      return {
+        disabled: false,
+        html: null,
+        selected: false,
+        text: name,
+        value: window.data.backupSources
+          .filter(source => source.name === name)
+          .map(source => source.sourceId)
+          .join(),
+      };
     });
+  // consts.filterSource = new MultiSelect('#filter-source', consts.filterSource.options);
 }
 
 //Disable Missing Status Options for the Settings modal
 function disableMissingStatusOptions() {
-  // Get the filter-status select element
-  let filterStatus = document.getElementById('filter-status');
-
   // Get the unique statuses from the data
   let validStatuses = new Set(window.data.backupManga.map(manga => manga.status));
 
   // Iterate over the options and disable those that are not in the validStatuses set
-  for (let i = 0; i < filterStatus.options.length; i++) {
-    let option = filterStatus.options[i];
+  for (let i = 0; i < consts.filterStatus.data.length; i++) {
+    let option = consts.filterStatus.data[i];
     if (option.value != '-1' && !validStatuses.has(parseInt(option.value))) {
       option.disabled = true;
     } else {

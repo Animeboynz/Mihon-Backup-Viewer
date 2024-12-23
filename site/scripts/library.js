@@ -26,9 +26,8 @@ export function initializeLibrary() {
 
   mangaItems = mangaItems.filter(manga => {
     let matchesStatus =
-      filters['status']?.includes('-1') || filters['status']?.includes(manga.status?.toString());
-    let matchesSource =
-      filters['source']?.includes('all') || filters['source']?.includes(manga.source);
+      !filters.status?.length || filters.status?.includes(manga.status?.toString());
+    let matchesSource = !filters.source?.length || filters.source?.includes(manga.source);
     let matchesTracking =
       filters['tracker'] === 'all-entries' ||
       (filters['tracker'] === 'tracked' && manga.tracking) ||
@@ -496,17 +495,13 @@ function showMangaDetails(manga, categories, source) {
     // Populate Scanlators filter list
     const scanlators = [...new Set(manga.chapters.map(c => c.scanlator).filter(s => s))];
     if (scanlators.length) {
-      consts.chapterFilterScanlator.parentNode.hidden = false;
-      consts.chapterFilterScanlator.innerHTML = '';
-      scanlators.forEach(group => {
-        const option = document.createElement('option');
-        option.innerText = group;
-        option.selected = !manga.excludedScanlators?.includes(group);
-        consts.chapterFilterScanlator.appendChild(option);
+      consts.chapterFilterScanlator.element.parentNode.hidden = false;
+      consts.chapterFilterScanlator.data = scanlators.map(s => {
+        return { text: s, selected: !manga.excludedScanlators?.includes(s) };
       });
     } else {
-      consts.chapterFilterScanlator.innerHTML = '<option disabled="true">Any</option>';
       consts.chapterFilterScanlator.parentNode.hidden = true;
+      consts.chapterFilterScanlator.data = [{ text: 'Any' }];
     }
 
     manga.chapters.forEach(chapter => {
@@ -832,13 +827,11 @@ export function toggleChapterFilter(reset = false) {
       option => (option.selected = !option.disabled)
     );
   }
-  const scanlators = Array.from(consts.chapterFilterScanlator.selectedOptions).map(
-    option => option.innerText
-  );
+  const scanlators = consts.chapterFilterScanlator.selectedValues;
 
   if (
-    (!consts.chapterFilterScanlator.parentNode.hidden &&
-      scanlators.length < consts.chapterFilterScanlator.options.length) ||
+    (!consts.chapterFilterScanlator.element.parentNode.hidden &&
+      scanlators.length < consts.chapterFilterScanlator.data.length) ||
     !consts.chapterFilterUnread.checked ||
     !consts.chapterFilterRead.checked
   )

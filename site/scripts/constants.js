@@ -1,3 +1,4 @@
+import { MultiSelect } from './multiSelect.js';
 export default {
   // ----- GLOBALS -----
   sortFlags: {
@@ -60,7 +61,10 @@ export default {
   chapterFilterModal: document.querySelector('#chapter-filters-modal'),
   chapterFilterUnread: document.querySelector('#unread-chapter-filter'),
   chapterFilterRead: document.querySelector('#read-chapter-filter'),
-  chapterFilterScanlator: document.querySelector('#scanlator-filter'),
+  chapterFilterScanlator: new MultiSelect(document.querySelector('#scanlator-filter'), {
+    listAll: false,
+    search: false,
+  }),
   chapterFilterOkButton: document.querySelector('#apply-chapter-filter'),
   chapterFilterResetButton: document.querySelector('#reset-chapter-filter'),
   chapterList: document.querySelector('#manga-chapters'),
@@ -70,10 +74,10 @@ export default {
   // Settings
   defaultSettings: {
     filters: {
-      status: ['-1'],
+      status: [],
       unread: 'all-entries',
       bookmark: 'all-entries',
-      source: ['all'],
+      source: [],
       tracker: 'all-entries',
     },
     sort: { chapters: 'asc', library: 64 },
@@ -83,7 +87,10 @@ export default {
   closeSettingsModalBtn: document.querySelector('#close-settings-modal'),
   applySettingsBtn: document.querySelector('#apply-settings'),
   closeSettingsBtn: document.querySelector('#close-manga-modal'),
-  filterSource: document.querySelector('#filter-source'),
+  filterSource: new MultiSelect(document.querySelector('#filter-source')),
+  filterStatus: new MultiSelect(document.querySelector('#filter-status'), {
+    search: false,
+  }),
   filterUnread: document.querySelector('#filter-unread'),
   filterBookmark: document.querySelector('#filter-bookmark'),
   // Re-encode
