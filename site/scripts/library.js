@@ -113,7 +113,7 @@ export function initializeLibrary() {
           break;
       }
 
-      tabButton.onclick = () => showTab(category.name);
+      tabButton.onclick = () => showTab(`tab${category.name}`);
       tabButton.appendChild(badge);
       if (badge.textContent === '0' && [-1, 65535].includes(category.order)) return; // Don't create empty meta-categories
       consts.tabsContainer.appendChild(tabButton);
@@ -121,7 +121,7 @@ export function initializeLibrary() {
       // Create tab content container
       const tabContent = document.createElement('div');
       tabContent.className = 'tab-content';
-      tabContent.id = category.name;
+      tabContent.id = `tab${category.name}`;
       consts.tabContentsContainer.appendChild(tabContent);
     });
 
@@ -179,7 +179,7 @@ export function initializeLibrary() {
       const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1];
       itemCategories.forEach(catOrder => {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
-        const tabContent = document.getElementById(category.name);
+        const tabContent = document.querySelector(`#tab${category.name}`);
 
         const titleFull = manga.customTitle || manga.title;
         const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
