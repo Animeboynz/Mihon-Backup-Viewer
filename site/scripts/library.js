@@ -79,7 +79,7 @@ export function initializeLibrary() {
       // Create tab button
       const tabButton = document.createElement('button');
       tabButton.className = 'tab-button';
-      tabButton.id = `btn${category.name}`;
+      tabButton.id = `btn${category.name.replaceAll(' ', '-')}`;
       tabButton.title = tabButton.textContent = category.name;
 
       //const editCategoryOptions = document.getElementById("edit-category-options");
@@ -113,7 +113,7 @@ export function initializeLibrary() {
           break;
       }
 
-      tabButton.onclick = () => showTab(`tab${category.name}`);
+      tabButton.onclick = () => showTab(`tab${category.name.replaceAll(' ', '-')}`);
       tabButton.appendChild(badge);
       if (badge.textContent === '0' && [-1, 65535].includes(category.order)) return; // Don't create empty meta-categories
       consts.tabsContainer.appendChild(tabButton);
@@ -121,7 +121,7 @@ export function initializeLibrary() {
       // Create tab content container
       const tabContent = document.createElement('div');
       tabContent.className = 'tab-content';
-      tabContent.id = `tab${category.name}`;
+      tabContent.id = `tab${category.name.replaceAll(' ', '-')}`;
       consts.tabContentsContainer.appendChild(tabContent);
     });
 
@@ -179,7 +179,7 @@ export function initializeLibrary() {
       const itemCategories = manga.favorite === false ? [65535] : manga.categories || [-1];
       itemCategories.forEach(catOrder => {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
-        const tabContent = document.querySelector(`#tab${category.name}`);
+        const tabContent = document.querySelector(`#tab${category.name.replaceAll(' ', '-')}`);
 
         const titleFull = manga.customTitle || manga.title;
         const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
@@ -461,7 +461,7 @@ function showMangaDetails(manga, categories, source) {
         })
         .forEach(cat => {
           const li = document.createElement('li');
-          li.id = cat;
+          li.id = cat.replaceAll(' ', '-');
           addMaterialSymbol(li, 'label');
           li.innerHTML += cat;
           li.addEventListener('click', function () {
