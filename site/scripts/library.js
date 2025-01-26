@@ -128,6 +128,7 @@ export function initializeLibrary() {
       const tabContent = document.createElement('div');
       tabContent.className = 'tab-content';
       tabContent.id = `tab${category.name.sanitizeId()}`;
+      tabContent.title = category.name;
       consts.tabContentsContainer.appendChild(tabContent);
     });
 
@@ -333,7 +334,7 @@ export function showTab(tabId) {
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  setTitle(selectedTab.id);
+  setTitle(selectedTab.title);
 
   // Save the active tab ID
   activeTabId = tabId;
