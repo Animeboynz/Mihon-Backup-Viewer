@@ -11,9 +11,20 @@ const httpRegex = RegExp('^https?://');
 var repoData = null;
 
 String.prototype.sanitizeId = function () {
-  return btoa(this)
+  return btoa(
+    encodeURIComponent(this).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode('0x' + p1))
+  )
     .replace(/=+$/, '')
     .replace(/[^\d\w]/g, '-');
+};
+
+// Just in case it's needed in the future
+String.prototype.decodeId = function () {
+  return decodeURIComponent(
+    Array.prototype.map
+      .call(atob(this), c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+      .join('')
+  );
 };
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
