@@ -152,7 +152,9 @@ export function initializeLibrary() {
       switch (consts.sortFlags[sortOrder]) {
         default:
         case 'Alphabetical':
-          return i1.title.localeCompare(i2.title);
+          const comp1 = i1.title || '';
+          const comp2 = i2.title || '';
+          return comp1.localeCompare(comp2);
         case 'LastRead':
           return (
             Math.max.apply(0, i1.history?.map(h => parseInt(h.lastRead || '0')) || [0]) -
@@ -199,7 +201,7 @@ export function initializeLibrary() {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.querySelector(`#tab${category.name.sanitizeId()}`);
 
-        const titleFull = manga.customTitle || manga.title;
+        const titleFull = manga.customTitle || manga.title || '';
         const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
         mangaItem.className = 'manga-item';
@@ -358,7 +360,7 @@ function showMangaDetails(manga, categories, source) {
   newWindowIcon.classList.add('link-icon');
   consts.mangaModal.dataset.index = window.data.backupManga.indexOf(manga);
   consts.modalTitle.forEach(element => {
-    element.textContent = manga.customTitle || manga.title;
+    element.textContent = manga.customTitle || manga.title || '';
     element.parentNode.removeAttribute('href');
     if (manga.url.match(httpRegex)) {
       element.parentNode.href = manga.url;
@@ -665,7 +667,7 @@ function showEditMenu(event, manga, index) {
     };
 
     // Prefill modal fields
-    document.getElementById('custom-title').value = manga.customTitle || manga.title;
+    document.getElementById('custom-title').value = manga.customTitle || manga.title || '';
     document.getElementById('custom-artist').value = manga.customArtist || manga.artist || '';
     document.getElementById('custom-author').value = manga.customAuthor || manga.author || '';
     document.getElementById('custom-thumbnail').value =
