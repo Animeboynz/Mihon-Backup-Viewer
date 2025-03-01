@@ -5,6 +5,7 @@ import { deleteManga, toggleForkOnlyElements } from './editBackup.js';
 import { loadSettings } from './settings.js';
 import { setTitle } from '../script.js';
 
+const noTitle = '-Untitled-';
 const url = new URL(window.location);
 export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
@@ -152,7 +153,7 @@ export function initializeLibrary() {
       switch (consts.sortFlags[sortOrder]) {
         default:
         case 'Alphabetical':
-          return i1.title.localeCompare(i2.title);
+          return (i1.title || noTitle).localeCompare(i2.title || noTitle);
         case 'LastRead':
           return (
             Math.max.apply(0, i1.history?.map(h => parseInt(h.lastRead || '0')) || [0]) -
@@ -199,6 +200,14 @@ export function initializeLibrary() {
         const category = categories.find(cat => cat.order === catOrder) || { name: 'Default' };
         const tabContent = document.querySelector(`#tab${category.name.sanitizeId()}`);
 
+        if (manga.title === undefined) {
+          manga.title = noTitle; // Fixes this loop
+          // Pre-emptively fix data loads in the same session
+          const bIndex = data.backupManga.findIndex(
+            m => m.source == manga.source && m.url == manga.url
+          );
+          if (bIndex != -1) data.backupManga[bIndex].title = noTitle;
+        }
         const titleFull = manga.customTitle || manga.title;
         const titleTrimmed = titleFull.length > 35 ? titleFull.substring(0, 35) + '…' : titleFull;
         const mangaItem = document.createElement('div');
