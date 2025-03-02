@@ -346,7 +346,7 @@ export function showTab(tabId) {
 
   // Add active class to the selected tab button
   const selectedTabButton = Array.from(tabButtons).find(
-    button => button.id === `btn${selectedTab.id}`
+    button => button.id === selectedTab.id.replace(/^tab/, 'btn')
   );
   if (selectedTabButton) {
     selectedTabButton.classList.add('active');
