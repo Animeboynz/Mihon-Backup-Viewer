@@ -24,6 +24,7 @@ message Backup {
 message BackupCategory {
   required string name = 1;
   optional int64 order = 2;
+  optional int64 id = 3;
   optional int64 flags = 100;
 }
 
@@ -140,6 +141,7 @@ message BackupTracking {
   optional int32 status = 9;
   optional int64 startedReadingDate = 10;
   optional int64 finishedReadingDate = 11;
+  optional bool private = 12;
   optional int64 mediaId = 100;
 }
 
