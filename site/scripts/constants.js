@@ -7,6 +7,7 @@ export default {
     8: 'LastUpdate',
     12: 'UnreadCount',
     16: 'TotalChapters',
+    18: 'FirstChapter', // BackupViewer
     20: 'LatestChapter',
     24: 'ChapterFetchDate',
     28: 'DateAdded',
@@ -18,6 +19,7 @@ export default {
     72: 'LastUpdate',
     76: 'UnreadCount',
     80: 'TotalChapters',
+    82: 'FirstChapter', // BackupViewer
     84: 'LatestChapter',
     88: 'ChapterFetchDate',
     92: 'DateAdded',
