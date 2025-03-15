@@ -567,6 +567,9 @@ function showMangaDetails(manga, categories, source) {
       if (chapter.read) {
         chapterName.classList.add('read');
       }
+      if (chapter.bookmark) {
+        chapterName.classList.add('bookmark');
+      }
       if (chapter.scanlator) {
         const chapterScanlator = document.createElement('div');
         chapterScanlator.classList.add('scanlator');

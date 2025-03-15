@@ -254,9 +254,19 @@
   color: darkseagreen;
 }
 
-#manga-chapters > div.chapter-box > div.read > a {
-  color: #808080;
-  font-style: italic;
+#manga-chapters > div.chapter-box > div {
+  &.read {
+    &,
+    & > a {
+      color: #808080;
+      font-style: italic;
+    }
+  }
+  &.bookmark::before {
+    content: 'bookmark';
+    font-family: 'Material Symbols Outlined';
+    padding-right: 0.2em;
+  }
 }
 
 .chapter-box > div {
