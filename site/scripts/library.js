@@ -845,13 +845,12 @@ function getRepoIndex() {
   const repoUrls = getRepoFromSettings();
   if (!repoUrls) return [];
   const usedSources = window.data.backupSources?.map(source => source.sourceId);
-  const sources =
-    consts.fork.value == 'sy'
-      ? [
-          { name: 'E-Hentai', lang: 'all', id: '6901', baseUrl: 'https://e-hentai.org' },
-          { name: 'ExHentai', lang: 'all', id: '6902', baseUrl: 'https://exhentai.org' },
-        ]
-      : [];
+  const sources = ['sy', 'komikku'].includes(consts.fork.value)
+    ? [
+        { name: 'E-Hentai', lang: 'all', id: '6901', baseUrl: 'https://e-hentai.org' },
+        { name: 'ExHentai', lang: 'all', id: '6902', baseUrl: 'https://exhentai.org' },
+      ]
+    : [];
   repoUrls.forEach(repoUrl => {
     // fetch(`../index.min.json`)
     fetch(`${repoUrl}/index.min.json`)
