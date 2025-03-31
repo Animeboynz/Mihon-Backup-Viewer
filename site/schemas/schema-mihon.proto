@@ -85,6 +85,7 @@ message BackupManga {
   optional int64 favoriteModifiedAt = 107;
   repeated string excludedScanlators = 108;
   optional int64 version = 109;
+  optional string notes = 110;
 }
 
 // BackupPreference.kt
