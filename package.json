@@ -1,16 +1,18 @@
 {
+  "name": "tachibk-viewer",
   "dependencies": {
-    "esbuild": "^0.25.0"
+    "esbuild": "~0.25.0"
   },
   "devDependencies": {
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
-    "postcss": "8.5.3",
-    "prettier": "3.5.3",
-    "prettier-plugin-css-order": "2.1.2"
+    "postcss": "^8.5.3",
+    "prettier": "~3.5.3",
+    "prettier-plugin-css-order": "^2.1.2"
   },
   "optionalDependencies": {
     "long": "^5.2.3",
+    "lz-string": "^1.5.0",
     "pako": "^2.1.0",
     "protobufjs": "^7.3.2"
   },

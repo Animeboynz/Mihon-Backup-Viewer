@@ -54,11 +54,21 @@ export function handleFileLoad(event, fork = 'mihon') {
     } catch (error) {
       alert('Error processing the file. Please pick a valid file.\n' + error);
     }
+    localStorage.setItem('data', LZString.compressToUTF16(JSON.stringify(window.data)));
   };
 
   if (file) {
     reader.readAsText(file);
   }
+}
+
+export function loadStoredData() {
+  const lsData = localStorage.getItem('data');
+  if (!lsData) return false;
+  window.data = JSON.parse(LZString.decompressFromUTF16(lsData));
+  loadSettings(true);
+  initializeLibrary();
+  return true;
 }
 
 export function loadDemoData() {

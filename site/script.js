@@ -1,6 +1,6 @@
 import consts from './scripts/constants.js';
 import { dlJSON, encodeToProtobuf } from './scripts/export.js';
-import { handleFileLoad, loadDemoData } from './scripts/loadBackup.js';
+import { handleFileLoad, loadDemoData, loadStoredData } from './scripts/loadBackup.js';
 import { closeModal, showModal } from './scripts/modals.js';
 import {
   initializeLibrary,
@@ -27,9 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   consts.sortButton.addEventListener('click', () => {
     consts.chapterList.classList.toggle('desc');
     saveSetting({
-      sort: {
-        chapters: consts.chapterList.classList.contains('desc') ? 'desc' : 'asc',
-      },
+      sort: { chapters: consts.chapterList.classList.contains('desc') ? 'desc' : 'asc' },
     });
   }); // Sort chapters
   consts.chapterFilterButton.addEventListener('click', () => showModal('chapter-filters-modal'));
@@ -44,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   consts.loadBackup.addEventListener('click', e => {
     closeModal('settings-modal');
     window.data = null;
+    localStorage.removeItem('data');
     consts.tabsContainer.innerHTML = '';
     consts.tabContentsContainer.innerHTML = '';
     showModal('load-modal');
@@ -76,6 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auto-load demo data if `?demo=1` is passed
   // Show the load modal otherwise
   DEV: if (new URLSearchParams(window.location.search).get('demo') == '1') loadDemoData();
-  showModal('load-modal');
+  if (!loadStoredData()) showModal('load-modal');
   consts.fork.value = loadSettings()['lastFork'];
 });
