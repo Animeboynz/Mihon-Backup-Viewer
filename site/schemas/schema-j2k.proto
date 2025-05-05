@@ -98,27 +98,21 @@ message BackupSourcePreferences {
 }
 
 message IntPreferenceValue {
-  required int32 value = 1;
 }
 
 message LongPreferenceValue {
-  required int64 value = 1;
 }
 
 message FloatPreferenceValue {
-  required float value = 1;
 }
 
 message StringPreferenceValue {
-  required string value = 1;
 }
 
 message BooleanPreferenceValue {
-  required bool value = 1;
 }
 
 message StringSetPreferenceValue {
-  repeated string value = 1;
 }
 
 // BackupSerializer.kt
