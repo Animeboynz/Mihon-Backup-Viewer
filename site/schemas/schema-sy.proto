@@ -93,6 +93,7 @@ message BackupManga {
   optional int64 favoriteModifiedAt = 107;
   repeated string excludedScanlators = 108;
   optional int64 version = 109;
+  optional string notes = 110;
   repeated BackupMergedMangaReference mergedMangaReferences = 600;
   optional BackupFlatMetadata flatMetadata = 601;
   optional int32 customStatus = 602;
