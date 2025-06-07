@@ -16,18 +16,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x' # Adjust the Python version as needed
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
       - name: Generate Schemas
         run: |
-          cd site/schemas
-          curl -o 'requirements.txt' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/requirements.txt
-          pip install -r requirements.txt
-          curl -o 'generate_schemas.py' https://raw.githubusercontent.com/BrutuZ/tachibk-converter/main/tachibk-converter.py
-          python generate_schemas.py --dump-schemas
+          cd site
+          uvx --from git+https://github.com/BrutuZ/tachibk-converter tachibk_converter --dump-schemas
 
       - name: Commit and push changes
         env:
