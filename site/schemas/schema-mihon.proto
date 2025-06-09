@@ -145,4 +145,3 @@ message BackupTracking {
   optional bool private = 12;
   optional int64 mediaId = 100;
 }
-

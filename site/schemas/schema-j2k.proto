@@ -142,4 +142,3 @@ message BackupTracking {
   optional int64 finishedReadingDate = 11;
   optional int64 mediaId = 100;
 }
-

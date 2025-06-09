@@ -212,4 +212,3 @@ message BackupSearchTitle {
   required string title = 1;
   required int32 type = 2;
 }
-
