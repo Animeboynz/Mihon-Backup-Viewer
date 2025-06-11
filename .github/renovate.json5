@@ -3,13 +3,20 @@
   "extends": ["config:recommended", "schedule:automergeEarlyMondays", "group:all"],
   "automerge": true,
   "automergeType": "branch",
-  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardAutoclose": false,
   "labels": ["Dependency"],
   "minimumReleaseAge": "1 week",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": ["minor", "pin", "digest"],
+      "automergeType": "branch",
       "automerge": true
     }
-  ]
+  ],
+  "lockFileMaintenance":{
+    "enabled": true,
+    "automerge": true,
+    "automergeType": "branch",
+    "ignoreTests": true,
+  },
 }
