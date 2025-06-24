@@ -10,6 +10,7 @@ const url = new URL(window.location);
 export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
 var repoData = null;
+var deduped = false;
 
 String.prototype.sanitizeId = function () {
   return btoa(
@@ -32,6 +33,10 @@ String.prototype.decodeId = function () {
 export function initializeLibrary() {
   if (!repoData) repoData = getRepoIndex();
   const categories = window.data.backupCategories || [];
+  if (!deduped) {
+    window.data.backupManga = window.data.backupManga.map(dedupeChapters);
+    deduped = true;
+  }
   let mangaItems = window.data.backupManga;
   const editCategoryOptions = document.getElementById('edit-category-options');
   DEV: console.log('Loading Settings from initializeLibrary');
@@ -909,4 +914,16 @@ export function toggleChapterFilter(reset = false) {
       element.hidden = true;
     }
   });
+}
+
+export function dedupeChapters(manga) {
+  if (Array.isArray(manga.chapters)) {
+    manga.chapters = Object.values(
+      manga.chapters.reduce((acc, obj) => {
+        acc[obj.url] = obj;
+        return acc;
+      }, {})
+    );
+  }
+  return manga;
 }
