@@ -79,3 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
   showModal('load-modal');
   consts.fork.value = loadSettings()['lastFork'];
 });
+
+const resizeObserver = new ResizeObserver(e =>
+  document.documentElement.style.setProperty(
+    '--header-height',
+    `${consts.tabsContainer.parentElement.clientHeight}px`
+  )
+);
+resizeObserver.observe(consts.tabsContainer.parentElement);
