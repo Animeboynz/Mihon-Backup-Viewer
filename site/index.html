@@ -93,11 +93,6 @@
 
   <body>
     <div class="container">
-      <!-- Search Icon + Field -->
-      <div id="search">
-        <span class="material-symbols-outlined search-icon">search</span>
-        <input type="search" name="search" placeholder='search "exact expression" -exclude' disabled />
-      </div>
       <!-- Welcome / Load File Screen -->
       <div id="load-modal" class="modal">
         <div class="modal-content">
@@ -120,11 +115,18 @@
           <input type="file" id="file-input" accept=".json,.tachibk,.proto.gz" />
         </div>
       </div>
-      <!-- Settings Icon -->
-      <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">filter_list</span></div>
-      <!-- Categories Buttons -->
-      <div class="tabs" id="tabs">
-        <!-- Tabs will be generated here -->
+      <div id="header">
+        <!-- Search Icon + Field -->
+        <div id="search">
+          <span class="material-symbols-outlined search-icon">search</span>
+          <input type="search" name="search" placeholder='search "exact expression" -exclude' disabled />
+        </div>
+        <!-- Categories Buttons -->
+        <div class="tabs" id="tabs">
+          <!-- Tabs will be generated here -->
+        </div>
+        <!-- Settings Icon -->
+        <div class="settings-icon" id="settings-icon"><span class="material-symbols-outlined">filter_list</span></div>
       </div>
       <!-- Manga Entries -->
       <div id="tab-contents">
