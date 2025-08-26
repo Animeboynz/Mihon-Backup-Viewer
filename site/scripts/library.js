@@ -317,6 +317,7 @@ export function search(searchQuery = '', manga = { title: '' }) {
     manga.artist || '',
     manga.author || '',
     manga.description || '',
+    manga.notes || '',
     manga.genre?.join('\n') || '',
   ].join('\n');
   const queryParams = searchQuery
