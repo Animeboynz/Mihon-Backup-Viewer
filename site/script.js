@@ -5,6 +5,7 @@ import { closeModal, showModal } from './scripts/modals.js';
 import {
   initializeLibrary,
   toggleChapterFilter,
+  toggleClearSearchButton,
   toggleExpandDescription,
 } from './scripts/library.js';
 import { applySettings, loadSettings, saveSetting } from './scripts/settings.js';
@@ -56,11 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
   consts.searchButton.addEventListener('click', () => {
     consts.searchField.toggleAttribute('disabled');
     if (!consts.searchField.disabled) consts.searchField.focus();
+    toggleClearSearchButton();
   });
-  consts.searchField.addEventListener('blur', () => (consts.searchField.disabled = true));
+  consts.searchField.addEventListener('blur', () => {
+    setTimeout(() => {
+      consts.searchField.disabled = true;
+      toggleClearSearchButton();
+    }, 500);
+  });
   consts.searchField.addEventListener('input', () => {
     clearTimeout(searchCooldown);
     searchCooldown = setTimeout(initializeLibrary, 1300);
+    toggleClearSearchButton();
+  });
+  consts.searchClear.addEventListener('click', () => {
+    console.log('Cleared Query!');
+    consts.searchField.value = '';
+    initializeLibrary();
   });
 
   // Closes Modals when clicking outside

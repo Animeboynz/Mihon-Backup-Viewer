@@ -342,6 +342,7 @@ export function search(searchQuery = '', manga = { title: '' }) {
     url.searchParams.delete('search');
     consts.searchButton.classList.remove('filtered');
   }
+  toggleClearSearchButton();
 
   if (url.toString() != window.location.toString())
     window.history.replaceState(null, '', url.toString());
@@ -927,4 +928,13 @@ export function dedupeChapters(manga) {
     );
   }
   return manga;
+}
+
+export function toggleClearSearchButton() {
+  consts.searchField.value == ''
+    ? consts.searchClear.setAttribute('hidden', '')
+    : consts.searchClear.removeAttribute('hidden');
+  consts.searchField.disabled
+    ? consts.searchClear.setAttribute('disabled', '')
+    : consts.searchClear.removeAttribute('disabled');
 }
