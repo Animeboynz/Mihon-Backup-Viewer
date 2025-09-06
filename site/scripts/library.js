@@ -485,7 +485,8 @@ function showMangaDetails(manga, categories, source) {
     element.hidden = !manga.customArtist && !manga.artist ? true : false;
   });
 
-  consts.modalDescription.innerText = manga.customDescription || manga.description;
+  consts.modalDescription.innerText =
+    `${manga.notes || ''}\n\n${manga.customDescription || manga.description}`.trimStart();
   consts.modalDescriptionDiv.classList.remove('expanded');
   consts.modalDescriptionDiv.style.maxHeight = 'var(--manga-desc-collapsed-height)';
   document.getElementById('description-expand-icon').style.transform = 'none';
