@@ -174,38 +174,18 @@ export function initializeLibrary() {
           return (i1.chapters?.length || '0') - (i2.chapters?.length || '0');
         case 'FirstChapter':
           return (
-            Math.min.apply(
-              0,
-              i1.chapters?.map(h => parseInt(h.dateUpload || '0'))
-            ) ||
-            [0] -
-              Math.min.apply(
-                0,
-                i2.chapters?.map(h => parseInt(h.dateUpload || '0'))
-              ) || [0]
+            Math.min.apply(0, i1.chapters?.map(h => parseInt(h.dateUpload || '0')) || [0]) -
+            Math.min.apply(0, i2.chapters?.map(h => parseInt(h.dateUpload || '0')) || [0])
           );
         case 'LatestChapter':
           return (
-            Math.max.apply(
-              0,
-              i1.chapters?.map(h => parseInt(h.dateUpload || '0'))
-            ) ||
-            [0] -
-              Math.max.apply(
-                0,
-                i2.chapters?.map(h => parseInt(h.dateUpload || '0'))
-              ) || [0]
+            Math.max.apply(0, i1.chapters?.map(h => parseInt(h.dateUpload || '0')) || [0]) -
+            Math.max.apply(0, i2.chapters?.map(h => parseInt(h.dateUpload || '0')) || [0])
           );
         case 'ChapterFetchDate':
           return (
-            (Math.max.apply(
-              0,
-              i1.chapters?.map(h => parseInt(h.dateFetch || '0'))
-            ) || [0]) -
-            (Math.max.apply(
-              0,
-              i2.chapters?.map(h => parseInt(h.dateFetch || '0'))
-            ) || [0])
+            Math.max.apply(0, i1.chapters?.map(h => parseInt(h.dateFetch || '0')) || [0]) -
+            Math.max.apply(0, i2.chapters?.map(h => parseInt(h.dateFetch || '0')) || [0])
           );
         case 'DateAdded':
           return parseInt(i1.dateAdded || '0') - parseInt(i2.dateAdded || '0');
