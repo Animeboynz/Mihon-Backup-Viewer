@@ -115,7 +115,6 @@ message BooleanPreferenceValue {
 message StringSetPreferenceValue {
 }
 
-// BackupSerializer.kt
 // BackupSource.kt
 message BrokenBackupSource {
   optional string name = 1;
