@@ -27,6 +27,9 @@ message BackupCategory {
   optional int64 order = 2;
   optional int64 id = 3;
   optional int64 flags = 100;
+  optional int64 version = 601;
+  optional int64 uid = 602;
+  optional int64 lastModifiedAt = 603;
 }
 
 // BackupChapter.kt
