@@ -9,7 +9,6 @@ const noTitle = '-Untitled-';
 const url = new URL(window.location);
 export var activeTabId = null;
 const httpRegex = RegExp('^https?://');
-var repoData = null;
 var deduped = false;
 
 String.prototype.sanitizeId = function () {
@@ -31,7 +30,7 @@ String.prototype.decodeId = function () {
 
 // Function to Initialise the Tab Contents and Library from the JSON found in the data variable.
 export function initializeLibrary() {
-  if (!repoData) repoData = getRepoIndex();
+  if (!window.data.repoData) window.data.repoData = getRepoIndex();
   const categories = window.data.backupCategories || [];
   if (!deduped) {
     window.data.backupManga = window.data.backupManga.map(dedupeChapters);
@@ -261,8 +260,8 @@ export function initializeLibrary() {
           showMangaDetails(
             manga,
             window.data.backupCategories,
-            repoData?.find(entry => entry.id == manga.source)
-              ? repoData?.find(entry => entry.id == manga.source)
+            window.data.repoData?.find(entry => entry.id == manga.source)
+              ? window.data.repoData?.find(entry => entry.id == manga.source)
               : window.data.backupSources.find(source => source.sourceId === manga.source)
           );
         });
@@ -361,7 +360,7 @@ export function showTab(tabId) {
 
 //Adds info to Manga Details Modal
 function showMangaDetails(manga, categories, source) {
-  const repoMatch = repoData?.find(entry => entry.id == manga.source);
+  const repoMatch = window.data.repoData?.find(entry => entry.id == manga.source);
   const newWindowIcon = addMaterialSymbol(null, 'open_in_new');
   newWindowIcon.classList.add('link-icon');
   consts.mangaModal.dataset.index = window.data.backupManga.indexOf(manga);
