@@ -42,6 +42,7 @@ message BackupChapter {
   optional int64 sourceOrder = 10;
   optional int64 lastModifiedAt = 11;
   optional int64 version = 12;
+  optional ByteArray memo = 13;
 }
 
 // BackupExtensionStore.kt
@@ -53,6 +54,7 @@ message BackupExtensionStore {
   required string contactWebsite = 4;
   optional string contactDiscord = 6;
   optional bool isLegacy = 7;
+  optional string extensionListUrl = 8;
 }
 
 // BackupHistory.kt
@@ -89,6 +91,7 @@ message BackupManga {
   optional int64 version = 109;
   optional string notes = 110;
   optional bool initialized = 111;
+  optional ByteArray memo = 112;
 }
 
 // BackupPreference.kt
