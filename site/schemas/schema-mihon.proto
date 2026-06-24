@@ -42,7 +42,7 @@ message BackupChapter {
   optional int64 sourceOrder = 10;
   optional int64 lastModifiedAt = 11;
   optional int64 version = 12;
-  optional ByteArray memo = 13;
+  repeated bytes memo = 13;
 }
 
 // BackupExtensionStore.kt
@@ -91,7 +91,7 @@ message BackupManga {
   optional int64 version = 109;
   optional string notes = 110;
   optional bool initialized = 111;
-  optional ByteArray memo = 112;
+  repeated bytes memo = 112;
 }
 
 // BackupPreference.kt
