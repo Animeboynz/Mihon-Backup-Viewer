@@ -11,7 +11,7 @@
   },
   "optionalDependencies": {
     "long": "^5.2.3",
-    "pako": "^2.1.0",
+    "pako": "^3.0.0",
     "protobufjs": "^8.0.0"
   },
   "scripts": {
