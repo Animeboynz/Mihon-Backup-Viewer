@@ -17,7 +17,7 @@ message Backup {
   repeated BackupSource backupSources = 101;
   repeated BackupPreference backupPreferences = 104;
   repeated BackupSourcePreferences backupSourcePreferences = 105;
-  repeated BackupExtensionRepos backupExtensionRepo = 106;
+  repeated BackupExtensionStore backupExtensionStores = 106;
   repeated BackupSavedSearch backupSavedSearches = 600;
   repeated BackupFeed backupFeeds = 610;
 }
@@ -45,15 +45,19 @@ message BackupChapter {
   optional int64 sourceOrder = 10;
   optional int64 lastModifiedAt = 11;
   optional int64 version = 12;
+  repeated bytes memo = 13;
 }
 
-// BackupExtensionRepos.kt
-message BackupExtensionRepos {
-  required string baseUrl = 1;
+// BackupExtensionStore.kt
+message BackupExtensionStore {
+  required string indexUrl = 1;
   required string name = 2;
-  optional string shortName = 3;
-  required string website = 4;
-  required string signingKeyFingerprint = 5;
+  optional string badgeLabel = 3;
+  required string signingKey = 5;
+  required string contactWebsite = 4;
+  optional string contactDiscord = 6;
+  optional bool isLegacy = 7;
+  optional string extensionListUrl = 8;
 }
 
 // BackupFeed.kt
@@ -104,6 +108,7 @@ message BackupManga {
   optional int64 version = 109;
   optional string notes = 110;
   optional bool initialized = 111;
+  repeated bytes memo = 112;
   repeated BackupMergedMangaReference mergedMangaReferences = 600;
   optional BackupFlatMetadata flatMetadata = 601;
   optional int32 customStatus = 602;
