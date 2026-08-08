@@ -44,6 +44,8 @@ export default {
     7: 'img/trackers/ic_tracker_manga_updates.webp',
     8: 'img/trackers/ic_tracker_kavita.webp',
     9: 'img/trackers/ic_tracker_suwayomi.webp',
+    10: 'img/trackers/ic_tracker_hikka.webp',
+    11: 'img/trackers/ic_tracker_mangabaka.webp',
     60: 'img/trackers/ic_tracker_mdlist.webp',
   },
   modalTitle: document.querySelectorAll('#manga-title'),
