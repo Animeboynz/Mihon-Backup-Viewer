@@ -380,7 +380,9 @@ function showMangaDetails(manga, categories, source) {
     element.innerHTML = '';
     if (source.baseUrl) {
       const favicon = document.createElement('img');
-      favicon.src = `https://external-content.duckduckgo.com/ip3/${source.baseUrl.split('/')[2]}.ico`;
+      favicon.src =
+        source.icon ||
+        `https://external-content.duckduckgo.com/ip3/${source.baseUrl.split('/')[2]}.ico`;
       favicon.height = 24;
       favicon.classList.add('material-symbols-outlined');
       element.append(favicon);
@@ -807,13 +809,17 @@ document.addEventListener('click', event => {
 
 // Fetch repo from saved settings
 function getRepoFromSettings() {
-  const repoSetting = window.data.backupPreferences?.find(s => s.key == 'extension_repos');
-  if (!repoSetting) return false;
+  // New dedicated Extension Repo / Store Message
+  const repoMsg = window.data.backupExtensionRepo;
+  // Legacy Preferences-based string array
+  if (repoMsg) return repoMsg.map(r => r.baseUrl);
+  const repoPref = window.data.backupPreferences?.find(s => s.key == 'extension_repos');
+  if (!repoPref) return false;
   const newList = [];
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   try {
-    const byteArray = encoder.encode(atob(repoSetting.value.truevalue));
+    const byteArray = encoder.encode(atob(repoPref.value.truevalue));
     byteArray.forEach(byte => {
       if (byte == byteArray[0]) newList.push([]);
       else newList[newList.length - 1].push(byte);
@@ -832,6 +838,7 @@ function getRepoIndex() {
   const repoUrls = getRepoFromSettings();
   if (!repoUrls) return [];
   const usedSources = window.data.backupSources?.map(source => source.sourceId);
+  if (!usedSources?.length) return [];
   const sources = ['sy', 'komikku'].includes(consts.fork.value)
     ? [
         { name: 'E-Hentai', lang: 'all', id: '6901', baseUrl: 'https://e-hentai.org' },
@@ -839,18 +846,40 @@ function getRepoIndex() {
       ]
     : [];
   repoUrls.forEach(repoUrl => {
-    // fetch(`../index.min.json`)
-    fetch(`${repoUrl}/index.min.json`)
-      .then(response => response.json())
-      .then(response =>
-        response.forEach(pkg => {
-          pkg.sources.forEach(source => {
-            if (usedSources && usedSources.length && !usedSources.includes(source.id)) return;
-            sources.push(source);
-          });
-        })
-      )
-      .catch(e => alert(`Error fetching the repo list. ${e}`));
+    if (repoUrl.endsWith('.pb') || repoUrl.endsWith('.json')) {
+      // Protobuf-based index
+      fetch(repoUrl.replace(/\.pb$/, '.json')) // We're trusting stores to follow the guidelines and provide the JSONified data
+        .then(response => response.json())
+        .then(store =>
+          store.extensionList?.extensions?.forEach(ext => {
+            ext.sources.forEach(src => {
+              if (usedSources.includes(src.id))
+                sources.push({
+                  name: src.name,
+                  lang: src.language,
+                  id: src.id,
+                  baseUrl: src.homeUrl,
+                  icon: ext.resources?.iconUrl,
+                });
+            });
+          })
+        )
+        .catch(e => alert(`Error reading Store Index Protobuf to JSON. ${e}`));
+    } else {
+      // Legacy extension repo index
+      // fetch(`../index.min.json`)
+      fetch(`${repoUrl}/index.min.json`)
+        .then(response => response.json())
+        .then(response =>
+          response.forEach(pkg => {
+            pkg.sources.forEach(source => {
+              if (usedSources && usedSources.length && !usedSources.includes(source.id)) return;
+              sources.push(source);
+            });
+          })
+        )
+        .catch(e => alert(`Error fetching the repo list. ${e}`));
+    }
   });
   return sources;
 }
