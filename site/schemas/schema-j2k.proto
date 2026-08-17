@@ -40,8 +40,8 @@ message BackupChapter {
   optional int64 dateUpload = 8;
   optional float chapterNumber = 9;
   optional int32 sourceOrder = 10;
+  optional string memo = 13;
   optional int32 pagesLeft = 800;
-  optional string memo = 801;
 }
 
 // BackupHistory.kt
@@ -79,13 +79,14 @@ message BackupManga {
   optional int32 viewer_flags = 103;
   repeated BackupHistory history = 104;
   optional UpdateStrategy updateStrategy = 105;
+  repeated string excludedScanlators = 108;
+  optional string memo = 112;
   optional int32 customStatus = 602;
   optional string customTitle = 800;
   optional string customArtist = 801;
   optional string customAuthor = 802;
   optional string customDescription = 804;
   repeated string customGenre = 805;
-  optional string memo = 806;
 }
 
 // BackupPreference.kt
