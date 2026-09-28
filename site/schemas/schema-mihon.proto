@@ -40,8 +40,6 @@ message BackupChapter {
   optional int64 dateUpload = 8;
   optional float chapterNumber = 9;
   optional int64 sourceOrder = 10;
-  optional int64 lastModifiedAt = 11;
-  optional int64 version = 12;
   repeated bytes memo = 13;
 }
 
@@ -85,10 +83,8 @@ message BackupManga {
   optional int32 viewer_flags = 103;
   repeated BackupHistory history = 104;
   optional UpdateStrategy updateStrategy = 105;
-  optional int64 lastModifiedAt = 106;
   optional int64 favoriteModifiedAt = 107;
   repeated string excludedScanlators = 108;
-  optional int64 version = 109;
   optional string notes = 110;
   optional bool initialized = 111;
   repeated bytes memo = 112;
