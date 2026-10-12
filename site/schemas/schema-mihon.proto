@@ -88,6 +88,7 @@ message BackupManga {
   optional string notes = 110;
   optional bool initialized = 111;
   repeated bytes memo = 112;
+  optional int64 nextUpdate = 113;
 }
 
 // BackupPreference.kt
