@@ -19,6 +19,7 @@ message Backup {
   repeated BackupSourcePreferences backupSourcePreferences = 105;
   repeated BackupExtensionStore backupExtensionStores = 106;
   repeated BackupSavedSearch backupSavedSearches = 600;
+  repeated BackupFeed backupFeeds = 601;
 }
 
 // BackupCategory.kt
@@ -51,14 +52,21 @@ message BackupChapter {
 
 // BackupExtensionStore.kt
 message BackupExtensionStore {
-  required string indexUrl = 1;
-  required string name = 2;
+  optional string indexUrl = 1;
+  optional string name = 2;
   optional string badgeLabel = 3;
-  required string signingKey = 5;
-  required string contactWebsite = 4;
+  optional string signingKey = 5;
+  optional string contactWebsite = 4;
   optional string contactDiscord = 6;
   optional bool isLegacy = 7;
   optional string extensionListUrl = 8;
+}
+
+// BackupFeed.kt
+message BackupFeed {
+  optional int64 source = 1;
+  optional bool global = 2;
+  optional string savedSearchName = 3;
 }
 
 // BackupFlatMetadata.kt
@@ -70,8 +78,8 @@ message BackupFlatMetadata {
 
 // BackupHistory.kt
 message BackupHistory {
-  required string url = 1;
-  required int64 lastRead = 2;
+  optional string url = 1;
+  optional int64 lastRead = 2;
   optional int64 readDuration = 3;
 }
 
@@ -104,10 +112,11 @@ message BackupManga {
   optional bool initialized = 111;
   repeated bytes memo = 112;
   optional int64 nextUpdate = 113;
-  repeated BackupMergedMangaReference mergedMangaReferences = 600;
+  repeated BackupMergedEntry mergedEntries = 600;
   optional BackupFlatMetadata flatMetadata = 601;
   optional int32 customStatus = 602;
   optional string customThumbnailUrl = 603;
+  optional BackupMergeSettings mergeSettings = 604;
   optional string customTitle = 800;
   optional string customArtist = 801;
   optional string customAuthor = 802;
@@ -115,16 +124,21 @@ message BackupManga {
   repeated string customGenre = 805;
 }
 
-// BackupMergedMangaReference.kt
-message BackupMergedMangaReference {
+// BackupMergedEntry.kt
+message BackupMergedEntry {
   optional bool isInfoManga = 1;
-  optional bool getChapterUpdates = 2;
+  optional bool fetchChapterUpdates = 2;
   optional int32 chapterSortMode = 3;
   optional int32 chapterPriority = 4;
   optional bool downloadChapters = 5;
-  optional string mergeUrl = 6;
   optional string mangaUrl = 7;
   optional int64 mangaSourceId = 8;
+}
+
+message BackupMergeSettings {
+  optional int32 chapterSortMode = 1;
+  optional string infoMangaUrl = 2;
+  optional int64 infoMangaSourceId = 3;
 }
 
 // BackupPreference.kt
@@ -139,27 +153,21 @@ message BackupSourcePreferences {
 }
 
 message IntPreferenceValue {
-  optional int32 value = 1;
 }
 
 message LongPreferenceValue {
-  optional int64 value = 1;
 }
 
 message FloatPreferenceValue {
-  optional float value = 1;
 }
 
 message StringPreferenceValue {
-  optional string value = 1;
 }
 
 message BooleanPreferenceValue {
-  optional bool value = 1;
 }
 
 message StringSetPreferenceValue {
-  repeated string value = 1;
 }
 
 // BackupSavedSearch.kt
